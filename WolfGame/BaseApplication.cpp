@@ -19,7 +19,6 @@ This source file is part of the
 //-------------------------------------------------------------------------------------
 BaseApplication::BaseApplication(void)
     : mRoot(0),
-    mCamera(0),
     mSceneMgr(0),
     mWindow(0),
     mResourcesCfg(Ogre::StringUtil::BLANK),
@@ -67,18 +66,6 @@ void BaseApplication::chooseSceneManager(void)
     mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
 }
 //-------------------------------------------------------------------------------------
-void BaseApplication::createCamera(void)
-{
-    // Create the camera
-    mCamera = mSceneMgr->createCamera("PlayerCam");
-
-    // Position it at 500 in Z direction
-    mCamera->setPosition(Ogre::Vector3(7.5,7.5,-15.0));
-    // Look back along -Z
-    mCamera->lookAt(Ogre::Vector3(0,0,0));
-    mCamera->setNearClipDistance(5);
-
-}
 //-------------------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)
 {
@@ -129,12 +116,13 @@ void BaseApplication::destroyScene(void)
 void BaseApplication::createViewports(void)
 {
     // Create one viewport, entire window
-    Ogre::Viewport* vp = mWindow->addViewport(mCamera);
+    Ogre::Viewport* vp = mWindow->addViewport(mController.mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
+	Ogre::Viewport* vp2 = mWindow->addViewport(mController.mCamera, 1, 0.5f,0.0f,0.5f,1.0f);
     vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
-
+	vp2->setBackgroundColour(Ogre::ColourValue(0,1,0));
     // Alter the camera aspect ratio to match the viewport
-    mCamera->setAspectRatio(
-        Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+    mController.mCamera->setAspectRatio(
+        Ogre::Real(vp->getActualWidth()/2) / Ogre::Real(vp->getActualHeight()));
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::setupResources(void)
@@ -201,7 +189,10 @@ bool BaseApplication::setup(void)
     if (!carryOn) return false;
 
     chooseSceneManager();
-    createCamera();
+
+	mOculus = new OculusControl();
+
+    mController.createCameras(mSceneMgr);
     createViewports();
 
     // Set default mipmap level (NB some APIs ignore this)
@@ -260,13 +251,14 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
-	mCamera->yaw(Ogre::Radian(0.1));
+	float relativeMovement = (float)arg.state.X.rel/40.0f;
+	mController.mCamera->yaw(Ogre::Radian(-relativeMovement));
     return true;
 }
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	mCamera->pitch(Ogre::Radian(0.1));
+	mController.mCamera->pitch(Ogre::Radian(0.1));
     return true;
 }
 

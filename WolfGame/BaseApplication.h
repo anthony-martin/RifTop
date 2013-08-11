@@ -32,6 +32,8 @@ This source file is part of the
 #include <OISMouse.h>
 #include <OgreWindowEventUtilities.h>
 
+#include "CameraController.h"
+#include "OculusControl.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -45,7 +47,6 @@ protected:
     virtual bool setup();
     virtual bool configure(void);
     virtual void chooseSceneManager(void);
-    virtual void createCamera(void);
     virtual void createFrameListener(void);
     virtual void createScene(void) = 0; // Override me!
     virtual void destroyScene(void);
@@ -72,7 +73,8 @@ protected:
     virtual void windowClosed(Ogre::RenderWindow* rw);
 
     Ogre::Root *mRoot;
-    Ogre::Camera* mCamera;
+	CameraController::Controller mController;
+	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;
     Ogre::RenderWindow* mWindow;
     Ogre::String mResourcesCfg;

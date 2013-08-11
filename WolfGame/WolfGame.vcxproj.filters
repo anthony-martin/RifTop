@@ -18,24 +18,30 @@
     <ClCompile Include="WolfGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OgreCore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TutorialApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OculusControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OgreCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BaseApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TutorialApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OculusControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

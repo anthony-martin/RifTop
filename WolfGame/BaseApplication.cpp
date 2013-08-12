@@ -117,12 +117,9 @@ void BaseApplication::createViewports(void)
 {
     // Create one viewport, entire window
     Ogre::Viewport* vp = mWindow->addViewport(mController.mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
-	Ogre::Viewport* vp2 = mWindow->addViewport(mController.mCamera, 1, 0.5f,0.0f,0.5f,1.0f);
+	Ogre::Viewport* vp2 = mWindow->addViewport(mController.mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
     vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
 	vp2->setBackgroundColour(Ogre::ColourValue(0,1,0));
-    // Alter the camera aspect ratio to match the viewport
-    mController.mCamera->setAspectRatio(
-        Ogre::Real(vp->getActualWidth()/2) / Ogre::Real(vp->getActualHeight()));
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::setupResources(void)
@@ -252,13 +249,12 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
 	float relativeMovement = (float)arg.state.X.rel/40.0f;
-	mController.mCamera->yaw(Ogre::Radian(-relativeMovement));
+	mController.mRotationNode->yaw(Ogre::Radian(-relativeMovement));
     return true;
 }
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	mController.mCamera->pitch(Ogre::Radian(0.1));
     return true;
 }
 

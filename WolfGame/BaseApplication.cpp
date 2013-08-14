@@ -115,11 +115,7 @@ void BaseApplication::destroyScene(void)
 //-------------------------------------------------------------------------------------
 void BaseApplication::createViewports(void)
 {
-    // Create one viewport, entire window
-    Ogre::Viewport* vp = mWindow->addViewport(mController.mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
-	Ogre::Viewport* vp2 = mWindow->addViewport(mController.mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
-    vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
-	vp2->setBackgroundColour(Ogre::ColourValue(0,1,0));
+	
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::setupResources(void)
@@ -187,18 +183,18 @@ bool BaseApplication::setup(void)
 
     chooseSceneManager();
 
-	mOculus = new OculusControl();
-
-    mController.createCameras(mSceneMgr);
-    createViewports();
-
-    // Set default mipmap level (NB some APIs ignore this)
+	// Set default mipmap level (NB some APIs ignore this)
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 
     // Create any resource listeners (for loading screens)
     createResourceListener();
     // Load resources
     loadResources();
+
+	mOculus = new OculusControl();
+	mController = new CameraController::Controller(mWindow);
+    mController->createCameras(mSceneMgr);
+	mController->createViewports(mOculus->getDeviceInfo());
 
     // Create the scene
     createScene();
@@ -219,6 +215,8 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
+
+	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 
     return true;
 }
@@ -249,7 +247,7 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
 	float relativeMovement = (float)arg.state.X.rel/40.0f;
-	mController.mRotationNode->yaw(Ogre::Radian(-relativeMovement));
+	mController->mBodyRotationNode->yaw(Ogre::Radian(-relativeMovement));
     return true;
 }
 

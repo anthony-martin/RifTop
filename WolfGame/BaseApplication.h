@@ -73,7 +73,7 @@ protected:
     virtual void windowClosed(Ogre::RenderWindow* rw);
 
     Ogre::Root *mRoot;
-	CameraController::Controller mController;
+	CameraController::Controller* mController;
 	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;
     Ogre::RenderWindow* mWindow;

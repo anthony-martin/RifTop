@@ -1,0 +1,67 @@
+uniform float2 ScreenCenter;
+uniform float2 LensCentre;
+uniform float2 Scale;
+uniform float2 ScaleIn;
+uniform float4 HmdWarpParam;
+uniform float4 ChromAbParam;
+
+float4 main_fp(float4 pos : POSITION, 
+		float2 iTexCoord : TEXCOORD0, 
+		uniform sampler2D RT : register(s0)) : COLOR
+{
+	float2 theta = (iTexCoord - LensCentre) * ScaleIn; // Scales to [-1, 1]
+	float rSq = theta.x * theta.x + theta.y * theta.y;
+	float2 theta1 = theta * (HmdWarpParam.x + HmdWarpParam.y * rSq + HmdWarpParam.z * rSq * rSq + HmdWarpParam.w * rSq * rSq * rSq);
+	float2 tc = LensCentre + Scale * theta1;
+
+	// Detect whether blue texture coordinates are out of range
+	// since these will scaled out the furthest.
+	float2 thetaBlue = theta1 * (ChromAbParam.z + ChromAbParam.w * rSq);
+	float2 tcBlue = LensCentre + Scale * thetaBlue;
+	//if (any(clamp(tcBlue, ScreenCenter -float2(0.25,0.5),
+	//ScreenCenter+float2(0.25, 0.5)) - tcBlue))
+	//return 0;
+	// Now do blue texture lookup.
+	float blue = tex2D(RT, tcBlue).b;
+	// Do green lookup (no scaling).
+	float2 tcGreen = LensCentre + Scale * theta1;
+	float green = tex2D(RT, tcGreen).g;
+	// Do red scale and lookup.
+	float2 thetaRed = theta1 * (ChromAbParam.x + ChromAbParam.y * rSq);
+	float2 tcRed = LensCentre + Scale * thetaRed;
+	float red = tex2D(RT, tcRed).r;
+
+	return float4(red, green, blue ,1);
+
+}
+
+void oculusBaseLightMap_vp(float4 position : POSITION,
+						  float2 uv1		  : TEXCOORD0,
+						  float2 uv2		  : TEXCOORD1,
+						  
+						  out float4 oPosition : POSITION,
+						  out float2 oUv1	   : TEXCOORD0,
+						  out float2 oUv2	   : TEXCOORD1,
+						  out float4 colour    : COLOR,
+
+						  uniform float4x4 worldViewProj,
+						  uniform float4 ambient)
+{
+	oPosition = mul(worldViewProj, position);
+	oUv1 = uv1;
+	oUv2 = uv2;
+	colour = ambient;
+}
+
+float4 oculusBaseLightMap_fp(float2 uv1 : TEXCOORD0, 
+			    float2 uv2 : TEXCOORD1, 
+			    uniform sampler2D texMap : register(s0),
+			    uniform sampler2D lightMap : register(s1)) : COLOR
+{
+	float4 colour1 = tex2D(texMap, uv1);
+	float4 colour2 = tex2D(lightMap, uv2);
+	colour2.rgb = colour2.rgb * lerp(1.2, 1.9, saturate(length(colour2.rgb)));
+	if (colour1.a <= 0.4)
+		discard;
+	return float4(colour1 * colour2);
+}

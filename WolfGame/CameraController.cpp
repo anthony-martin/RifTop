@@ -8,9 +8,48 @@ namespace
 const float g_defaultFarClip = 10000.0f;
 }
 
-Controller::Controller()
+Controller::Controller( Ogre::RenderWindow* window)
 {
+	mWindow = window;
 	mStereoConfig = new OVR::Util::Render::StereoConfig();
+}
+
+void Controller::configureCompositors(OVR::HMDInfo devinfo)
+{
+	Ogre::MaterialPtr matLeft = Ogre::MaterialManager::getSingleton().getByName("Ogre/Compositor/Oculus");
+	
+	Ogre::MaterialPtr matRight = matLeft->clone("Ogre/Compositor/Oculus/Right");
+	Ogre::GpuProgramParametersSharedPtr pParamsLeft = matLeft->getTechnique(0)->getPass(0)->getFragmentProgramParameters();
+	Ogre::GpuProgramParametersSharedPtr pParamsRight = matRight->getTechnique(0)->getPass(0)->getFragmentProgramParameters();
+	
+	Ogre::Vector4 hmdwarp = Ogre::Vector4(mStereoConfig->GetDistortionK(0),
+							mStereoConfig->GetDistortionK(1),
+							mStereoConfig->GetDistortionK(2),
+							mStereoConfig->GetDistortionK(3));
+
+	pParamsLeft->setNamedConstant("HmdWarpParam", hmdwarp);
+	pParamsRight->setNamedConstant("HmdWarpParam", hmdwarp);
+
+	Ogre::Vector4 ChromAb;
+	ChromAb = Ogre::Vector4(devinfo.ChromaAbCorrection[0],
+								devinfo.ChromaAbCorrection[1],
+								devinfo.ChromaAbCorrection[2],
+								devinfo.ChromaAbCorrection[3]);
+
+	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
+	pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
+
+
+	pParamsLeft->setNamedConstant("LensCentre", 0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f));
+	pParamsRight->setNamedConstant("LensCentre", 0.5f-(mStereoConfig->GetProjectionCenterOffset()/2.0f));
+
+	Ogre::CompositorPtr comp = Ogre::CompositorManager::getSingleton().getByName("OculusRight");
+	comp->getTechnique(0)->getOutputTargetPass()->getPass(0)->setMaterialName("Ogre/Compositor/Oculus/Right");
+
+	mLeftCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mLeftVp , "OculusLeft");
+	mLeftCompositor->setEnabled(true);
+	mRightCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mRightVp , "OculusRight");
+	mRightCompositor->setEnabled(true);
 }
 
 void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
@@ -29,26 +68,40 @@ void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, 
 
 void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 {
-	mRotationNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Head");
-	mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
-	mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
-	mRotationNode->setPosition(Ogre::Vector3(7.5,7.5,-15.0));
+	mBodyRotationNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Body");
+	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
+	//mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
+	//mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
+	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,0,-15.0));
     // Create the camera
     mCamera = mSceneMgr->createCamera("LeftCamera");
-    SetupCamera(mCamera,mStereoConfig, -1.0f);
+    SetupCamera(mCamera,mStereoConfig, 1.0f);
 
-	mLeftCameraNode->attachObject(mCamera);
-	mLeftCameraNode->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
-	mCamera->lookAt(Ogre::Vector3(0,0,0));
+	mRotationNode->attachObject(mCamera);
+	mCamera->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
 
     // Create the camera
     mCameraRight = mSceneMgr->createCamera("RightCamera");
-    SetupCamera(mCameraRight,mStereoConfig, 1.0f);
+    SetupCamera(mCameraRight,mStereoConfig, -1.0f);
 
-	mRightCameraNode->attachObject(mCameraRight);
-	mRightCameraNode->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
-	mCameraRight->lookAt(Ogre::Vector3(0,0,0));
+	mRotationNode->attachObject(mCameraRight);
+	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
+
 
 }
+
+void Controller::createViewports(OVR::HMDInfo devinfo)
+{
+	// Create one viewport, entire window
+    mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
+	mRightVp = mWindow->addViewport(mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
+
+    mLeftVp->setBackgroundColour(Ogre::ColourValue(0,1,0));
+	mRightVp->setBackgroundColour(Ogre::ColourValue(0,1,0));
+
+	configureCompositors(devinfo);
+}
+
+
 
 

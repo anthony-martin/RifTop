@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include <iostream>
-#include "OgreCore.h"
 #include "windows.h"
 
 using namespace std;

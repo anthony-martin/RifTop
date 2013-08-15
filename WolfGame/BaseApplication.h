@@ -16,24 +16,10 @@ This source file is part of the
 */
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
+#include "stdafx.h"
 
-#include <OgreCamera.h>
-#include <OgreEntity.h>
-#include <OgreLogManager.h>
-#include <OgreRoot.h>
-#include <OgreViewport.h>
-#include <OgreSceneManager.h>
-#include <OgreRenderWindow.h>
-#include <OgreConfigFile.h>
-
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
-#include <OgreWindowEventUtilities.h>
-
-#include "CameraController.h"
 #include "OculusControl.h"
+#include "BulletConfig.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -74,6 +60,7 @@ protected:
 
     Ogre::Root *mRoot;
 	CameraController::Controller* mController;
+	BulletConfig* mBullet;
 	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;
     Ogre::RenderWindow* mWindow;

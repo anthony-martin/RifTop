@@ -14,6 +14,7 @@ This source file is part of the
       http://www.ogre3d.org/tikiwiki/
 -----------------------------------------------------------------------------
 */
+#include "stdafx.h"
 #include "TutorialApplication.h"
 
 //-------------------------------------------------------------------------------------
@@ -32,26 +33,37 @@ void TutorialApplication::createScene(void)
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
  
     // Create an Entity
+	Ogre::Entity *ent;
+            Ogre::Plane p;
+            p.normal = Ogre::Vector3(0,1,0); p.d = 0;
+            Ogre::MeshManager::getSingleton().createPlane(
+                "FloorPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                p, 200000, 200000, 20, 20, true, 1, 9000, 9000, Ogre::Vector3::UNIT_Z);
+            // Create an entity (the floor)
+            ent = mSceneMgr->createEntity("floor", "FloorPlane");
     Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("Simple_Perpixel");
-	ogreHead->setMaterial(material);
+	//ogreHead->setMaterial(material);
 
 	Ogre::Entity* bridge = mSceneMgr->createEntity("Bridge", "TestBridge.mesh");
 	bridge->setMaterial(material);
 
     // Create a SceneNode and attach the Entity to it
     Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("HeadNode");
-    headNode->attachObject(ogreHead);
+    headNode->attachObject(ent);
 	headNode->scale(10,10,10);
 
 	Ogre::SceneNode* BridgeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("bridge");
     BridgeNode->attachObject(bridge);
 	BridgeNode->setPosition(0,0,1);
 	BridgeNode->yaw(Ogre::Radian(Ogre::Math::PI/2));
+	
 
     // Create a Light and set its position
     Ogre::Light* light = mSceneMgr->createLight("MainLight");
+
+
     light->setPosition(20.0f, 280.0f, 50.0f);
 }
 

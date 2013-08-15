@@ -1,13 +1,4 @@
-#include <OgreCamera.h>
-#include <OgreSceneManager.h>
-#include <OgreRenderWindow.h>
-#include <OgreViewport.h>
-#include <OgreVector3.h>
-#include <OVR.h>
-#include <OgreCompositorManager.h>
-#include <OgreCompositorInstance.h>
-#include <OgreCompositionTargetPass.h>
-#include <OgreCompositionPass.h>
+#include "stdafx.h"
 
 namespace CameraController
 {
@@ -25,8 +16,6 @@ namespace CameraController
 	protected:
 		OVR::Util::Render::StereoConfig *mStereoConfig; 
 		Ogre::RenderWindow* mWindow;
-		Ogre::SceneNode* mLeftCameraNode;
-		Ogre::SceneNode* mRightCameraNode;
 		Ogre::Viewport* mLeftVp;
 		Ogre::Viewport* mRightVp;
 		Ogre::CompositorInstance *mLeftCompositor;

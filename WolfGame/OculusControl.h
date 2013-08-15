@@ -1,7 +1,5 @@
 #pragma once
-
-#include <OVR.h>
-#include "OgreQuaternion.h"
+#include "stdafx.h"
 
 class OculusControl
 {

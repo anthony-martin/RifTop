@@ -14,6 +14,7 @@ This source file is part of the
       http://www.ogre3d.org/tikiwiki/
 -----------------------------------------------------------------------------
 */
+#include "stdafx.h"
 #include "BaseApplication.h"
 
 //-------------------------------------------------------------------------------------
@@ -195,7 +196,9 @@ bool BaseApplication::setup(void)
 	mController = new CameraController::Controller(mWindow);
     mController->createCameras(mSceneMgr);
 	mController->createViewports(mOculus->getDeviceInfo());
-
+	mBullet = new BulletConfig(mSceneMgr, 
+									Ogre::AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), //aligned box for Bullet
+                                                               Ogre::Vector3 (10000,  10000,  10000)));
     // Create the scene
     createScene();
 
@@ -215,7 +218,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
-
+	mBullet->StepPhysics(evt.timeSinceLastFrame);
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 
     return true;
@@ -223,7 +226,10 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
-   
+	if(arg.key == OIS::KC_B)// && mTimeUntilNextToggle <=0)
+          {
+             mBullet->CreateCube(mController);
+          }
     if(arg.key == OIS::KC_F5)   // refresh all textures
     {
         Ogre::TextureManager::getSingleton().reloadAll();

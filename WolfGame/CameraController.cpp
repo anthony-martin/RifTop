@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CameraController.h"
 
 
@@ -72,7 +73,7 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
 	//mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
 	//mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
-	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,0,-15.0));
+	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,2,-15.0));
     // Create the camera
     mCamera = mSceneMgr->createCamera("LeftCamera");
     SetupCamera(mCamera,mStereoConfig, 1.0f);

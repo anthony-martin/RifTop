@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "OculusControl.h"
 
 using namespace OVR;

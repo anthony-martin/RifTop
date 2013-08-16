@@ -4,7 +4,7 @@
 class Player
 {
 public:
-	Player(Ogre::SceneNode* playerNode);
+	Player(Ogre::SceneNode* playerNode, Ogre::SceneNode* eyeNode);
 	~Player(void);
 	void addInput(Ogre::Vector3 input);
 	void processMovement(Ogre::Real timeSinceLastFrame);
@@ -12,6 +12,7 @@ public:
 
 private:
 	Ogre::SceneNode* mPlayerNode;
+	Ogre::SceneNode* mEyeNode;
 	Ogre::Vector3 mInput;
 	bool mJumping;
 

@@ -23,6 +23,7 @@ namespace CameraController
 		Ogre::Vector3 mInput;
 
 	private:
+		void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side);
 		void configureCompositors(OVR::HMDInfo devinfo);
 	};
 }

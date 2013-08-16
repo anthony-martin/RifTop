@@ -196,7 +196,10 @@ bool BaseApplication::setup(void)
 	mController = new CameraController::Controller(mWindow);
     mController->createCameras(mSceneMgr);
 	mController->createViewports(mOculus->getDeviceInfo());
-	mPlayer = new Player(mController->mBodyRotationNode);
+
+	Ogre::SceneNode* playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("bodyNode");
+	playerNode->addChild(mController->mBodyRotationNode);
+	mPlayer = new Player(playerNode, mController->mBodyRotationNode);
 
     createScene();
 

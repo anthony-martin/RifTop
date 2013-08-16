@@ -38,8 +38,8 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 								devinfo.ChromaAbCorrection[2],
 								devinfo.ChromaAbCorrection[3]);
 
-	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
-	pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
+	//pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
+	//pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
 
 
 	pParamsLeft->setNamedConstant("LensCentre", 0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f));
@@ -54,13 +54,20 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	mRightCompositor->setEnabled(true);
 }
 
-void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
+void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
 {
 	camera->setNearClipDistance(config->GetEyeToScreenDistance());
 	camera->setFarClipDistance(g_defaultFarClip);
 	camera->setAspectRatio(config->GetAspect());
-	camera->setFOVy(Ogre::Radian(config->GetYFOVRadians()));
-			
+	float eyeToScreenDistance = config->GetYFOVDegrees();
+	//Ogre::Radian fovY = 2.0f* Ogre::Math::ATan(0.0935f/(2*config->GetEyeToScreenDistance()));
+	//maigc fucking number for vertical fov.....
+	//the settings returns too big the docs calc too small
+	Ogre::Radian otherFovY = Ogre::Radian(1.90240888f);
+	camera->setFOVy(otherFovY);
+	
+	//camera->setFOVy(Ogre::Radian(config->GetYFOVRadians()));
+	//camera->setPosition(mStereoConfig->GetIPD() * 0.5f *side, 0, config->GetEyeToScreenDistance());
 			// Oculus requires offset projection, create a custom projection matrix
 	Ogre::Matrix4 proj = Ogre::Matrix4::IDENTITY;
 	float temp = config->GetProjectionCenterOffset();
@@ -70,7 +77,7 @@ void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, 
 
 void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 {
-	mBodyRotationNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Body");
+	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); //getRootSceneNode()->createChildSceneNode("Body");
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
 	//mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
 	//mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
@@ -78,16 +85,15 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
     // Create the camera
     mCamera = mSceneMgr->createCamera("LeftCamera");
     SetupCamera(mCamera,mStereoConfig, 1.0f);
-
 	mRotationNode->attachObject(mCamera);
 	mCamera->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
-
+	
     // Create the camera
     mCameraRight = mSceneMgr->createCamera("RightCamera");
     SetupCamera(mCameraRight,mStereoConfig, -1.0f);
 
 	mRotationNode->attachObject(mCameraRight);
-	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
+	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, -0.05);
 }
 
 void Controller::createViewports(OVR::HMDInfo devinfo)

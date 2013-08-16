@@ -30,4 +30,8 @@
 
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes\OgreBulletCollisionsStaticPlaneShape.h>
+#include <Shapes\OgreBulletCollisionsCapsuleShape.h>
 #include <Shapes\OgreBulletCollisionsBoxShape.h>
+
+#include <BulletDynamics\Character\btKinematicCharacterController.h>
+#include <BulletCollision\CollisionDispatch\btGhostObject.h>

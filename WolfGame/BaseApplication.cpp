@@ -196,9 +196,9 @@ bool BaseApplication::setup(void)
 	mController = new CameraController::Controller(mWindow);
     mController->createCameras(mSceneMgr);
 	mController->createViewports(mOculus->getDeviceInfo());
-	mBullet = new BulletConfig(mSceneMgr, 
-									Ogre::AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), //aligned box for Bullet
-                                                               Ogre::Vector3 (10000,  10000,  10000)));
+	//mBullet = new BulletConfig(mSceneMgr, 
+	//								Ogre::AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), //aligned box for Bullet
+ //                                                              Ogre::Vector3 (10000,  10000,  10000)));
     // Create the scene
     createScene();
 
@@ -218,18 +218,30 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
-	mBullet->StepPhysics(evt.timeSinceLastFrame);
+	//mBullet->StepPhysics(evt.timeSinceLastFrame);
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
-
+	mController->processMovement();
     return true;
 }
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
-	if(arg.key == OIS::KC_B)// && mTimeUntilNextToggle <=0)
-          {
-             mBullet->CreateCube(mController);
-          }
+	if(arg.key == OIS::KC_A)// && mTimeUntilNextToggle <=0)
+    {
+		mController->addInput(Ogre::Vector3(-1,0,0));
+    }
+	if(arg.key == OIS::KC_D)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(1,0,0));
+    }
+	if(arg.key == OIS::KC_S)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(0,0,1));
+    }
+	if(arg.key == OIS::KC_W)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(0,0,-1));
+    }
     if(arg.key == OIS::KC_F5)   // refresh all textures
     {
         Ogre::TextureManager::getSingleton().reloadAll();
@@ -247,6 +259,22 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 
 bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 {
+	if(arg.key == OIS::KC_A)// && mTimeUntilNextToggle <=0)
+    {
+		mController->addInput(Ogre::Vector3(1,0,0));
+    }
+	if(arg.key == OIS::KC_D)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(-1,0,0));
+    }
+	if(arg.key == OIS::KC_S)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(0,0,-1));
+    }
+	if(arg.key == OIS::KC_W)// && mTimeUntilNextToggle <=0)
+    {
+        mController->addInput(Ogre::Vector3(0,0,1));
+    }
     return true;
 }
 

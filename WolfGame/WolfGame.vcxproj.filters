@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{a0429243-b55f-4d4c-b781-1a1bea08279d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Areas">
+      <UniqueIdentifier>{5a5ef561-55c5-4233-89c8-c0c666dcb9bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WolfGame.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="BulletConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WarehouseFloor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -63,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BulletConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WarehouseFloor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

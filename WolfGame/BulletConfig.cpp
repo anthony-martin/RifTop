@@ -24,9 +24,28 @@ BulletConfig::BulletConfig(Ogre::SceneManager* sceneMgr,
                    "BasePlane",
                    mWorld);
           defaultPlaneBody->setStaticShape(Shape, 0.1, 0.8); // (shape, restitution, friction)
-          // push the created objects to the deques
-          mShapes.push_back(Shape);
+		  
+		  mShapes.push_back(Shape);
           mBodies.push_back(defaultPlaneBody);
+
+
+		  OgreBulletCollisions::BoxCollisionShape *sceneBoxShape = new OgreBulletCollisions::BoxCollisionShape(Ogre::Vector3(4,4,4));
+			// and the Bullet rigid body
+            OgreBulletDynamics::RigidBody *defaultBody = new OgreBulletDynamics::RigidBody(
+                "defaultBoxRigid" + Ogre::StringConverter::toString(mNumEntitiesInstanced),
+                mWorld);
+            defaultBody->setShape(   node,
+                            sceneBoxShape,
+                            1.0f,         // dynamic body restitution
+                            1.0f,         // dynamic body friction
+                            100.0f,          // dynamic bodymass
+							Ogre::Vector3::ZERO,      // starting position of the box
+                            Ogre::Quaternion(0,0,0,1));// orientation of the box
+            mNumEntitiesInstanced++;            
+			defaultBody->setKinematicObject(true);
+                // push the created objects to the deques
+            mShapes.push_back(sceneBoxShape);
+            mBodies.push_back(defaultBody);            
 }
 
 
@@ -57,7 +76,7 @@ void BulletConfig::CreateCube(CameraController::Controller * mController)
 {
 	Ogre::Vector3 size = Ogre::Vector3::ZERO;   // size of the box
              // starting position of the box
-			 Ogre::Vector3 position = (mController->mBodyRotationNode->getPosition() + mController->mCamera->getDerivedDirection().normalisedCopy() * 10);
+			 Ogre::Vector3 position = (mController->mBodyRotationNode->getPosition() + mController->mCamera->getDerivedDirection().normalisedCopy() * 5);
              // create an ordinary, Ogre mesh with texture
               Ogre::Entity *entity = mSceneMgr->createEntity(
                    "Box" + Ogre::StringConverter::toString(mNumEntitiesInstanced),
@@ -75,7 +94,7 @@ void BulletConfig::CreateCube(CameraController::Controller * mController)
              size *= 0.01f;                  // don't forget to scale down the Bullet-box too
              // after that create the Bullet shape with the calculated size
              OgreBulletCollisions::BoxCollisionShape *sceneBoxShape = new OgreBulletCollisions::BoxCollisionShape(size);
-             // and the Bullet rigid body
+			 // and the Bullet rigid body
              OgreBulletDynamics::RigidBody *defaultBody = new OgreBulletDynamics::RigidBody(
                    "defaultBoxRigid" + Ogre::StringConverter::toString(mNumEntitiesInstanced),
                    mWorld);

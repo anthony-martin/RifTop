@@ -13,6 +13,7 @@ Controller::Controller( Ogre::RenderWindow* window)
 {
 	mWindow = window;
 	mStereoConfig = new OVR::Util::Render::StereoConfig();
+	mInput = Ogre::Vector3::ZERO;
 }
 
 void Controller::configureCompositors(OVR::HMDInfo devinfo)
@@ -73,7 +74,7 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
 	//mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
 	//mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
-	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,2,-15.0));
+	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,1.75,-15.0));
     // Create the camera
     mCamera = mSceneMgr->createCamera("LeftCamera");
     SetupCamera(mCamera,mStereoConfig, 1.0f);
@@ -87,8 +88,6 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 
 	mRotationNode->attachObject(mCameraRight);
 	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
-
-
 }
 
 void Controller::createViewports(OVR::HMDInfo devinfo)
@@ -97,10 +96,23 @@ void Controller::createViewports(OVR::HMDInfo devinfo)
     mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
 	mRightVp = mWindow->addViewport(mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
 
-    mLeftVp->setBackgroundColour(Ogre::ColourValue(0,1,0));
-	mRightVp->setBackgroundColour(Ogre::ColourValue(0,1,0));
+    mLeftVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
+	mRightVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
 
 	configureCompositors(devinfo);
+}
+
+void Controller::addInput(Ogre::Vector3 input)
+{
+	mInput += input;
+}
+
+void Controller::processMovement()
+{
+	Ogre::Vector3 direction = mBodyRotationNode->getOrientation() * mInput;
+	direction.normalise();
+	direction /=4;
+	mBodyRotationNode->translate(direction);
 }
 
 

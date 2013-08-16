@@ -20,6 +20,7 @@ This source file is part of the
 
 #include "OculusControl.h"
 #include "BulletConfig.h"
+#include "Player.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -60,6 +61,7 @@ protected:
 
     Ogre::Root *mRoot;
 	CameraController::Controller* mController;
+	Player* mPlayer;
 	BulletConfig* mBullet;
 	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;

@@ -102,19 +102,6 @@ void Controller::createViewports(OVR::HMDInfo devinfo)
 	configureCompositors(devinfo);
 }
 
-void Controller::addInput(Ogre::Vector3 input)
-{
-	mInput += input;
-}
-
-void Controller::processMovement()
-{
-	Ogre::Vector3 direction = mBodyRotationNode->getOrientation() * mInput;
-	direction.normalise();
-	direction /=4;
-	mBodyRotationNode->translate(direction);
-}
-
 
 
 

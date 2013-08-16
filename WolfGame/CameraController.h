@@ -8,8 +8,6 @@ namespace CameraController
 		Controller( Ogre::RenderWindow* window);
 		void createCameras(Ogre::SceneManager* mSceneMgr);
 		void createViewports(OVR::HMDInfo devinfo);
-		void addInput(Ogre::Vector3 input);
-		void processMovement();
 		Ogre::Camera* mCamera;
 		Ogre::Camera* mCameraRight;
 		Ogre::SceneNode* mRotationNode;

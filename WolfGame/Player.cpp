@@ -2,35 +2,64 @@
 #include "Player.h"
 
 
-Player::Player(void)
+Player::Player(Ogre::SceneNode* playerNode)
 {
-	//btTransform startTransform;
-	//startTransform.setIdentity ();
-	////startTransform.setOrigin (btVector3(0.0, 4.0, 0.0));
-	//startTransform.setOrigin (btVector3(0,1.75,0));
-
-	//btVector3 worldMin(-1000,-1000,-1000);
-	//btVector3 worldMax(1000,1000,1000);
-	//btAxisSweep3* sweepBP = new btAxisSweep3(worldMin,worldMax);
-
-	//m_ghostObject = new btPairCachingGhostObject();
-	//m_ghostObject->setWorldTransform(startTransform);
-	//sweepBP->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	//btScalar characterHeight=1.75;
-	//btScalar characterWidth =1.75;
-	//btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
-	//
-	////Ogre version of the capsule
-	////OgreBulletCollisions::CapsuleCollisionShape* OgreCapsule = new OgreBulletCollisions::CapsuleCollisionShape(capsule);
-	//m_ghostObject->setCollisionShape (capsule);
-	//m_ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
-
-	//btScalar stepHeight = btScalar(0.35);
-	//m_character = new btKinematicCharacterController (m_ghostObject,capsule,stepHeight);
-	//m_ghostObject->getWorldTransform().
+	mPlayerNode = playerNode;
+	mJumping = false;
+	mInput = Ogre::Vector3::ZERO;
+	mJumpDuration=0;
 }
 
 
 Player::~Player(void)
 {
+}
+
+void Player::addInput(Ogre::Vector3 input)
+{
+	mInput += input;
+}
+
+void Player::processMovement(Ogre::Real timeSinceLastFrame)
+{
+	if( mJumping)
+	{
+		if(mJumpDuration == 0)
+		{
+			mJumpVector = mInput ;
+		}
+		mJumpDuration += timeSinceLastFrame;
+
+		if(mJumpDuration > 1)
+		{
+			mJumpDuration = 0;
+			mJumping = false;
+		}
+	}
+
+	Ogre::Vector3 direction;
+	if(mJumping)
+	{
+		// tweak the jump speed Number within the sin must equal 2xPi over the total jump duration
+		// or you do not end up where you started at the end of a flat jump
+		Ogre::Real multiplier = Ogre::Math::Sin(mJumpDuration * 2 * Ogre::Math::PI) * 1.5;
+		direction = mPlayerNode->getOrientation() * mJumpVector + Ogre::Vector3::UNIT_Y *multiplier ;
+	}
+	else
+	{
+		direction = mPlayerNode->getOrientation() * mInput;
+	}
+
+	//normalisation sounds like a great idea but it plays hell with jumping
+	direction = direction *(timeSinceLastFrame * 4);
+	mPlayerNode->translate(direction);
+}
+
+
+void Player::jump()
+{
+	if(!mJumping)
+	{
+		mJumping = true;
+	}
 }

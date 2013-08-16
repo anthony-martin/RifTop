@@ -4,13 +4,18 @@
 class Player
 {
 public:
-	Player(void);
+	Player(Ogre::SceneNode* playerNode);
 	~Player(void);
+	void addInput(Ogre::Vector3 input);
+	void processMovement(Ogre::Real timeSinceLastFrame);
+	void jump();
 
 private:
 	Ogre::SceneNode* mPlayerNode;
 	Ogre::Vector3 mInput;
-	btKinematicCharacterController* m_character;
-	btPairCachingGhostObject * m_ghostObject;
+	bool mJumping;
+
+	Ogre::Vector3 mJumpVector;
+	Ogre::Real mJumpDuration;
 };
 

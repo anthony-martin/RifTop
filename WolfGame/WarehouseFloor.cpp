@@ -9,23 +9,66 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 {
 	mSceneMgr = sceneMgr;
 	mCount = 0;
-	// large 3x2 cubes at near the door stacked two high
-	CreateCube(Vector3(2.5,1,3.5), Vector3(1.5,1,1.5));
-	CreateCube(Vector3(2.5,1,6.5), Vector3(1.5,1,1.5));
-	CreateCube(Vector3(2.5,3,3.5), Vector3(1.5,1,1.5));
-	CreateCube(Vector3(2.5,3,6.5), Vector3(1.5,1,1.5));
 
+	std::string lightSingle = "box/singlelight";
+
+	Ogre::Vector3 largeCube(1.5,1,1.5);
+	// large 3x2 cubes at near the door stacked two high
+	CreateCube(Vector3(2.5,1,3.5), largeCube, lightSingle);
+	CreateCube(Vector3(2.5,3,3.5), largeCube, lightSingle);
+	CreateCube(Vector3(2.5,1,6.5), largeCube, lightSingle);
+	CreateCube(Vector3(2.5,3,6.5), largeCube, lightSingle);
+	CreateCube(Vector3(2.5,1,9.5), largeCube, lightSingle);
+	CreateCube(Vector3(2.5,3,9.5), largeCube, lightSingle);
+
+	std::string doubleboxes = "box/double";
+	CreateCube(Vector3(6.5,1,3.5), largeCube, doubleboxes);
+	CreateCube(Vector3(6.5,3,3.5), largeCube, doubleboxes);
+	CreateCube(Vector3(6.5,1,6.5), largeCube, doubleboxes);
+	CreateCube(Vector3(6.5,3,6.5), largeCube, doubleboxes);
+	CreateCube(Vector3(6.5,1,9.5), largeCube, doubleboxes);
+	CreateCube(Vector3(6.5,3,9.5), largeCube, doubleboxes);
 
 	//CreateCube(Vector3(5.5,1,3.5), Vector3(3,2,3));
-	CreateCube(Vector3(8,2.5,13.5), Vector3(2,2.5,1.5));
+	CreateCube(Vector3(8,2.5,13.5), Vector3(2,2.5,1.5), lightSingle);
 
+	Ogre::Vector3 smallCube(.5, .6,.5);
 
-	CreateCube(Vector3(2,1.8,12.5), Vector3(2, 1.8,.5));
-	CreateCube(Vector3(4.5,.6,14.5), Vector3(1.5, .6,.5));
-	CreateCube(Vector3(4.5,2.4,14), Vector3(1.5, 1.2,1));
+	//CreateCube(Vector3(2,1.8,12.5), Vector3(2, 1.8,.5), "box/tripple");
+	CreateCube(Vector3(.5,.6,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(1.5,.6,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(2.5,.6,12.5), smallCube, lightSingle);
+
+	CreateCube(Vector3(.5,1.8,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(1.5,1.8,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(2.5,1.8,12.5), smallCube, lightSingle);
+
+	CreateCube(Vector3(.5,3,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(1.5,3,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(2.5,3,12.5), smallCube, lightSingle);
+
+	CreateCube(Vector3(3.5,.6,12.5), smallCube, lightSingle);
+	CreateCube(Vector3(3.5,.6,11.5), smallCube, lightSingle);
+
+	CreateCube(Vector3(5.5,.6,13), smallCube, lightSingle);
+	CreateCube(Vector3(5.5,.6,12), smallCube, lightSingle);
+
+	//jump cubes
+	CreateCube(Vector3(4.5,.6,8.5), smallCube, lightSingle);
+	CreateCube(Vector3(4.5,.6, 5), smallCube, lightSingle);
 	
+	//tripple cubes near back entrace
+	CreateCube(Vector3(3.5,.6,14.5), smallCube, lightSingle);
+	CreateCube(Vector3(4.5,.6,14.5), smallCube, lightSingle);
+	CreateCube(Vector3(5.5,.6,14.5), smallCube, lightSingle);
+
+	std::string singledark = "box/singledark";
+
+	Ogre::Vector3 mediumCube(1.5, 1.2,1);
+	CreateCube(Vector3(4.5,2.4,14), mediumCube, singledark);
+	CreateCube(Vector3(4.5,2.4,12), mediumCube, singledark);
 	//floorplan remove before release
-	CreateCube(Vector3(5, 4, 7.5), Vector3(5, .2, 7.5));
+	CreateCube(Vector3(5, 4, 7.5), Vector3(5, .2, 7.5), lightSingle);
 }
 
 
@@ -33,11 +76,11 @@ WarehouseFloor::~WarehouseFloor(void)
 {
 }
 
-void WarehouseFloor::CreateCube(Ogre::Vector3 position, Ogre::Vector3 scale)
+void WarehouseFloor::CreateCube(Ogre::Vector3 position, Ogre::Vector3 scale, std::string texture)
 {
 	Ogre::Entity* cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "Boxnk2.mesh");
 	
-	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/single");
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(texture);
 	cube->setMaterial(material);
     Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
     headNode->attachObject(cube);

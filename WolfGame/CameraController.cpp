@@ -38,8 +38,8 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 								devinfo.ChromaAbCorrection[2],
 								devinfo.ChromaAbCorrection[3]);
 
-	//pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
-	//pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
+	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
+	pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
 
 
 	pParamsLeft->setNamedConstant("LensCentre", 0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f));
@@ -59,7 +59,6 @@ void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConf
 	camera->setNearClipDistance(config->GetEyeToScreenDistance());
 	camera->setFarClipDistance(g_defaultFarClip);
 	camera->setAspectRatio(config->GetAspect());
-	float eyeToScreenDistance = config->GetYFOVDegrees();
 	//Ogre::Radian fovY = 2.0f* Ogre::Math::ATan(0.0935f/(2*config->GetEyeToScreenDistance()));
 	//maigc fucking number for vertical fov.....
 	//the settings returns too big the docs calc too small
@@ -77,15 +76,14 @@ void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConf
 
 void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 {
-	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); //getRootSceneNode()->createChildSceneNode("Body");
+	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); 
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
-	//mLeftCameraNode = mRotationNode->createChildSceneNode("LeftEye");
-	//mRightCameraNode = mRotationNode->createChildSceneNode("RightEye");
-	mBodyRotationNode->setPosition(Ogre::Vector3(7.5,1.75,-15.0));
+	mBodyRotationNode->setPosition(Ogre::Vector3(0,1.75,0));
     // Create the camera
     mCamera = mSceneMgr->createCamera("LeftCamera");
     SetupCamera(mCamera,mStereoConfig, 1.0f);
 	mRotationNode->attachObject(mCamera);
+	//left eye position
 	mCamera->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
 	
     // Create the camera
@@ -93,7 +91,9 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
     SetupCamera(mCameraRight,mStereoConfig, -1.0f);
 
 	mRotationNode->attachObject(mCameraRight);
-	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, -0.05);
+
+	//right eye position
+	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
 }
 
 void Controller::createViewports(OVR::HMDInfo devinfo)

@@ -71,6 +71,7 @@
     <ClCompile Include="BaseApplication.cpp" />
     <ClCompile Include="BulletConfig.cpp" />
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="CollisionTools.cpp" />
     <ClCompile Include="OculusControl.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +85,7 @@
     <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="BulletConfig.h" />
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="CollisionTools.h" />
     <ClInclude Include="OculusControl.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />

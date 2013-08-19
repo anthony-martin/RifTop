@@ -54,7 +54,7 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	CreateCube(Vector3(5.5,.6,12), smallCube, lightSingle);
 
 	//jump cubes
-	CreateCube(Vector3(4.5,.6,8.5), smallCube, lightSingle);
+	CreateCube(Vector3(4.5,.3,8.5), Ogre::Vector3(.5, .3,.5), lightSingle);
 	CreateCube(Vector3(4.5,.6, 5), smallCube, lightSingle);
 	
 	//tripple cubes near back entrace

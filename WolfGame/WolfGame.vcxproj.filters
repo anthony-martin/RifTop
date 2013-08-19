@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Areas">
       <UniqueIdentifier>{5a5ef561-55c5-4233-89c8-c0c666dcb9bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{6055d4b6-666e-411f-93af-10fac76d1098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WolfGame.cpp">
@@ -39,13 +42,16 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BulletConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WarehouseFloor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,13 +71,16 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BulletConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WarehouseFloor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

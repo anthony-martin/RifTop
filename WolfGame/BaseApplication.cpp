@@ -197,9 +197,8 @@ bool BaseApplication::setup(void)
     mController->createCameras(mSceneMgr);
 	mController->createViewports(mOculus->getDeviceInfo());
 
-	Ogre::SceneNode* playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("bodyNode");
-	playerNode->addChild(mController->mBodyRotationNode);
-	mPlayer = new Player(playerNode, mController->mBodyRotationNode);
+	
+	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
     createScene();
 
@@ -229,19 +228,19 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
 	if(arg.key == OIS::KC_A)
     {
-		mPlayer->addInput(Ogre::Vector3(-1,0,0));
+		mPlayer->addKeyboardInput(Ogre::Vector3(-1,0,0));
     }
 	else if(arg.key == OIS::KC_D)
     {
-        mPlayer->addInput(Ogre::Vector3(1,0,0));
+        mPlayer->addKeyboardInput(Ogre::Vector3(1,0,0));
     }
 	else if(arg.key == OIS::KC_S)
     {
-        mPlayer->addInput(Ogre::Vector3(0,0,1));
+        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,1));
     }
 	else if(arg.key == OIS::KC_W)
     {
-        mPlayer->addInput(Ogre::Vector3(0,0,-1));
+        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,-1));
     }
     else if(arg.key == OIS::KC_F5)   // refresh all textures
     {
@@ -259,6 +258,10 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     {
         mShutDown = true;
     }
+	else if(arg.key == OIS::KC_LCONTROL)
+    {
+        mPlayer->changeHeight(true);
+    }
     return true;
 }
 
@@ -266,19 +269,23 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 {
 	if(arg.key == OIS::KC_A)
     {
-		mPlayer->addInput(Ogre::Vector3(1,0,0));
+		mPlayer->addKeyboardInput(Ogre::Vector3(1,0,0));
     }
 	else if(arg.key == OIS::KC_D)
     {
-        mPlayer->addInput(Ogre::Vector3(-1,0,0));
+        mPlayer->addKeyboardInput(Ogre::Vector3(-1,0,0));
     }
 	else if(arg.key == OIS::KC_S)
     {
-        mPlayer->addInput(Ogre::Vector3(0,0,-1));
+        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,-1));
     }
 	else if(arg.key == OIS::KC_W)
     {
-        mPlayer->addInput(Ogre::Vector3(0,0,1));
+        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,1));
+    }
+	else if(arg.key == OIS::KC_LCONTROL)
+    {
+        mPlayer->changeHeight(false);
     }
 	
     return true;
@@ -286,8 +293,7 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
-	float relativeMovement = (float)arg.state.X.rel/40.0f;
-	mController->mBodyRotationNode->yaw(Ogre::Radian(-relativeMovement));
+	mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
     return true;
 }
 

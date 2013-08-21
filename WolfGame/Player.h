@@ -17,7 +17,9 @@ public:
 private:
 	bool OnGround();
 	void processJump(bool onGround, Ogre::Real timeSinceLastFrame);
-	bool Player::checkHorizontalColisions( Ogre::Vector3 normal);
+	bool checkHorizontalColisions( Ogre::Vector3 normal);
+	float checkVerticalClearance(bool up, float travel);
+
 
 	Ogre::SceneNode* mPlayerNode;
 	Ogre::SceneNode* mEyeNode;

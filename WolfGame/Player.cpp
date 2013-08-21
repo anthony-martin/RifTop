@@ -53,7 +53,7 @@ void Player::mouseInput(Ogre::Vector2 input)
 
 void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 {
-		if( mJumping)
+	if( mJumping)
 	{
 		if(mJumpDuration == 0)
 		{
@@ -71,6 +71,7 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 	if(!mJumping && onGround)
 	{
 		mJumpDuration = 0;
+		//mJumpVector = Ogre::Vector3::ZERO;
 	}
 }
 
@@ -93,15 +94,7 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 		{
 			mJumpVector.y -= 3.0f * mJumpDuration;
 		}
-		// tweak the jump speed 
-		// Numbers within the sin must equal 2xPi over the total jump duration
-		// or you do not end up where you started at the end of a flat jump
-		//Ogre::Real curve = Ogre::Math::Sin(mJumpDuration * 2.6666666666f * Ogre::Math::PI);
-		// take into account the difference between crouching and standing height
-		//float jumpHeight =  2.0f + (maxHeight - mEyeNode->getPosition().y)/1.5;
-		
-		//Ogre::Real multiplier =  curve * jumpHeight;
-		direction = mEyeNode->getOrientation() * mJumpVector ;//+ Ogre::Vector3::UNIT_Y *multiplier ;
+		direction = mEyeNode->getOrientation() * mJumpVector ;
 	}
 	else
 	{
@@ -109,28 +102,71 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 	}
 
 	//normalisation sounds like a great idea but it plays hell with jumping
-	direction = direction *(timeSinceLastFrame * 4);
+	direction = direction *(timeSinceLastFrame * 4.0f);
+	
+	bool up = direction.y > 0;
+	float verticalClearance = checkVerticalClearance(up, direction.y );
 
-	Ogre::Vector3 result;
-	Ogre::Entity* myObject = NULL;
-	float distToColl = 0.0f;
+	//we are moving up but do not have the remaining space for it
+	if((mJumping || !onGround))
+	{
+		if(up && verticalClearance < direction.y)
+		{
+			mJumpVector.y = 0.0f;
+		}
+	}
 
-	Ogre::Vector3 colisionOrigin = mPlayerNode->getPosition();
-	// 10cm above the eyes for top colision 
-	colisionOrigin.y += mEyeNode->getPosition().y + 0.1f;
+	direction.y = verticalClearance;
 
     Ogre::Vector3 colisionNormal = Ogre::Vector3( direction);
 	colisionNormal.y = 0;
 
 	if(checkHorizontalColisions(colisionNormal))
 	{
-		mPlayerNode->translate(Ogre::Vector3(0, direction.y, 0));
-		return;
+		direction.x = 0.0f;
+		direction.z = 0.0f;
 	}
 
 	mPlayerNode->translate(direction);
 }
 
+float Player::checkVerticalClearance(bool up, float travel)
+{
+	Ogre::Vector3 result;
+	Ogre::Entity* myObject = NULL;
+	float distToColl = -1.0f;
+
+	Ogre::Vector3 origin;
+	Ogre::Vector3 normal;
+
+	if(up)
+	{
+		float eyeHeight = mPlayerNode->getPosition().y + mEyeNode->getPosition().y;
+
+		origin = mPlayerNode->getPosition();
+		origin.y += eyeHeight  - 0.1f;
+
+		normal = Ogre::Vector3::UNIT_Y;
+	}
+	else
+	{
+		origin = mPlayerNode->getPosition();
+		origin.y += 0.2f ;
+
+		normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
+	}
+
+	if(mCollisionTools->raycastFromPoint(origin, normal, result,myObject,distToColl))
+	{
+		//distToColl -= -0.2f;
+		if(distToColl <  0.25f)
+		{
+			return 0.25f - distToColl; 
+		}
+	}
+
+	return travel;
+}
 
 bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 {
@@ -150,7 +186,7 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 	Ogre::Vector3 chest= mPlayerNode->getPosition();
 	chest.y = .75 * eyeHeight;
 	Ogre::Vector3 waist= mPlayerNode->getPosition();
-	waist.y = .5f *eyeHeight ;
+	waist.y = .4f *eyeHeight ;
 	// 10cm above the eyes for top colision 
 	Ogre::Vector3 headTop = mPlayerNode->getPosition();
 	headTop.y += eyeHeight + 0.1f;

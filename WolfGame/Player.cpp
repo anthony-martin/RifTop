@@ -67,6 +67,14 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 			mJumping = false;
 		}
 	}
+	else
+	{
+		if(!onGround && mJumpDuration == 0)
+		{
+			//clearly falling if we get here keep the movement
+			mJumpVector = mInput + + Ogre::Vector3::NEGATIVE_UNIT_Y * 3.0f;
+		}
+	}
 
 	if(!mJumping && onGround)
 	{
@@ -150,7 +158,7 @@ float Player::checkVerticalClearance(bool up, float travel)
 	else
 	{
 		origin = mPlayerNode->getPosition();
-		origin.y += 0.2f ;
+		origin.y += eyeHeight/2 ;
 
 		normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
 	}
@@ -163,9 +171,9 @@ float Player::checkVerticalClearance(bool up, float travel)
 		}
 		else
 		{
-			if(distToColl <  0.25f)
+			if(distToColl <  eyeHeight/2)
 			{
-				return 0.25f - distToColl;
+				return eyeHeight/2 - distToColl;
 			}
 		}
 	}
@@ -209,7 +217,7 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 	{
 		if(mCollisionTools->raycastFromPoint(rays[i], normal, result,myObject,distToColl))
 		{
-			if(distToColl <= 2.0f)
+			if(distToColl <= 3.0f)
 			{
 				//mPlayerNode->translate(Ogre::Vector3(0, direction.y, 0));
 				return true;

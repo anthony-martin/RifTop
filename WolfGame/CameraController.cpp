@@ -56,7 +56,7 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 
 void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
 {
-	camera->setNearClipDistance(config->GetEyeToScreenDistance());
+	camera->setNearClipDistance(0.02f);
 	camera->setFarClipDistance(g_defaultFarClip);
 	camera->setAspectRatio(config->GetAspect());
 	//Ogre::Radian fovY = 2.0f* Ogre::Math::ATan(0.0935f/(2*config->GetEyeToScreenDistance()));
@@ -84,7 +84,7 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
     SetupCamera(mCamera,mStereoConfig, 1.0f);
 	mRotationNode->attachObject(mCamera);
 	//left eye position
-	mCamera->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
+	mCamera->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
 	
     // Create the camera
     mCameraRight = mSceneMgr->createCamera("RightCamera");
@@ -93,7 +93,7 @@ void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
 	mRotationNode->attachObject(mCameraRight);
 
 	//right eye position
-	mCameraRight->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
+	mCameraRight->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
 }
 
 void Controller::createViewports(OVR::HMDInfo devinfo)

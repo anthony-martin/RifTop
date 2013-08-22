@@ -11,7 +11,6 @@ public:
 	void mouseInput(Ogre::Vector2 input);
 	void processMovement(Ogre::Real timeSinceLastFrame);
 	void jump();
-	void stopJump();
 	void changeHeight(bool change);
 
 private:
@@ -26,6 +25,7 @@ private:
 	MOC::CollisionTools* mCollisionTools;
 	Ogre::Vector3 mInput;
 	bool mJumping;
+	bool mDoubleJumping;
 	bool mOnGround;
 	bool mChangeHeight;
 

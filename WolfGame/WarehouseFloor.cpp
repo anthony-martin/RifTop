@@ -69,6 +69,22 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	CreateCube(Vector3(4.5,2.4,12), mediumCube, singledark);
 	//floorplan remove before release
 	CreateCube(Vector3(5, 4, 7.5), Vector3(5, .2, 7.5), lightSingle);
+
+	//stairs
+	//	stairs
+	//CreateCube(Vector3(11,0.3,6), Ogre::Vector3(2, .3,.3), lightSingle);
+	//CreateCube(Vector3(11,0.6,6.3), Ogre::Vector3(2, .3,.3), lightSingle);
+	//CreateCube(Vector3(11,0.9,6.9), Ogre::Vector3(2, .3,.3), lightSingle);
+	Ogre::Entity* cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "Boxnk2.mesh");
+	
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(lightSingle);
+	cube->setMaterial(material);
+    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
+    headNode->attachObject(cube);
+	headNode->scale(Vector3(2,0.1,4));
+	headNode->setPosition(Vector3(11,1,6));
+	headNode->pitch(Radian(-Math::PI/6));
+	mCount++;
 }
 
 

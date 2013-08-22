@@ -171,7 +171,7 @@ float Player::checkVerticalClearance(bool up, float travel)
 		}
 		else
 		{
-			if(distToColl <  eyeHeight/2)
+			if(distToColl <  .75* eyeHeight)
 			{
 				return eyeHeight/2 - distToColl;
 			}
@@ -187,19 +187,21 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 	Ogre::Entity* myObject = NULL;
 	float distToColl = -1.0f;
 
-	float eyeHeight = mPlayerNode->getPosition().y + mEyeNode->getPosition().y;
+
+
+	float eyeHeight =  mEyeNode->getPosition().y;
 	
 	//5 rays
 	Ogre::Vector3 leftEye = mPlayerNode->getPosition();
-	leftEye.y = eyeHeight;
-	leftEye.z = -0.1f;
+	leftEye.y += eyeHeight;
+	leftEye.z -= -0.1f;
 	Ogre::Vector3 rightEye= mPlayerNode->getPosition();
-	rightEye.y = eyeHeight;
-	rightEye.z = 0.1f;
+	rightEye.y += eyeHeight;
+	rightEye.z -= 0.1f;
 	Ogre::Vector3 chest= mPlayerNode->getPosition();
-	chest.y = .75 * eyeHeight;
+	chest.y +=.75 * eyeHeight;
 	Ogre::Vector3 waist= mPlayerNode->getPosition();
-	waist.y = .4f *eyeHeight ;
+	waist.y += .4f *eyeHeight ;
 	// 10cm above the eyes for top colision 
 	Ogre::Vector3 headTop = mPlayerNode->getPosition();
 	headTop.y += eyeHeight + 0.1f;

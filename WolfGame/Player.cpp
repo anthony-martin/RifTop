@@ -110,7 +110,7 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 	//we are moving up but do not have the remaining space for it
 	if((mJumping || !onGround))
 	{
-		if(up && verticalClearance < direction.y)
+		if(up && verticalClearance != direction.y)
 		{
 			mJumpVector.y = 0.0f;
 		}
@@ -139,13 +139,12 @@ float Player::checkVerticalClearance(bool up, float travel)
 	Ogre::Vector3 origin;
 	Ogre::Vector3 normal;
 
+
+	float eyeHeight = mEyeNode->getPosition().y;
 	if(up)
 	{
-		float eyeHeight = mPlayerNode->getPosition().y + mEyeNode->getPosition().y;
-
 		origin = mPlayerNode->getPosition();
-		origin.y += eyeHeight  - 0.1f;
-
+		origin.y += travel;
 		normal = Ogre::Vector3::UNIT_Y;
 	}
 	else
@@ -158,10 +157,16 @@ float Player::checkVerticalClearance(bool up, float travel)
 
 	if(mCollisionTools->raycastFromPoint(origin, normal, result,myObject,distToColl))
 	{
-		//distToColl -= -0.2f;
-		if(distToColl <  0.25f)
+		if(up && distToColl  < eyeHeight + 0.1f)
 		{
-			return 0.25f - distToColl; 
+			return  0.0f;
+		}
+		else
+		{
+			if(distToColl <  0.25f)
+			{
+				return 0.25f - distToColl;
+			}
 		}
 	}
 
@@ -204,7 +209,7 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 	{
 		if(mCollisionTools->raycastFromPoint(rays[i], normal, result,myObject,distToColl))
 		{
-			if(distToColl <= 6.0f)
+			if(distToColl <= 2.0f)
 			{
 				//mPlayerNode->translate(Ogre::Vector3(0, direction.y, 0));
 				return true;

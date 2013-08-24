@@ -11,6 +11,8 @@ public:
 private:
 	void CreateCube(Ogre::Vector3 position, Ogre::Vector3 scale,std::string texture);
 	Ogre::SceneManager* mSceneMgr;
+	Ogre::SceneNode* mMainNode;
+	void createWalls();
 	int mCount;
 };
 

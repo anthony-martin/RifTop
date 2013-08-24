@@ -19,7 +19,7 @@ This source file is part of the
 
 #include "stdafx.h"
 #include "BaseApplication.h"
-#include "WarehouseFloor.h"
+
 
 class TutorialApplication : public BaseApplication
 {

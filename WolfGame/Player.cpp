@@ -173,6 +173,7 @@ float Player::checkVerticalClearance(bool up, float travel)
 		}
 		else
 		{
+			//note if you dont check a little extra it jumps around when you walk down a slope
 			if(distToColl <  .75* eyeHeight)
 			{
 				return eyeHeight/2 - distToColl;

@@ -200,6 +200,8 @@ bool BaseApplication::setup(void)
 	
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
+	mWarehouseShown = false;
+
     createScene();
 
     createFrameListener();
@@ -226,6 +228,21 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
+	if(arg.key == OIS::KC_1)
+    {
+		if(!mWarehouseShown )
+		{
+			mScene = new WarehouseFloor(mSceneMgr);
+			mWarehouseShown = true;
+		}
+		else
+		{
+			delete mScene;
+			mWarehouseShown = false;
+		}
+    }
+
+
 	if(arg.key == OIS::KC_A)
     {
 		mPlayer->addKeyboardInput(Ogre::Vector3(-1,0,0));

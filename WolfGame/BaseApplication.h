@@ -21,6 +21,7 @@ This source file is part of the
 #include "OculusControl.h"
 #include "BulletConfig.h"
 #include "Player.h"
+#include "WarehouseFloor.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -58,6 +59,9 @@ protected:
     virtual void windowResized(Ogre::RenderWindow* rw);
     //Unattach OIS before window shutdown (very important under Linux)
     virtual void windowClosed(Ogre::RenderWindow* rw);
+
+	bool mWarehouseShown;
+	WarehouseFloor* mScene;
 
     Ogre::Root *mRoot;
 	CameraController::Controller* mController;

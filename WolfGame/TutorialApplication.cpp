@@ -67,8 +67,6 @@ void TutorialApplication::createScene(void)
 	//bush1Node->setPosition(12,0,10);
 	//bush1Node->yaw(Ogre::Radian(Ogre::Math::PI/2));
 
-	WarehouseFloor were (mSceneMgr);
-
 
     // Create a Light and set its position
     Ogre::Light* light = mSceneMgr->createLight("MainLight");

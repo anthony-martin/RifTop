@@ -33,70 +33,110 @@ void DestroyAllAttachedMovableObjects( SceneNode* i_pSceneNode )
 void WarehouseFloor::createWalls()
 {
 	Ogre::Entity *ent;
-            Ogre::Plane p;
-            p.normal = Ogre::Vector3(-1,0,0); p.d = 0;
-            Ogre::MeshManager::getSingleton().createPlane(
-                "RightSideWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-				p, 15, 9, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-            // Create an entity (the floor)
-           ent = mSceneMgr->createEntity("RightSideWall", "RightSideWall");
- //   Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
+    Ogre::Plane p;
+    p.normal = Ogre::Vector3(-1,0,0); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "RightSideWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 15, 9, 1, 1, false, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("RightSideWall", "RightSideWall");
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
 	ent->setMaterial(material);
 
-	Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("RightSideWall");
+	Ogre::SceneNode* headNode = mMainNode->createChildSceneNode("RightSideWall");
     headNode->attachObject(ent);
-	//headNode->pitch(Ogre::Radian(Ogre::Math::PI/2));
 	headNode->setPosition(Ogre::Vector3(10,4.5,7.5));
 
-            p.normal = Ogre::Vector3(1,0,0); p.d = 0;
-            Ogre::MeshManager::getSingleton().createPlane(
-                "LeftSideWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-				p, 15, 9, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-            // Create an entity (the floor)
-           ent = mSceneMgr->createEntity("LeftSideWall", "LeftSideWall");
- //   Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
+    p.normal = Ogre::Vector3(1,0,0); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "RightSideWallout", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 15.02, 9, 1, 1, false, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("RightSideWallout", "RightSideWallout");
 
 	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
 	ent->setMaterial(material);
 
-	headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("LeftSideWall");
+	headNode = mMainNode->createChildSceneNode("RightSideWallout");
     headNode->attachObject(ent);
-	//headNode->pitch(Ogre::Radian(Ogre::Math::PI/2));
+	headNode->setPosition(Ogre::Vector3(10.01,4.5,7.5));
+
+    p.normal = Ogre::Vector3(1,0,0); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "LeftSideWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 15, 9, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("LeftSideWall", "LeftSideWall");
+
+	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
+	ent->setMaterial(material);
+
+	headNode = mMainNode->createChildSceneNode("LeftSideWall");
+    headNode->attachObject(ent);
 	headNode->setPosition(Ogre::Vector3(0,4.5,7.5));
 
-	         p.normal = Ogre::Vector3(0,0,-1); p.d = 0;
-            Ogre::MeshManager::getSingleton().createPlane(
-                "backWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-				p, 10, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
-            // Create an entity (the floor)
-           ent = mSceneMgr->createEntity("backWall", "backWall");
- //   Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
+	p.normal = Ogre::Vector3(-1,0,0); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "LeftSideWallout", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 15.02, 9, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("LeftSideWallout", "LeftSideWallout");
 
 	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
 	ent->setMaterial(material);
 
-	headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("backWall");
+	headNode = mMainNode->createChildSceneNode("LeftSideWallout");
     headNode->attachObject(ent);
-	//headNode->pitch(Ogre::Radian(Ogre::Math::PI/2));
+	headNode->setPosition(Ogre::Vector3(-0.01,4.5,7.5));
+
+	p.normal = Ogre::Vector3(0,0,-1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "backWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 10, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("backWall", "backWall");
+
+	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
+	ent->setMaterial(material);
+
+	headNode = mMainNode->createChildSceneNode("backWall");
+    headNode->attachObject(ent);;
 	headNode->setPosition(Ogre::Vector3(5,4.5,15));
 
-	         p.normal = Ogre::Vector3(0,0,1); p.d = 0;
-            Ogre::MeshManager::getSingleton().createPlane(
-                "frontWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-				p, 10, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
-            // Create an entity (the floor)
-           ent = mSceneMgr->createEntity("frontWall", "frontWall");
- //   Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
+	p.normal = Ogre::Vector3(0,0,1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "backWallout", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 10.02, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("backWallout", "backWallout");
 
 	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
 	ent->setMaterial(material);
 
-	headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("frontWall");
+	headNode = mMainNode->createChildSceneNode("backWallout");
+    headNode->attachObject(ent);;
+	headNode->setPosition(Ogre::Vector3(5,4.5,15.01));
+
+	p.normal = Ogre::Vector3(0,0,1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "frontWall", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 10, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("frontWall", "frontWall");
+
+	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
+	ent->setMaterial(material);
+
+	headNode = mMainNode->createChildSceneNode("frontWall");
     headNode->attachObject(ent);
-	//headNode->pitch(Ogre::Radian(Ogre::Math::PI/2));
 	headNode->setPosition(Ogre::Vector3(5,4.5,0));
+
+	p.normal = Ogre::Vector3(0,0,-1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "frontWallout", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		p, 10.02, 9, 1, 1, true, 1, .66, 1, Ogre::Vector3::UNIT_Y);
+    ent = mSceneMgr->createEntity("frontWallout", "frontWallout");
+
+	material = Ogre::MaterialManager::getSingleton().getByName("box/WallTripplePanel");
+	ent->setMaterial(material);
+
+	headNode = mMainNode->createChildSceneNode("frontWallout");
+    headNode->attachObject(ent);
+	headNode->setPosition(Ogre::Vector3(5,4.5,-0.01));
 }
 
 WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)

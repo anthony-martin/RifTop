@@ -223,14 +223,14 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	headNode->yaw(Radian(Math::PI/2));
 	mCount++;
 
-	 cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "roof.mesh");
+	 cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "roof2.mesh");
 	
 	 material = Ogre::MaterialManager::getSingleton().getByName("box/roof");
 	cube->setMaterial(material);
      headNode = mMainNode->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
     headNode->attachObject(cube);
 	headNode->scale(Vector3(3.6,5,5.05));
-	headNode->setPosition(Vector3(5,8.75,5));
+	headNode->setPosition(Vector3(5,8.88,5));
 	headNode->yaw(Radian(Math::PI));
 	mCount++;
 }

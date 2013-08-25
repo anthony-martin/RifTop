@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "CollisionTools.h"
 #include "feet.h"
 
 class Player
@@ -13,6 +12,7 @@ public:
 	void processMovement(Ogre::Real timeSinceLastFrame);
 	void jump();
 	void changeHeight(bool change);
+	void step();
 
 private:
 	bool OnGround();

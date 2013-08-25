@@ -5,30 +5,6 @@ const float minHeight = 0.5f;
 const float maxHeight = 1.75f;
 
 
-void createFeet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
-{
-	Ogre::Entity* cube = sceneMgr->createEntity("left foot", "LeftFoot.mesh");
-	
-	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
-	cube->setMaterial(material);
-    Ogre::SceneNode* headNode = player->createChildSceneNode("left foot");
-    headNode->attachObject(cube);
-	headNode->scale(Ogre::Vector3(0.2,1,0.2));
-	headNode->setPosition(Ogre::Vector3(-0.15,0.1, 0));
-	headNode->yaw(Ogre::Radian(-Ogre::Math::PI/2));
-
-
-	cube = sceneMgr->createEntity("right foot", "Rightfoot.mesh");
-	
-	material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
-	cube->setMaterial(material);
-    headNode = player->createChildSceneNode("right foot");
-    headNode->attachObject(cube);
-	headNode->scale(Ogre::Vector3(0.2,1,0.2));
-	headNode->setPosition(Ogre::Vector3(0.15,0.1, 0));
-	headNode->yaw(Ogre::Radian(-Ogre::Math::PI/2));
-
-}
 
 Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 {
@@ -38,7 +14,7 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 	playerNode->addChild(eyeNode);
 	mPlayerNode = playerNode;
 	//starting position
-	mPlayerNode->setPosition(Ogre::Vector3(5,12,7.5));
+	mPlayerNode->setPosition(Ogre::Vector3(5.25,12,7.5));
 	mEyeNode = eyeNode;
 	mJumping = false;
 	mDoubleJumping = false;
@@ -49,7 +25,6 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 	mBody = playerNode->createChildSceneNode("body");
 
 	mFeet = new Feet(sceneMgr, mBody);
-	//createFeet(sceneMgr, mBody);
 }
 
 
@@ -126,6 +101,11 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 		mDoubleJumping = false;
 		//mJumpVector = Ogre::Vector3::ZERO;
 	}
+}
+
+void Player::step()
+{
+	mFeet->swapFeet();
 }
 
 void Player::processMovement(Ogre::Real timeSinceLastFrame)
@@ -206,29 +186,17 @@ float Player::checkVerticalClearance(bool up, float travel)
 		origin = mPlayerNode->getPosition();
 		origin.y += travel;
 		normal = Ogre::Vector3::UNIT_Y;
+		if(mCollisionTools->raycastFromPoint(origin, normal, result,myObject,distToColl))
+		{
+			if(up && distToColl  < eyeHeight + 0.1f)
+			{
+				return  0.0f;
+			}
+		}
 	}
 	else
 	{
-		origin = mPlayerNode->getPosition();
-		origin.y += eyeHeight/2 ;
-
-		normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
-	}
-
-	if(mCollisionTools->raycastFromPoint(origin, normal, result,myObject,distToColl))
-	{
-		if(up && distToColl  < eyeHeight + 0.1f)
-		{
-			return  0.0f;
-		}
-		else
-		{
-			//note if you dont check a little extra it jumps around when you walk down a slope
-			if(distToColl <  .75* eyeHeight)
-			{
-				return eyeHeight/2 - distToColl;
-			}
-		}
+		return mFeet->distanceToGround(travel);
 	}
 
 	return travel;
@@ -287,22 +255,7 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 //todo return clearence so we don't fall through the floor as often
 bool Player::OnGround()
 {
-	Ogre::Vector3 result;
-	//Vector3 myResult(0, 0, 0);
-	Ogre::Entity* myObject = NULL;
-	float distToColl = 0.0f;
-
-	Ogre::Vector3 colisionOrigin = mPlayerNode->getPosition();
-	colisionOrigin.y += 0.2f;
-
-	if(mCollisionTools->raycastFromPoint(colisionOrigin, Ogre::Vector3::NEGATIVE_UNIT_Y, result,myObject,distToColl))
-	{
-		if(distToColl <= 0.25f)
-		{
-			return true;
-		}
-	}
-	return false;
+	return mFeet->onGround();
 }
 
 void Player::jump()

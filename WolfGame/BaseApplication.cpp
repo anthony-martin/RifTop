@@ -316,6 +316,7 @@ bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
+	mPlayer->step();
     return true;
 }
 

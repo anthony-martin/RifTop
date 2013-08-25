@@ -10,6 +10,7 @@ const float horizontalStepMin = 0.0f;
 Feet::Feet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
 {
 	mBody = player;
+	mCollisionTools = new MOC::CollisionTools(sceneMgr);
 	leftMesh = sceneMgr->createEntity("left foot", "LeftFoot.mesh");
 	
 	upMaterial = Ogre::MaterialManager::getSingleton().getByName("player/feet");
@@ -37,6 +38,12 @@ Feet::Feet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
 
 Feet::~Feet(void)
 {
+}
+
+void Feet::swapFeet()
+{
+	mLeftFootActive = !mLeftFootActive;
+	UpdateMaterial();
 }
 
 void Feet::setVisible(bool visible)
@@ -246,5 +253,71 @@ void Feet::UpdateMaterial()
 	}
 }
 
+
+bool Feet::onGround()
+{
+	//don't stand on own feet
+	setVisible(false);
+
+	Ogre::Vector3 result;
+	//Vector3 myResult(0, 0, 0);
+	Ogre::Entity* myObject = NULL;
+	float distToColl = 0.0f;
+
+	Ogre::Vector3 colisionOrigin;
+	if(!mLeftFootActive)
+	{
+		colisionOrigin = mBody->convertLocalToWorldPosition(leftFoot->getPosition());
+	}
+	else
+	{
+		colisionOrigin = mBody->convertLocalToWorldPosition(rightFoot->getPosition());
+	}
+
+	colisionOrigin.y += 0.2f;
+
+	if(mCollisionTools->raycastFromPoint(colisionOrigin, Ogre::Vector3::NEGATIVE_UNIT_Y, result,myObject,distToColl))
+	{
+		if(distToColl <= 0.25f)
+		{
+			return true;
+		}
+	}
+	return false;
+
+	//show feet
+	setVisible(true);
+}
+
+
+float Feet::distanceToGround(float travel)
+{
+	Ogre::Vector3 colisionOrigin;
+	if(!mLeftFootActive)
+	{
+		colisionOrigin = mBody->convertLocalToWorldPosition(leftFoot->getPosition());
+	}
+	else
+	{
+		colisionOrigin = mBody->convertLocalToWorldPosition(rightFoot->getPosition());
+	}
+
+	colisionOrigin.y += 1.75/2 ;
+
+	Ogre::Vector3 normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
+	Ogre::Vector3 result;
+	Ogre::Entity* myObject = NULL;
+	float distToColl = -1.0f;
+	if(mCollisionTools->raycastFromPoint(colisionOrigin, normal, result,myObject,distToColl))
+	{
+		//note if you dont check a little extra it jumps around when you walk down a slope
+		if(distToColl <  .75*  1.75)
+		{
+			return 1.75/2 - distToColl + 0.01;
+		}
+	}
+
+	return travel;
+}
 
 

@@ -116,9 +116,9 @@ void Feet::moveRightFoot(Ogre::Vector3 movement)
 	}
 
 	if(!mLeftFootActive && 
-		(currentPosition.y != -0.f) &&
-		(currentPosition.z < 0.4f || 
-		currentPosition.z > -0.4f))
+		(currentPosition.y != -0.0f) &&
+		(currentPosition.z < 0.3f || 
+		currentPosition.z > -0.3f))
 	{
 		mLeftFootActive = true;
 	}
@@ -191,9 +191,9 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 	}
 
 	if(!mLeftFootActive && 
-		(currentPosition.y != -0.f) &&
-		(currentPosition.z < 0.4f || 
-		currentPosition.z > -0.4f))
+		(currentPosition.y != -0.0f) &&
+		(currentPosition.z < 0.3f || 
+		currentPosition.z > -0.3f))
 	{
 		mLeftFootActive = true;
 	}
@@ -347,7 +347,7 @@ float Feet::distanceToGround(float travel)
 	if(toGround < -0.05f || 
 		toGround > 0.05f) 
 	{
-		return toGround += 0.01;
+		return toGround += 0.05f;
 	}
 
 	return travel;

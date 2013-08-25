@@ -3,8 +3,11 @@
 
 const float minHeight = 0.5f;
 const float maxHeight = 1.75f;
-
-
+const Ogre::Vector3 startPosition(2,.1,14);
+const float minX = -2.0;
+const float manX = 12.0;
+const float minZ = -2.0;
+const float manZ = 18.0;
 
 Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 {
@@ -14,7 +17,7 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 	playerNode->addChild(eyeNode);
 	mPlayerNode = playerNode;
 	//starting position
-	mPlayerNode->setPosition(Ogre::Vector3(5.25,12,7.5));
+	mPlayerNode->setPosition(startPosition);
 	mEyeNode = eyeNode;
 	mJumping = false;
 	mDoubleJumping = false;
@@ -44,7 +47,10 @@ void Player::mouseInput(Ogre::Vector2 input)
 	Ogre::Vector3 relativePosition = mFeet->turn(turn);
 	if(OnGround())
 	{
-		mPlayerNode->translate(relativePosition);
+		if(!checkHorizontalColisions(relativePosition))
+		{
+			mPlayerNode->translate(relativePosition);
+		}
 	}
 
 	if(mChangeHeight)

@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "CollisionTools.h"
+#include "feet.h"
 
 class Player
 {
@@ -19,8 +20,9 @@ private:
 	bool checkHorizontalColisions( Ogre::Vector3 normal);
 	float checkVerticalClearance(bool up, float travel);
 
-
+	Feet* mFeet;
 	Ogre::SceneNode* mPlayerNode;
+	Ogre::SceneNode* mBody;
 	Ogre::SceneNode* mEyeNode;
 	MOC::CollisionTools* mCollisionTools;
 	Ogre::Vector3 mInput;

@@ -262,7 +262,8 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
 
         // only check this result if its a hit against an entity
         if ((query_result[qr_idx].movable != NULL)  &&
-            (query_result[qr_idx].movable->getMovableType().compare("Entity") == 0))
+            (query_result[qr_idx].movable->getMovableType().compare("Entity") == 0) &&
+			(query_result[qr_idx].movable->getVisible()))
         {
             // get the entity to check
 			Ogre::MovableObject *pentity = static_cast<Ogre::MovableObject*>(query_result[qr_idx].movable);
@@ -308,6 +309,7 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
             // closest_result before moving on to the next object.
             if (new_closest_found)
             {
+				//note here
 				target = pentity;
                 closest_result = ray.getPoint(closest_distance);
             }

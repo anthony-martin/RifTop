@@ -229,8 +229,19 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	cube->setMaterial(material);
      headNode = mMainNode->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
     headNode->attachObject(cube);
-	headNode->scale(Vector3(3.6,5,5.05));
+	headNode->scale(Vector3(3.6,5,5.07));
 	headNode->setPosition(Vector3(5,8.88,5));
+	headNode->yaw(Radian(Math::PI));
+	mCount++;
+
+	 cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "beams.mesh");
+	
+	 material = Ogre::MaterialManager::getSingleton().getByName("box/roof");
+	cube->setMaterial(material);
+     headNode = mMainNode->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
+    headNode->attachObject(cube);
+	headNode->scale(Vector3(3.6,5,5.05));
+	headNode->setPosition(Vector3(5,9,5));
 	headNode->yaw(Radian(Math::PI));
 	mCount++;
 }

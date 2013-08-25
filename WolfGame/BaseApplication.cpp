@@ -200,8 +200,8 @@ bool BaseApplication::setup(void)
 	
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
-	mWarehouseShown = false;
-
+	mScene = new WarehouseFloor(mSceneMgr);
+	mWarehouseShown = true;
     createScene();
 
     createFrameListener();

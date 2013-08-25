@@ -4,6 +4,32 @@
 const float minHeight = 0.5f;
 const float maxHeight = 1.75f;
 
+
+void createFeet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
+{
+	Ogre::Entity* cube = sceneMgr->createEntity("left foot", "LeftFoot.mesh");
+	
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
+	cube->setMaterial(material);
+    Ogre::SceneNode* headNode = player->createChildSceneNode("left foot");
+    headNode->attachObject(cube);
+	headNode->scale(Ogre::Vector3(0.2,1,0.2));
+	headNode->setPosition(Ogre::Vector3(-0.15,0.1, 0));
+	headNode->yaw(Ogre::Radian(-Ogre::Math::PI/2));
+
+
+	cube = sceneMgr->createEntity("right foot", "Rightfoot.mesh");
+	
+	material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
+	cube->setMaterial(material);
+    headNode = player->createChildSceneNode("right foot");
+    headNode->attachObject(cube);
+	headNode->scale(Ogre::Vector3(0.2,1,0.2));
+	headNode->setPosition(Ogre::Vector3(0.15,0.1, 0));
+	headNode->yaw(Ogre::Radian(-Ogre::Math::PI/2));
+
+}
+
 Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 {
 	Ogre::SceneNode* playerNode = sceneMgr->getRootSceneNode()->createChildSceneNode("bodyNode");
@@ -11,13 +37,19 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 
 	playerNode->addChild(eyeNode);
 	mPlayerNode = playerNode;
-	mPlayerNode->setPosition(Ogre::Vector3(7.5,0,-15));
+	//starting position
+	mPlayerNode->setPosition(Ogre::Vector3(1,0,-1));
 	mEyeNode = eyeNode;
 	mJumping = false;
 	mDoubleJumping = false;
 	mChangeHeight = false;
 	mInput = Ogre::Vector3::ZERO;
 	mJumpDuration=0;
+
+	mBody = playerNode->createChildSceneNode("body");
+
+	mFeet = new Feet(sceneMgr, mBody);
+	//createFeet(sceneMgr, mBody);
 }
 
 
@@ -32,7 +64,7 @@ void Player::addKeyboardInput(Ogre::Vector3 input)
 
 void Player::mouseInput(Ogre::Vector2 input)
 {
-	mEyeNode->yaw(Ogre::Radian(input.x / -80.0));
+	mEyeNode->yaw(Ogre::Radian(input.x / -160.0));
 	if(mChangeHeight)
 	{
 		Ogre::Vector3 eyePosition = mEyeNode->getPosition();
@@ -87,11 +119,14 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 
 void Player::processMovement(Ogre::Real timeSinceLastFrame)
 {
+	mFeet->setVisible(false) ;
+	//mBody->setOrientation(mEyeNode->getOrientation());
 	bool onGround = OnGround();
 	if(onGround && !mJumping && mInput == Ogre::Vector3::ZERO)
 	{
 		//break early no movement happening so perform no updates
 		// this means currently we cannot collide with moving objects while standing still
+		mFeet->setVisible(true) ;
 		return;
 	}
 	
@@ -136,8 +171,10 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 		direction.x = 0.0f;
 		direction.z = 0.0f;
 	}
-
+	
+	mFeet->move(direction);
 	mPlayerNode->translate(direction);
+	mFeet->setVisible(true) ;
 }
 
 float Player::checkVerticalClearance(bool up, float travel)

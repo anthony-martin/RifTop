@@ -87,6 +87,10 @@ void Player::mouseInput(Ogre::Vector2 input)
 			height = maxHeight;
 		}
 
+		if(-input.y > 0 && checkVerticalClearance(true, height) == 0.0f)
+		{
+			return;
+		}
 		mEyeNode->setPosition(Ogre::Vector3(eyePosition.x, height, eyePosition.z));
 	}
 }

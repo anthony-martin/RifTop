@@ -4,7 +4,7 @@
 
 const float driftTogether = 1.2f;
 const float forwardsStep = 0.8f;
-const float horizontalStepMax = 0.5f;
+const float horizontalStepMax = 0.8f;
 const float horizontalStepMin = 0.0f;
 
 Feet::Feet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
@@ -165,7 +165,7 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 
 void Feet::move(Ogre::Vector3 movement)
 {
-	if(movement.y != 0.0f)
+	if(movement.y >= 0.01f || movement.y <= -0.01f)
 	{
 		Ogre::Vector3 currentPosition = leftFoot->getPosition();
 		if(currentPosition.x < -0.25)

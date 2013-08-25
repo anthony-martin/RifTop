@@ -38,7 +38,7 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 	playerNode->addChild(eyeNode);
 	mPlayerNode = playerNode;
 	//starting position
-	mPlayerNode->setPosition(Ogre::Vector3(1,0,-1));
+	mPlayerNode->setPosition(Ogre::Vector3(5,12,7.5));
 	mEyeNode = eyeNode;
 	mJumping = false;
 	mDoubleJumping = false;
@@ -120,7 +120,7 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 void Player::processMovement(Ogre::Real timeSinceLastFrame)
 {
 	mFeet->setVisible(false) ;
-	//mBody->setOrientation(mEyeNode->getOrientation());
+	mBody->setOrientation(mEyeNode->getOrientation());
 	bool onGround = OnGround();
 	if(onGround && !mJumping && mInput == Ogre::Vector3::ZERO)
 	{
@@ -172,7 +172,7 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 		direction.z = 0.0f;
 	}
 	
-	mFeet->move(direction);
+	mFeet->move(mInput * (timeSinceLastFrame * 4.0f));
 	mPlayerNode->translate(direction);
 	mFeet->setVisible(true) ;
 }

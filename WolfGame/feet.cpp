@@ -2,6 +2,11 @@
 #include "feet.h"
 
 
+const float driftTogether = 1.2f;
+const float forwardsStep = 0.8f;
+const float horizontalStepMax = 0.5f;
+const float horizontalStepMin = 0.1f;
+
 Feet::Feet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
 {
 	mBody = player;
@@ -44,7 +49,7 @@ void Feet::setVisible(bool visible)
 void Feet::moveRightFoot(Ogre::Vector3 movement)
 {
 	Ogre::Vector3 localMovement;
-	if(!mRightFootActive)
+	if(mLeftFootActive)
 	{
 		localMovement = -movement;
 	}
@@ -56,16 +61,38 @@ void Feet::moveRightFoot(Ogre::Vector3 movement)
 	Ogre::Vector3 currentPosition = rightFoot->getPosition();
 	currentPosition += localMovement;
 
-	if(currentPosition.z > .8f)
+	if(currentPosition.z > forwardsStep)
 	{
-		currentPosition.z += (.8f - currentPosition.z);
-		mRightFootActive = movement.z <=0;
+		currentPosition.z += (forwardsStep - currentPosition.z);
+		mLeftFootActive = movement.z <=0;
+	}
+	else if(currentPosition.z < -forwardsStep)
+	{
+		currentPosition.z += (-forwardsStep - currentPosition.z);
+		mLeftFootActive = movement.z >= 0;
+	}
+	if(currentPosition.x > horizontalStepMax)
+	{
+		currentPosition.x += (horizontalStepMax - currentPosition.x);
+		mLeftFootActive = movement.x <=0;
+	}
+	else if(currentPosition.x < -horizontalStepMin)
+	{
+		currentPosition.x += (-horizontalStepMin - currentPosition.x);
+		mLeftFootActive = movement.x >= 0;
 	}
 
-	if(currentPosition.z < -.8f)
+	if(!mLeftFootActive)
 	{
-		currentPosition.z += (-.8f - currentPosition.z);
-		mRightFootActive = movement.z >= 0;
+		if(movement.z == 0.0f)
+		{
+			currentPosition.z /=driftTogether;
+		}
+
+		if(movement.x == 0.0f)
+		{
+			currentPosition.x /=driftTogether;
+		}
 	}
 
 	rightFoot->setPosition(currentPosition);
@@ -86,16 +113,38 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 	Ogre::Vector3 currentPosition = leftFoot->getPosition();
 	currentPosition += localMovement;
 
-	if(currentPosition.z > .8f)
+	if(currentPosition.z > forwardsStep)
 	{
-		currentPosition.z += (.8f - currentPosition.z);
+		currentPosition.z += (forwardsStep - currentPosition.z);
 		mLeftFootActive = movement.z <=0;
 	}
-
-	if(currentPosition.z < -.8f)
+	else if(currentPosition.z < -forwardsStep)
 	{
-		currentPosition.z += (-.8f - currentPosition.z);
+		currentPosition.z += (-forwardsStep - currentPosition.z);
 		mLeftFootActive = movement.z >= 0;
+	}
+
+	if(currentPosition.x < -horizontalStepMax)
+	{
+		currentPosition.x += (-horizontalStepMax - currentPosition.x);
+		mLeftFootActive = movement.x >=0;
+	}
+	else if(currentPosition.x > horizontalStepMin)
+	{
+		currentPosition.x += (horizontalStepMin - currentPosition.x);
+		mLeftFootActive = movement.x <= 0;
+	}
+	if(mLeftFootActive)
+	{
+		if(movement.z == 0.0f)
+		{
+			currentPosition.z /=driftTogether;
+		}
+
+		if(movement.x == 0.0f)
+		{
+			currentPosition.x /=driftTogether;
+		}
 	}
 
 	leftFoot->setPosition(currentPosition);
@@ -103,32 +152,13 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 
 void Feet::move(Ogre::Vector3 movement)
 {
-	//changing height is for later
 	movement.y = 0;
-	movement.x = 0;
+
+	movement.x /=2;
 
 	moveRightFoot(movement);
 	moveLeftFoot(movement);
-	/*movement =  mBody->getOrientation() * movement;
-	if(mLeftFootActive)
-	{
-		leftFoot->translate(movement);
-		rightFoot->translate(-movement);
-	}
-	else
-	{
-		leftFoot->translate(-movement);
-		rightFoot->translate(movement);
-	}
 
-	Ogre::Vector3 spaceing = leftFoot->getPosition() -  rightFoot->getPosition();
-	float spacing = spaceing.squaredLength();
-
-	if( spacing> 2.0f)
-	{
-		mLeftFootActive = !mLeftFootActive;
-	}*/
-	//return Ogre::Vector3::ZERO;
 }
 
 

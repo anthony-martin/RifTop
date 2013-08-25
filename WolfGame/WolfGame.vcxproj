@@ -58,13 +58,17 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>D:\Project\bullet-2.81\src;D:\Project\orgrebulletsrc\Dynamics\include;D:\Project\orgrebulletsrc\Collisions\include;D:\Project\WolfGame\Ogre\dependencies\include\OIS;C:\boost_1_53_0\boost\include\boost-1_53;D:\Project\WolfGame\Ogre\include;D:\Project\WolfGame\Oculus\LibOVR\Include;</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm250 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>LinearMath.lib;GIMPACTUtils.lib;ConvexDecomposition.lib;BulletDynamics.lib;BulletCollision.lib;OgreBulletDynamics.lib;OgreBulletCollisions.lib;Winmm.lib;libovr.lib;OIS.lib;OgreMain.lib;OgreOverlay.lib;OgrePaging.lib;OgreProperty.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;Plugin_CgProgramManager.lib;Plugin_OctreeSceneManager.lib;Plugin_OctreeZone.lib;Plugin_ParticleFX.lib;Plugin_PCZSceneManager.lib;RenderSystem_Direct3D9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Project\bulletbuild\lib\Release;D:\Project\Ogrebullet\Release\;D:\Project\WolfGame\Ogre\dependencies\lib\Release;C:\boost_1_53_0\boost\lib;D:\Project\WolfGame\Ogre\lib\Release;D:\Project\WolfGame\Oculus\LibOVR\Lib\Win32;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

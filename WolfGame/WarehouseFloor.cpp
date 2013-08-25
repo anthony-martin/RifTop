@@ -203,8 +203,8 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	CreateCube(Vector3(4.5,2.4,14), mediumCube, singledark);
 	CreateCube(Vector3(4.5,2.4,12), mediumCube, singledark);
 
-	CreateCube(Vector3(2.5,6,10.5), Vector3(1.5,2,1.5), doubleboxes);
-	CreateCube(Vector3(2.5,6,13.5), Vector3(1.5,2,1.5), doubleboxes);
+	CreateCube(Vector3(2.5,6.5,10.5), Vector3(1.5,2,1.5), doubleboxes);
+	CreateCube(Vector3(2.5,6.5,13.5), Vector3(1.5,2,1.5), doubleboxes);
 
 	//floorplan remove before release
 	CreateCube(Vector3(5, 4.5, 11.5), Vector3(5, .1, 3.5), lightSingle);

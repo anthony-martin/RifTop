@@ -260,7 +260,7 @@ bool Player::checkHorizontalColisions( Ogre::Vector3 normal)
 	{
 		if(mCollisionTools->raycastFromPoint(rays[i], normal, result,myObject,distToColl))
 		{
-			if(distToColl <= 4.0f)
+			if(distToColl <= 3.0f)
 			{
 				//mPlayerNode->translate(Ogre::Vector3(0, direction.y, 0));
 				return true;

@@ -160,8 +160,8 @@ void BaseApplication::go(void)
     mResourcesCfg = "D:\\Project\\WolfGame\\WolfGame\\Debug\\resources_d.cfg";
     mPluginsCfg = "D:\\Project\\WolfGame\\WolfGame\\Debug\\plugins_d.cfg";
 #else
-    mResourcesCfg = "D:\\Project\\WolfGame\\WolfGame\\Release\\resources.cfg";
-    mPluginsCfg = "D:\\Project\\WolfGame\\WolfGame\\Release\\plugins.cfg";
+    mResourcesCfg = ".\\resources.cfg";
+    mPluginsCfg = ".\\plugins.cfg";
 #endif
 
     if (!setup())
@@ -228,7 +228,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
-	if(arg.key == OIS::KC_1)
+	/*if(arg.key == OIS::KC_1)
     {
 		if(!mWarehouseShown )
 		{
@@ -240,7 +240,7 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 			delete mScene;
 			mWarehouseShown = false;
 		}
-    }
+    }*/
 
 
 	if(arg.key == OIS::KC_A)

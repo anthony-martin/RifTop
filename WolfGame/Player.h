@@ -19,7 +19,7 @@ private:
 	void processJump(bool onGround, Ogre::Real timeSinceLastFrame);
 	bool checkHorizontalColisions( Ogre::Vector3 normal);
 	float checkVerticalClearance(bool up, float travel);
-
+	void checkBounds();
 	Feet* mFeet;
 	Ogre::SceneNode* mPlayerNode;
 	Ogre::SceneNode* mBody;

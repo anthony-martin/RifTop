@@ -202,6 +202,10 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	Ogre::Vector3 mediumCube(1.5, 1.2,1);
 	CreateCube(Vector3(4.5,2.4,14), mediumCube, singledark);
 	CreateCube(Vector3(4.5,2.4,12), mediumCube, singledark);
+
+	CreateCube(Vector3(2.5,6,10.5), Vector3(1.5,2,1.5), doubleboxes);
+	CreateCube(Vector3(2.5,6,13.5), Vector3(1.5,2,1.5), doubleboxes);
+
 	//floorplan remove before release
 	CreateCube(Vector3(5, 4.5, 11.5), Vector3(5, .1, 3.5), lightSingle);
 	
@@ -244,6 +248,9 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	headNode->setPosition(Vector3(5,8.85,5));
 	headNode->yaw(Radian(Math::PI));
 	mCount++;
+
+	//need work on steping algorithm first
+	//addSteps();
 }
 
 
@@ -264,5 +271,20 @@ void WarehouseFloor::CreateCube(Ogre::Vector3 position, Ogre::Vector3 scale, std
     headNode->attachObject(cube);
 	headNode->scale(scale);
 	headNode->setPosition(position);
+	mCount++;
+}
+
+
+void WarehouseFloor::addSteps()
+{
+	Ogre::Entity* cube = mSceneMgr->createEntity("warehouse_"+ Ogre::StringConverter::toString(mCount), "step.mesh");
+	
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/roof");
+	cube->setMaterial(material);
+    Ogre::SceneNode* headNode = mMainNode->createChildSceneNode("warehouse_"+Ogre::StringConverter::toString(mCount));
+    headNode->attachObject(cube);
+	//headNode->scale(Vector3(.5,0.1,1));
+	headNode->setPosition(2.0, 5, 12.0);
+	headNode->yaw(Radian(Math::PI/2));
 	mCount++;
 }

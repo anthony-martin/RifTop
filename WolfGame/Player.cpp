@@ -4,10 +4,11 @@
 const float minHeight = 0.5f;
 const float maxHeight = 1.75f;
 const Ogre::Vector3 startPosition(2,.1,14);
+//const Ogre::Vector3 startPosition(6,6,14);
 const float minX = -2.0;
-const float manX = 12.0;
+const float maxX = 12.0;
 const float minZ = -2.0;
-const float manZ = 18.0;
+const float maxZ = 18.0;
 
 Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 {
@@ -173,7 +174,20 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 	stepDirection.y = direction.y;
 	mFeet->move(stepDirection * (timeSinceLastFrame * 4.0f));
 	mPlayerNode->translate(direction);
+	checkBounds();
 	mFeet->setVisible(true) ;
+}
+
+void Player::checkBounds()
+{
+	Ogre::Vector3 position = mPlayerNode->getPosition();
+	if(position.x < minX || 
+		position.x > maxX ||
+		position.z < minZ ||
+		position.z > maxZ)
+	{
+		mPlayerNode->setPosition(startPosition);
+	}
 }
 
 float Player::checkVerticalClearance(bool up, float travel)

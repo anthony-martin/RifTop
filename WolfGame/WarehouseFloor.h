@@ -13,6 +13,7 @@ private:
 	Ogre::SceneManager* mSceneMgr;
 	Ogre::SceneNode* mMainNode;
 	void createWalls();
+	void addSteps();
 	int mCount;
 };
 

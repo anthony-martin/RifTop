@@ -132,17 +132,19 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 	
 	processJump(onGround, timeSinceLastFrame);
 
-	Ogre::Vector3 direction;
+	Ogre::Vector3 direction, stepDirection;
 	if(mJumping || !onGround)
 	{
 		if(mJumpVector.y > -3.0f)
 		{
 			mJumpVector.y -= 3.0f * mJumpDuration;
 		}
+		stepDirection = mJumpVector;
 		direction = mEyeNode->getOrientation() * mJumpVector ;
 	}
 	else
 	{
+		stepDirection = mInput; 
 		direction = mEyeNode->getOrientation() * mInput;
 	}
 
@@ -171,8 +173,8 @@ void Player::processMovement(Ogre::Real timeSinceLastFrame)
 		direction.x = 0.0f;
 		direction.z = 0.0f;
 	}
-	
-	mFeet->move(mInput * (timeSinceLastFrame * 4.0f));
+	stepDirection.y = direction.y;
+	mFeet->move(stepDirection * (timeSinceLastFrame * 4.0f));
 	mPlayerNode->translate(direction);
 	mFeet->setVisible(true) ;
 }

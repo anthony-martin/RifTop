@@ -152,12 +152,29 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 
 void Feet::move(Ogre::Vector3 movement)
 {
-	movement.y = 0;
+	if(movement.y != 0.0f)
+	{
+		Ogre::Vector3 currentPosition = leftFoot->getPosition();
+		currentPosition.z /=driftTogether;
+		currentPosition.x /=driftTogether;
+		leftFoot->setPosition(currentPosition);
 
-	movement.x /=2;
+		currentPosition = rightFoot->getPosition();
+		currentPosition.z /=driftTogether;
+		currentPosition.x /=driftTogether;
+		rightFoot->setPosition(currentPosition);
+	}
+	else
+	{
+		movement.y = 0;
+		movement.x /=2;
 
-	moveRightFoot(movement);
-	moveLeftFoot(movement);
+		moveRightFoot(movement);
+		moveLeftFoot(movement);
+	}
+	
+
+	
 
 }
 

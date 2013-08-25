@@ -253,7 +253,6 @@ void Feet::UpdateMaterial()
 	}
 }
 
-
 bool Feet::onGround()
 {
 	//don't stand on own feet
@@ -276,11 +275,23 @@ bool Feet::onGround()
 
 	colisionOrigin.y += 0.2f;
 
-	if(mCollisionTools->raycastFromPoint(colisionOrigin, Ogre::Vector3::NEGATIVE_UNIT_Y, result,myObject,distToColl))
+	Ogre::Vector3 rayOrigins[5] =
 	{
-		if(distToColl <= 0.25f)
+		Ogre::Vector3(0.0,0.0, -0.05),
+		Ogre::Vector3(0.0,0.0, 0.0),
+		Ogre::Vector3(-0.03,0.0, 0.0),
+		Ogre::Vector3(0.04,0.0, 0.0),
+		Ogre::Vector3(0.0,0.0, 0.15)
+	};
+
+	for(int i=0; i<5; i++)
+	{
+		if(mCollisionTools->raycastFromPoint(colisionOrigin+rayOrigins[i], Ogre::Vector3::NEGATIVE_UNIT_Y, result,myObject,distToColl))
 		{
-			return true;
+			if(distToColl <= 0.25f)
+			{
+				return true;
+			}
 		}
 	}
 	return false;
@@ -304,20 +315,34 @@ float Feet::distanceToGround(float travel)
 
 	colisionOrigin.y += 1.75/2 ;
 
-	Ogre::Vector3 normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
 	Ogre::Vector3 result;
 	Ogre::Entity* myObject = NULL;
 	float distToColl = -1.0f;
-	if(mCollisionTools->raycastFromPoint(colisionOrigin, normal, result,myObject,distToColl))
+
+	Ogre::Vector3 rayOrigins[5] =
 	{
-		//note if you dont check a little extra it jumps around when you walk down a slope
-		if(distToColl <  .75*  1.75)
+		Ogre::Vector3(0.0,0.0, -0.05),
+		Ogre::Vector3(0.0,0.0, 0.0),
+		Ogre::Vector3(-0.03,0.0, 0.0),
+		Ogre::Vector3(0.04,0.0, 0.0),
+		Ogre::Vector3(0.0,0.0, 0.15)
+	};
+
+	for(int i=0; i<5; i++)
+	{
+		if(mCollisionTools->raycastFromPoint(colisionOrigin + rayOrigins[i], Ogre::Vector3::NEGATIVE_UNIT_Y, result,myObject,distToColl))
 		{
-			return 1.75/2 - distToColl + 0.01;
+			//note if you dont check a little extra it jumps around when you walk down a slope
+			if(distToColl <  .75*  1.75)
+			{
+				return 1.75/2 - distToColl + 0.01;
+			}
 		}
 	}
 
 	return travel;
 }
+
+
 
 

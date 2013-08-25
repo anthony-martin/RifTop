@@ -17,6 +17,7 @@ private:
 	void moveRightFoot(Ogre::Vector3 movement);
 	void moveLeftFoot(Ogre::Vector3 movement);
 	void UpdateMaterial();
+	float distanceToGround(Ogre::SceneNode* foot);
 
 	Ogre::SceneNode* leftFoot;
 	Ogre::SceneNode* rightFoot;

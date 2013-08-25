@@ -108,6 +108,22 @@ void Feet::moveRightFoot(Ogre::Vector3 movement)
 		}
 	}
 
+	currentPosition.y = distanceToGround(rightFoot);
+	if(currentPosition.y > -0.1f && 
+		currentPosition.y < 0.1f)
+	{
+		currentPosition.y = 0.0f;
+	}
+
+	if(!mLeftFootActive && 
+		(currentPosition.y != -0.f) &&
+		(currentPosition.z < 0.4f || 
+		currentPosition.z > -0.4f))
+	{
+		mLeftFootActive = true;
+	}
+	currentPosition.y += 0.1;
+
 	rightFoot->setPosition(currentPosition);
 }
 
@@ -166,6 +182,22 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 			}
 		}
 	}
+	currentPosition.y = distanceToGround(leftFoot);
+
+	if(currentPosition.y > -0.1f && 
+		currentPosition.y < 0.1f)
+	{
+		currentPosition.y = 0.0f;
+	}
+
+	if(!mLeftFootActive && 
+		(currentPosition.y != -0.f) &&
+		(currentPosition.z < 0.4f || 
+		currentPosition.z > -0.4f))
+	{
+		mLeftFootActive = true;
+	}
+	currentPosition.y += 0.1;
 
 	leftFoot->setPosition(currentPosition);
 }
@@ -203,7 +235,6 @@ void Feet::move(Ogre::Vector3 movement)
 	else
 	{
 		movement.y = 0;
-		//movement.x /=2;
 
 		moveRightFoot(movement);
 		moveLeftFoot(movement);
@@ -281,7 +312,7 @@ bool Feet::onGround()
 		Ogre::Vector3(0.0,0.0, 0.0),
 		Ogre::Vector3(-0.03,0.0, 0.0),
 		Ogre::Vector3(0.04,0.0, 0.0),
-		Ogre::Vector3(0.0,0.0, 0.15)
+		Ogre::Vector3(0.0,0.0, 0.08)
 	};
 
 	for(int i=0; i<5; i++)
@@ -303,17 +334,30 @@ bool Feet::onGround()
 
 float Feet::distanceToGround(float travel)
 {
-	Ogre::Vector3 colisionOrigin;
+	float toGround;
 	if(!mLeftFootActive)
 	{
-		colisionOrigin = mBody->convertLocalToWorldPosition(leftFoot->getPosition());
+		toGround = distanceToGround( leftFoot);
 	}
 	else
 	{
-		colisionOrigin = mBody->convertLocalToWorldPosition(rightFoot->getPosition());
+		toGround =distanceToGround(leftFoot);
 	}
 
-	colisionOrigin.y += 1.75/2 ;
+	if(toGround < -0.05f || 
+		toGround > 0.05f) 
+	{
+		return toGround += 0.01;
+	}
+
+	return travel;
+}
+
+float Feet::distanceToGround(Ogre::SceneNode* foot)
+{
+	Ogre::Vector3 colisionOrigin = mBody->convertLocalToWorldPosition(foot->getPosition());
+
+	colisionOrigin.y += 1.75/2.0 ;
 
 	Ogre::Vector3 result;
 	Ogre::Entity* myObject = NULL;
@@ -325,7 +369,7 @@ float Feet::distanceToGround(float travel)
 		Ogre::Vector3(0.0,0.0, 0.0),
 		Ogre::Vector3(-0.03,0.0, 0.0),
 		Ogre::Vector3(0.04,0.0, 0.0),
-		Ogre::Vector3(0.0,0.0, 0.15)
+		Ogre::Vector3(0.0,0.0, 0.08)
 	};
 
 	for(int i=0; i<5; i++)
@@ -335,12 +379,12 @@ float Feet::distanceToGround(float travel)
 			//note if you dont check a little extra it jumps around when you walk down a slope
 			if(distToColl <  .75*  1.75)
 			{
-				return 1.75/2 - distToColl + 0.01;
+				return 1.75/2.0 - distToColl ;
 			}
 		}
 	}
 
-	return travel;
+	return 0;
 }
 
 

@@ -64,7 +64,14 @@ void Player::addKeyboardInput(Ogre::Vector3 input)
 
 void Player::mouseInput(Ogre::Vector2 input)
 {
-	mEyeNode->yaw(Ogre::Radian(input.x / -160.0));
+	Ogre::Radian turn(input.x / -160.0);
+	mEyeNode->yaw(turn);
+	Ogre::Vector3 relativePosition = mFeet->turn(turn);
+	if(OnGround())
+	{
+		mPlayerNode->translate(relativePosition);
+	}
+
 	if(mChangeHeight)
 	{
 		Ogre::Vector3 eyePosition = mEyeNode->getPosition();
@@ -120,7 +127,7 @@ void Player::processJump(bool onGround, Ogre::Real timeSinceLastFrame)
 void Player::processMovement(Ogre::Real timeSinceLastFrame)
 {
 	mFeet->setVisible(false) ;
-	mBody->setOrientation(mEyeNode->getOrientation());
+	
 	bool onGround = OnGround();
 	if(onGround && !mJumping && mInput == Ogre::Vector3::ZERO)
 	{

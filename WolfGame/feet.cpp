@@ -5,30 +5,29 @@
 const float driftTogether = 1.2f;
 const float forwardsStep = 0.8f;
 const float horizontalStepMax = 0.5f;
-const float horizontalStepMin = 0.1f;
+const float horizontalStepMin = 0.0f;
 
 Feet::Feet(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* player)
 {
 	mBody = player;
-	Ogre::Entity* cube = sceneMgr->createEntity("left foot", "LeftFoot.mesh");
+	leftMesh = sceneMgr->createEntity("left foot", "LeftFoot.mesh");
 	
-	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
-	cube->setMaterial(material);
+	upMaterial = Ogre::MaterialManager::getSingleton().getByName("player/feet");
+	leftMesh->setMaterial(upMaterial);
     leftFoot = player->createChildSceneNode("left foot");
-    leftFoot->attachObject(cube);
+    leftFoot->attachObject(leftMesh);
 	leftFoot->scale(Ogre::Vector3(0.2,1,0.2));
-	leftFoot->setPosition(Ogre::Vector3(0.1,0.1, 0));
+	leftFoot->setPosition(Ogre::Vector3(-.25,0.1, 0));
 	leftFoot->yaw(Ogre::Radian(-Ogre::Math::PI/2));
 
-
-	cube = sceneMgr->createEntity("right foot", "Rightfoot.mesh");
+	rightMesh = sceneMgr->createEntity("right foot", "Rightfoot.mesh");
 	
-	material = Ogre::MaterialManager::getSingleton().getByName("player/feet");
-	cube->setMaterial(material);
+	downMaterial = Ogre::MaterialManager::getSingleton().getByName("player/Activefoot");
+	rightMesh->setMaterial(upMaterial);
     rightFoot = player->createChildSceneNode("right foot");
-    rightFoot->attachObject(cube);
+    rightFoot->attachObject(rightMesh);
 	rightFoot->scale(Ogre::Vector3(0.2,1,0.2));
-	rightFoot->setPosition(Ogre::Vector3(-0.1,0.1, 0));
+	rightFoot->setPosition(Ogre::Vector3(.25, 0.1, 0));
 	rightFoot->yaw(Ogre::Radian(-Ogre::Math::PI/2));
 
 	mLeftFootActive = false;
@@ -91,7 +90,14 @@ void Feet::moveRightFoot(Ogre::Vector3 movement)
 
 		if(movement.x == 0.0f)
 		{
-			currentPosition.x /=driftTogether;
+			if(currentPosition.x < 0.25)
+			{
+				currentPosition.x /=driftTogether;
+			}
+			else
+			{
+				currentPosition.x =0.25;
+			}
 		}
 	}
 
@@ -143,7 +149,14 @@ void Feet::moveLeftFoot(Ogre::Vector3 movement)
 
 		if(movement.x == 0.0f)
 		{
-			currentPosition.x /=driftTogether;
+			if(currentPosition.x >-0.25)
+			{
+				currentPosition.x /=driftTogether;
+			}
+			else
+			{
+				currentPosition.x = -0.25;
+			}
 		}
 	}
 
@@ -155,27 +168,82 @@ void Feet::move(Ogre::Vector3 movement)
 	if(movement.y != 0.0f)
 	{
 		Ogre::Vector3 currentPosition = leftFoot->getPosition();
+		if(currentPosition.x < -0.25)
+		{
+			currentPosition.x /=driftTogether;
+		}
+		else
+		{
+			currentPosition.x = -0.25;
+		}
+
 		currentPosition.z /=driftTogether;
-		currentPosition.x /=driftTogether;
+		
 		leftFoot->setPosition(currentPosition);
 
 		currentPosition = rightFoot->getPosition();
+		if(currentPosition.x > 0.25)
+		{
+			currentPosition.x /=driftTogether;
+		}
+		else
+		{
+			currentPosition.x = 0.25;
+		}
 		currentPosition.z /=driftTogether;
-		currentPosition.x /=driftTogether;
 		rightFoot->setPosition(currentPosition);
 	}
 	else
 	{
 		movement.y = 0;
-		movement.x /=2;
+		//movement.x /=2;
 
 		moveRightFoot(movement);
 		moveLeftFoot(movement);
 	}
-	
 
-	
+	UpdateMaterial();
+}
 
+Ogre::Vector3 Feet::turn(Ogre::Radian turn)
+{
+	Ogre::Vector3 referencePosition;
+	if(!mLeftFootActive)
+	{
+		referencePosition = mBody->convertLocalToWorldPosition(leftFoot->getPosition());
+	}
+	else
+	{
+		referencePosition = mBody->convertLocalToWorldPosition(rightFoot->getPosition());
+	}
+
+	mBody->yaw(turn);
+
+	Ogre::Vector3 newPosition;
+	if(!mLeftFootActive)
+	{
+		newPosition = mBody->convertLocalToWorldPosition(leftFoot->getPosition());
+	}
+	else
+	{
+		newPosition = mBody->convertLocalToWorldPosition(rightFoot->getPosition());
+	}
+
+	return referencePosition - newPosition;
+}
+
+void Feet::UpdateMaterial()
+{
+	if(!mLeftFootActive)
+	{
+		leftMesh->setMaterial(downMaterial);
+		rightMesh->setMaterial(upMaterial);
+	}
+	else
+	{
+		leftMesh->setMaterial(upMaterial);
+		rightMesh->setMaterial(downMaterial);
+	}
 }
 
 

@@ -16,6 +16,24 @@ Controller::Controller( Ogre::RenderWindow* window)
 	mInput = Ogre::Vector3::ZERO;
 }
 
+Controller::~Controller( )
+{
+	Ogre::CompositorManager::getSingleton().removeCompositor(mLeftVp, "Oculus");
+	Ogre::CompositorManager::getSingleton().removeCompositor(mRightVp, "Oculus");
+
+	mWindow->removeAllViewports();
+	
+	mCamera->getParentSceneNode()->detachObject(mCamera);
+	mCameraRight->getParentSceneNode()->detachObject(mCameraRight);
+	mSceneMgr->destroyCamera(mCamera);
+	mSceneMgr->destroyCamera(mCameraRight);
+
+	mSceneMgr->destroySceneNode(mRotationNode);
+	mSceneMgr->destroySceneNode(mBodyRotationNode);
+
+
+}
+
 void Controller::configureCompositors(OVR::HMDInfo devinfo)
 {
 	Ogre::MaterialPtr matLeft = Ogre::MaterialManager::getSingleton().getByName("Ogre/Compositor/Oculus");
@@ -74,8 +92,9 @@ void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConf
 	camera->setCustomProjectionMatrix(true, proj * camera->getProjectionMatrix());
 }
 
-void Controller::createCameras(Ogre::SceneManager* mSceneMgr)
+void Controller::createCameras(Ogre::SceneManager* sceneMgr)
 {
+	mSceneMgr = sceneMgr;
 	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); 
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
 	mBodyRotationNode->setPosition(Ogre::Vector3(0,1.75,0));

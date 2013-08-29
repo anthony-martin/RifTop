@@ -6,6 +6,7 @@ namespace CameraController
 	{
 	public:
 		Controller( Ogre::RenderWindow* window);
+		~Controller();
 		void createCameras(Ogre::SceneManager* mSceneMgr);
 		void createViewports(OVR::HMDInfo devinfo);
 		Ogre::Camera* mCamera;
@@ -23,6 +24,7 @@ namespace CameraController
 		Ogre::Vector3 mInput;
 
 	private:
+		Ogre::SceneManager* mSceneMgr;
 		void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side);
 		void configureCompositors(OVR::HMDInfo devinfo);
 	};

@@ -22,6 +22,15 @@
     <Filter Include="Header Files\Player">
       <UniqueIdentifier>{6055d4b6-666e-411f-93af-10fac76d1098}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Areas">
+      <UniqueIdentifier>{f0453dc0-2764-4094-898a-2f0cb15c2b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SystemWindows">
+      <UniqueIdentifier>{9af989a6-74f6-4d24-95ad-dc5a238411e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SystemWindows">
+      <UniqueIdentifier>{96e5c29f-dea7-4d39-8242-39a0929d2eb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WolfGame.cpp">
@@ -45,9 +54,6 @@
     <ClCompile Include="BulletConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WarehouseFloor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
@@ -56,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="feet.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="WarehouseFloor.cpp">
+      <Filter>Source Files\Areas</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemTextureLoader.cpp">
+      <Filter>Source Files\SystemWindows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,9 +89,6 @@
     <ClInclude Include="BulletConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WarehouseFloor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
@@ -88,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="feet.h">
       <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="WarehouseFloor.h">
+      <Filter>Header Files\Areas</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemTextureLoader.h">
+      <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

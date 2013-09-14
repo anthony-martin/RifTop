@@ -150,6 +150,8 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	Ogre::Vector3 largeCube(1.5,1,1.5);
 	// large 3x2 cubes at near the door stacked two high
 	CreateCube(Vector3(2.5,1,3.5), largeCube, lightSingle);
+
+	return;
 	CreateCube(Vector3(2.5,3,3.5), largeCube, lightSingle);
 	CreateCube(Vector3(2.5,1,6.5), largeCube, lightSingle);
 	CreateCube(Vector3(2.5,3,6.5), largeCube, lightSingle);

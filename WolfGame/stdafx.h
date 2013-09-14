@@ -22,6 +22,12 @@
 #include <OgreRenderWindow.h>
 #include <OgreConfigFile.h>
 #include <OgreWindowEventUtilities.h>
+#include <OgreD3D11Texture.h>
+#include <OgreResource.h>
+#include <OgreTextureManager.h>
+
+#include <OgreShaderGenerator.h>
+#include <OgreShaderExPerPixelLighting.h>
 
 #include <OISEvents.h>
 #include <OISInputManager.h>

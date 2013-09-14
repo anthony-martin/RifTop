@@ -62,6 +62,7 @@ protected:
 
 	bool mWarehouseShown;
 	WarehouseFloor* mScene;
+	Ogre::RTShader::ShaderGenerator *mShaderGenerator;
 
     Ogre::Root *mRoot;
 	CameraController::Controller* mController;

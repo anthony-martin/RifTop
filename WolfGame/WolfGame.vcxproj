@@ -41,7 +41,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Project\bullet-2.81\src;D:\Project\orgrebulletsrc\Dynamics\include;D:\Project\orgrebulletsrc\Collisions\include;D:\Project\WolfGame\Ogre\dependencies\include\OIS;C:\boost_1_53_0\boost\include\boost-1_53;D:\Project\WolfGame\Ogre\include;D:\Project\WolfGame\Oculus\LibOVR\Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project\Ogre\OgreDynamic\include;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\Components\RTShaderSystem\include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\RenderSystems\Direct3D11\include;D:\Project\bullet-2.81\src;D:\Project\orgrebulletsrc\Dynamics\include;D:\Project\orgrebulletsrc\Collisions\include;D:\Project\WolfGame\Ogre\dependencies\include\OIS;C:\boost_1_53_0\boost\include\boost-1_53;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\OgreMain\include;D:\Project\WolfGame\Oculus\LibOVR\Include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm250 %(AdditionalOptions)</AdditionalOptions>
@@ -82,6 +82,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SystemTextureLoader.cpp" />
     <ClCompile Include="TutorialApplication.cpp" />
     <ClCompile Include="WarehouseFloor.cpp" />
     <ClCompile Include="WolfGame.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="OculusControl.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemTextureLoader.h" />
     <ClInclude Include="TutorialApplication.h" />
     <ClInclude Include="WarehouseFloor.h" />
   </ItemGroup>

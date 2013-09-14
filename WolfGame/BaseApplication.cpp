@@ -153,6 +153,33 @@ void BaseApplication::createResourceListener(void)
 void BaseApplication::loadResources(void)
 {
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+	if (Ogre::RTShader::ShaderGenerator::initialize())
+	{
+		// Grab the shader generator pointer.
+		mShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+ 
+		// Add the shader libs resource location.
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreDynamic\\lib\\Debug", "FileSystem");
+ 
+		// Set shader cache path.
+		mShaderGenerator->setShaderCachePath(".\\");		
+ 
+		// Set the scene manager.
+		mShaderGenerator->addSceneManager(mSceneMgr);
+ 
+		// Add a specialized sub-render (per-pixel lighting) state to the default scheme render state
+		Ogre::RTShader::RenderState* pMainRenderState = 
+			mShaderGenerator->createOrRetrieveRenderState(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME).first;
+		pMainRenderState->reset();
+ 
+		//mShaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::PerPixelLightingFactory);
+		pMainRenderState->addTemplateSubRenderState(
+			mShaderGenerator->createSubRenderState(Ogre::RTShader::PerPixelLighting::Type));	
+ 
+		//return true;
+	}
+
+	//Ogre::MaterialManager::getSingleton().addListener();
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::go(void)
@@ -192,6 +219,8 @@ bool BaseApplication::setup(void)
     createResourceListener();
     // Load resources
     loadResources();
+
+	
 
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);

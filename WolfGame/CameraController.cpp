@@ -67,9 +67,9 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	comp->getTechnique(0)->getOutputTargetPass()->getPass(0)->setMaterialName("Ogre/Compositor/Oculus/Right");
 
 	mLeftCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mLeftVp , "OculusLeft");
-	mLeftCompositor->setEnabled(true);
+	//mLeftCompositor->setEnabled(true);
 	mRightCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mRightVp , "OculusRight");
-	mRightCompositor->setEnabled(true);
+	//mRightCompositor->setEnabled(true);
 }
 
 void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
@@ -120,6 +120,8 @@ void Controller::createViewports(OVR::HMDInfo devinfo)
 	// Create one viewport, entire window
     mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
 	mRightVp = mWindow->addViewport(mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
+	mLeftVp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+	mRightVp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
     mLeftVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
 	mRightVp->setBackgroundColour(Ogre::ColourValue(0,0,1));

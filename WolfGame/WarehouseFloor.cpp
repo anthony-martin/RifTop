@@ -141,6 +141,7 @@ void WarehouseFloor::createWalls()
 
 WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 {
+		return;
 	mSceneMgr = sceneMgr;
 	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("warehousebasenode");
 	mCount = 0;
@@ -151,7 +152,7 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 	// large 3x2 cubes at near the door stacked two high
 	CreateCube(Vector3(2.5,1,3.5), largeCube, lightSingle);
 
-	return;
+	
 	CreateCube(Vector3(2.5,3,3.5), largeCube, lightSingle);
 	CreateCube(Vector3(2.5,1,6.5), largeCube, lightSingle);
 	CreateCube(Vector3(2.5,3,6.5), largeCube, lightSingle);

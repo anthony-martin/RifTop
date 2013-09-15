@@ -36,12 +36,17 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Project\Ogre\OgreDynamic\include;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\Components\RTShaderSystem\include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\RenderSystems\Direct3D11\include;D:\Project\bullet-2.81\src;D:\Project\orgrebulletsrc\Dynamics\include;D:\Project\orgrebulletsrc\Collisions\include;D:\Project\WolfGame\Ogre\dependencies\include\OIS;C:\boost_1_53_0\boost\include\boost-1_53;D:\Project\Ogre\sinbad-ogre-0bba4f7cdb95\OgreMain\include;D:\Project\WolfGame\Oculus\LibOVR\Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\Ogre\include;..\..\Ogre\Components\RTShaderSystem\include;..\..\Ogre\RenderSystems\Direct3D11\include;..\..\Ogre\dependencies\include\OIS;..\..\Ogre\OgreMain\include;..\..\Oculus\LibOVR\Include;..\..\boost-1_53;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm250 %(AdditionalOptions)</AdditionalOptions>
@@ -60,7 +65,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\Project\bullet-2.81\src;D:\Project\orgrebulletsrc\Dynamics\include;D:\Project\orgrebulletsrc\Collisions\include;D:\Project\WolfGame\Ogre\dependencies\include\OIS;C:\boost_1_53_0\boost\include\boost-1_53;D:\Project\WolfGame\Ogre\include;D:\Project\WolfGame\Oculus\LibOVR\Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\Ogre\include;..\..\Ogre\Components\RTShaderSystem\include;..\..\Ogre\RenderSystems\Direct3D11\include;..\..\Ogre\dependencies\include\OIS;..\..\Ogre\OgreMain\include;..\..\Oculus\LibOVR\Include;..\..\boost-1_53;</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm250 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -73,7 +78,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseApplication.cpp" />
-    <ClCompile Include="BulletConfig.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CollisionTools.cpp" />
     <ClCompile Include="feet.cpp" />
@@ -89,7 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h" />
-    <ClInclude Include="BulletConfig.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CollisionTools.h" />
     <ClInclude Include="feet.h" />

@@ -152,7 +152,9 @@ void BaseApplication::createResourceListener(void)
 //-------------------------------------------------------------------------------------
 void BaseApplication::loadResources(void)
 {
+	Ogre::ResourceGroupManager::getSingleton().createResourceGroup(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
 	if (Ogre::RTShader::ShaderGenerator::initialize())
 	{
 		// Grab the shader generator pointer.
@@ -162,8 +164,8 @@ void BaseApplication::loadResources(void)
 		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreDynamic\\lib\\Debug", "FileSystem");
  
 		// Set shader cache path.
-		mShaderGenerator->setShaderCachePath(".\\");		
- 
+		mShaderGenerator->setShaderCachePath("D:\\Project\\WolfGame\\WolfGame\\Debug\\shaders");		
+		//mShaderGenerator->
 		// Set the scene manager.
 		mShaderGenerator->addSceneManager(mSceneMgr);
  
@@ -174,10 +176,12 @@ void BaseApplication::loadResources(void)
  
 		//mShaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::PerPixelLightingFactory);
 		pMainRenderState->addTemplateSubRenderState(
-			mShaderGenerator->createSubRenderState(Ogre::RTShader::PerPixelLighting::Type));	
+			mShaderGenerator->createSubRenderState(Ogre::RTShader::FFPTexturing::Type));	
  
 		//return true;
 	}
+	
+	mShaderGenerator->createShaderBasedTechnique("box/singlelight", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
 	//Ogre::MaterialManager::getSingleton().addListener();
 }

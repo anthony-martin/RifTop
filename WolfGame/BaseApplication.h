@@ -67,7 +67,6 @@ protected:
     Ogre::Root *mRoot;
 	CameraController::Controller* mController;
 	Player* mPlayer;
-	BulletConfig* mBullet;
 	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;
     Ogre::RenderWindow* mWindow;

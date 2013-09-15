@@ -6,6 +6,7 @@
 #include <OgreSceneManager.h>
 #include <OgreRenderWindow.h>
 #include <OgreViewport.h>
+#include <OgreMeshManager.h>
 
 #include <OgreVector3.h>
 #include "OgreQuaternion.h"
@@ -28,16 +29,9 @@
 
 #include <OgreShaderGenerator.h>
 #include <OgreShaderExPerPixelLighting.h>
+#include <OgreShaderFFPTexturing.h>
 
 #include <OISEvents.h>
 #include <OISInputManager.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
-
-#include <OgreBulletDynamicsRigidBody.h>
-#include <Shapes\OgreBulletCollisionsStaticPlaneShape.h>
-#include <Shapes\OgreBulletCollisionsCapsuleShape.h>
-#include <Shapes\OgreBulletCollisionsBoxShape.h>
-
-#include <BulletDynamics\Character\btKinematicCharacterController.h>
-#include <BulletCollision\CollisionDispatch\btGhostObject.h>

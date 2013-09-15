@@ -43,8 +43,8 @@ void TutorialApplication::createScene(void)
            ent = mSceneMgr->createEntity("floor", "FloorPlane");
  //   Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "Plane.mesh");
 
-	/*Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/single");
-	ent->setMaterial(material);*/
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");//,Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+	ent->setMaterial(material);
 
 	//Ogre::Entity* bridge = mSceneMgr->createEntity("Bridge", "TestBridge.mesh");
 	//bridge->setMaterial(material);

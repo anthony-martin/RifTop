@@ -5,8 +5,6 @@ RifTop
 Base code working from my work towards the oculus rift gamejam. I plan to use this as a starting point to develop an oculus compatble window manager for windows to streamline the development process so that work can be done with both the rift on or off depending on style.
 
 Todo list in no particular order.
-Convert to using relative paths to make building easier
-Add build instructions
 Standardise class field and method naming.
 Convert to using IOC
 Add Unit test assembly
@@ -18,3 +16,28 @@ Detect newly opened windows.
 
 In Progress
 Bring system windows in as textures.
+
+Build Steps
+
+You will need 
+Ogre 3D prefferably 1.9.1
+Boost 1.53
+Oculus Rift SDK
+Directx SDK (also required for Ogre). I am just going to assume this gets installed to c:\ if it doesnt on your system you will need to change the path.
+
+If you set your folder structure up as follows the relative paths should work.
+Create a top level folder aka Riftop
+
+copy folders to these relative locations. The final folder is the name of the folder to be copied.
+
+Riftop\Oculus\LibOVR  		< Oculus SDK
+Riftop\Ogre\Bin			< Ogre build from where you built ogre.
+Riftop\Ogre\Lib			< Ogre build
+Riftop\Ogre\Include		< Ogre build
+Riftop\Ogre\OgreMain		< Ogre source from the ogre source code.
+Riftop\Ogre\Components		< Ogre source
+Riftop\Ogre\RenderSystems	< Ogre source
+Riftop\boost			< boost 1.53 should be the folder just above include and lib
+Riftop\Wolfgame			< This repo. I'll rename it eventaully it's just not high on the todo list yet.
+
+

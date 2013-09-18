@@ -24,6 +24,8 @@
 #include <OgreConfigFile.h>
 #include <OgreWindowEventUtilities.h>
 #include <OgreD3D11Texture.h>
+#include <OgreD3D9Texture.h>
+#include <OgreD3D9RenderSystem.h>
 #include <OgreResource.h>
 #include <OgreTextureManager.h>
 

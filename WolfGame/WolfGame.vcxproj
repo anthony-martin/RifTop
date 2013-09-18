@@ -46,7 +46,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\Ogre\include;..\..\Ogre\Components\RTShaderSystem\include;..\..\Ogre\RenderSystems\Direct3D11\include;..\..\Ogre\dependencies\include\OIS;..\..\Ogre\OgreMain\include;..\..\Oculus\LibOVR\Include;..\..\boost\include\boost-1_53;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\Ogre\include;..\..\Ogre\Components\RTShaderSystem\include;..\..\Ogre\RenderSystems\Direct3D11\include;..\..\Ogre\RenderSystems\Direct3D9\include;..\..\Ogre\dependencies\include\OIS;..\..\Ogre\OgreMain\include;..\..\Oculus\LibOVR\Include;..\..\boost\include\boost-1_53;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm250 %(AdditionalOptions)</AdditionalOptions>

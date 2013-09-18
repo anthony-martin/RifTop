@@ -161,7 +161,7 @@ void BaseApplication::loadResources(void)
 		mShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
  
 		// Add the shader libs resource location.
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreDynamic\\lib\\Debug", "FileSystem");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreSource\\Samples\\Media\\RTShaderLib\\Cg", "FileSystem");
  
 		// Set shader cache path.
 		mShaderGenerator->setShaderCachePath("D:\\Project\\WolfGame\\WolfGame\\Debug\\shaders");		
@@ -224,7 +224,21 @@ bool BaseApplication::setup(void)
     // Load resources
     loadResources();
 
-	
+	SystemTextureLoader *loader = new SystemTextureLoader();
+
+	Ogre::TexturePtr ptr = Ogre::TextureManager::getSingleton().createManual("window",
+		Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		Ogre::TextureType::TEX_TYPE_2D,
+		256,
+		256,
+		1,
+		Ogre::PixelFormat::PF_A8R8G8B8,
+		Ogre::TU_STATIC_WRITE_ONLY,
+		loader);
+
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
+	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);
+
 
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);

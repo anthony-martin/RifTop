@@ -22,6 +22,7 @@ This source file is part of the
 #include "BulletConfig.h"
 #include "Player.h"
 #include "WarehouseFloor.h"
+#include "SystemTextureLoader.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {

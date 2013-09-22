@@ -13,6 +13,8 @@ Populate billboards with window textures
 Local only input and window movement
 Pump messages back to active window
 Detect newly opened windows.
+Create a fork of Ogre with the changes required to build this
+
 
 In Progress
 Bring system windows in as textures.
@@ -20,7 +22,7 @@ Bring system windows in as textures.
 Build Steps
 
 You will need 
-Ogre 3D prefferably 1.9.1
+Ogre 3D prefferably 1.9.1 + some custom changes I have not pushed to a public repo yet. 
 Boost 1.53
 Oculus Rift SDK
 Directx SDK (also required for Ogre). I am just going to assume this gets installed to c:\ if it doesnt on your system you will need to change the path.

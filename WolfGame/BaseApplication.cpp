@@ -226,15 +226,15 @@ bool BaseApplication::setup(void)
 
 	SystemTextureLoader *loader = new SystemTextureLoader();
 
-	Ogre::TexturePtr ptr = Ogre::TextureManager::getSingleton().createManual("window",
-		Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		Ogre::TextureType::TEX_TYPE_2D,
-		256,
-		256,
-		1,
-		Ogre::PixelFormat::PF_A8R8G8B8,
-		Ogre::TU_STATIC_WRITE_ONLY,
-		loader);
+		Ogre::TexturePtr ptr = Ogre::TextureManager::getSingleton().createManual("window",
+			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			Ogre::TextureType::TEX_TYPE_2D,
+			256,
+			256,
+			1,
+			Ogre::PixelFormat::PF_A8R8G8B8,
+			Ogre::TU_STATIC_WRITE_ONLY,
+			loader);
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);
@@ -243,7 +243,16 @@ bool BaseApplication::setup(void)
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);
     mController->createCameras(mSceneMgr);
-	mController->createViewports(mOculus->getDeviceInfo());
+
+	if(mOculus->isInitialised())
+	{
+		mController->createViewports(mOculus->getDeviceInfo());
+	}
+	else
+	{
+		mController->createViewports();
+	}
+	
 
 	
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);

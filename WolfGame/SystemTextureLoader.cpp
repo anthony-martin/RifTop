@@ -75,11 +75,7 @@ void SystemTextureLoader::loadResource ( Resource *resource)
 	}
 	else if(D3D11Texture *tex = dynamic_cast<D3D11Texture*>(resource))
 	{
-		ID3D11ShaderResourceView *texture = tex->getTexture();
-
-		if(texture)
-		{
-		}
-
+		HANDLE texHandle = GetDWMSharedHandle( (HWND)(0x000F0516));
+		tex->LoadSharedResource(texHandle);
 	}
 }

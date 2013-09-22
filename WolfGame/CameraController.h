@@ -13,6 +13,7 @@ namespace CameraController
 		Ogre::Camera* mCameraRight;
 		Ogre::SceneNode* mRotationNode;
 		Ogre::SceneNode* mBodyRotationNode;
+		void createViewports();
 
 	protected:
 		OVR::Util::Render::StereoConfig *mStereoConfig; 

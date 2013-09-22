@@ -54,6 +54,7 @@ void SystemTextureLoader::loadResource ( Resource *resource)
 
 	if(D3D9Texture *tex = dynamic_cast<D3D9Texture*>(resource))
 	{
+		//this does not work directx 9 does not appear capable of opening the shared resource handle
 		IDirect3DDevice9 *device = Ogre::D3D9RenderSystem::getActiveD3D9Device();
 		IDirect3DTexture9 **texture = tex->getNormTexturePtr();
 
@@ -71,5 +72,14 @@ void SystemTextureLoader::loadResource ( Resource *resource)
 
 		texture = &outTexture;
 		
+	}
+	else if(D3D11Texture *tex = dynamic_cast<D3D11Texture*>(resource))
+	{
+		ID3D11ShaderResourceView *texture = tex->getTexture();
+
+		if(texture)
+		{
+		}
+
 	}
 }

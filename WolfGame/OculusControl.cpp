@@ -18,8 +18,8 @@ OculusControl::OculusControl(void)
 	pHMD = *pManager->EnumerateDevices<HMDDevice>().CreateDevice();
 
 	if (pHMD)
-        {
-           InfoLoaded = pHMD->GetDeviceInfo(&Info);
+    {
+        InfoLoaded = pHMD->GetDeviceInfo(&Info);
 
 	   pSensor = *pHMD->GetSensor();
 	}
@@ -31,6 +31,11 @@ OculusControl::OculusControl(void)
 	if (pSensor)
 	{
 	   FusionResult.AttachToSensor(pSensor);
+	   m_Initialised = true;
+	}
+	else
+	{
+		m_Initialised = false;
 	}
 }
 
@@ -57,3 +62,9 @@ OVR::HMDInfo OculusControl::getDeviceInfo()
 	pHMD->GetDeviceInfo(&devinfo);
 	return devinfo;
 }
+
+bool OculusControl::isInitialised()
+{
+	return m_Initialised;
+}
+

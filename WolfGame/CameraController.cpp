@@ -115,7 +115,7 @@ void Controller::createCameras(Ogre::SceneManager* sceneMgr)
 	mCameraRight->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
 }
 
-void Controller::createViewports(OVR::HMDInfo devinfo)
+void Controller::createViewports()
 {
 	// Create one viewport, entire window
     mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
@@ -125,6 +125,11 @@ void Controller::createViewports(OVR::HMDInfo devinfo)
 
     mLeftVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
 	mRightVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
+}
+
+void Controller::createViewports(OVR::HMDInfo devinfo)
+{
+	createViewports();
 
 	configureCompositors(devinfo);
 }

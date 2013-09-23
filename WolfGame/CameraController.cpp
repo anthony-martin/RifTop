@@ -56,9 +56,20 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 								devinfo.ChromaAbCorrection[2],
 								devinfo.ChromaAbCorrection[3]);
 
-	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
-	pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
+	
 
+	float scaleFactor = 1.0f / mStereoConfig->GetDistortionScale();
+	float aspectRatio = mCamera->getAspectRatio();
+	Ogre::Vector2 scaleIn = Ogre::Vector2(2.0f, 2.0f /aspectRatio);
+	Ogre::Vector2 scale = Ogre::Vector2(0.5f* scaleFactor, 0.5f * scaleFactor * aspectRatio);
+
+	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
+	pParamsLeft->setNamedConstant("Scale", scale);
+	pParamsLeft->setNamedConstant("ScaleIn", scaleIn);
+
+	pParamsRight->setNamedConstant("ChromAbParam", ChromAb);
+	pParamsRight->setNamedConstant("Scale", scale);
+	pParamsRight->setNamedConstant("ScaleIn", scaleIn);
 
 	pParamsLeft->setNamedConstant("LensCentre", 0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f));
 	pParamsRight->setNamedConstant("LensCentre", 0.5f-(mStereoConfig->GetProjectionCenterOffset()/2.0f));
@@ -67,9 +78,9 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	comp->getTechnique(0)->getOutputTargetPass()->getPass(0)->setMaterialName("Ogre/Compositor/Oculus/Right");
 
 	mLeftCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mLeftVp , "OculusLeft");
-	//mLeftCompositor->setEnabled(true);
+	mLeftCompositor->setEnabled(true);
 	mRightCompositor = Ogre::CompositorManager::getSingleton().addCompositor(mRightVp , "OculusRight");
-	//mRightCompositor->setEnabled(true);
+	mRightCompositor->setEnabled(true);
 }
 
 void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
@@ -80,10 +91,10 @@ void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConf
 	//Ogre::Radian fovY = 2.0f* Ogre::Math::ATan(0.0935f/(2*config->GetEyeToScreenDistance()));
 	//maigc fucking number for vertical fov.....
 	//the settings returns too big the docs calc too small
-	Ogre::Radian otherFovY = Ogre::Radian(1.90240888f);
-	camera->setFOVy(otherFovY);
+	//Ogre::Radian otherFovY = Ogre::Radian(1.90240888f);
+	//camera->setFOVy(otherFovY);
 	
-	//camera->setFOVy(Ogre::Radian(config->GetYFOVRadians()));
+	camera->setFOVy(Ogre::Radian(config->GetYFOVRadians()));
 	//camera->setPosition(mStereoConfig->GetIPD() * 0.5f *side, 0, config->GetEyeToScreenDistance());
 			// Oculus requires offset projection, create a custom projection matrix
 	Ogre::Matrix4 proj = Ogre::Matrix4::IDENTITY;
@@ -103,7 +114,7 @@ void Controller::createCameras(Ogre::SceneManager* sceneMgr)
     SetupCamera(mCamera,mStereoConfig, 1.0f);
 	mRotationNode->attachObject(mCamera);
 	//left eye position
-	mCamera->setPosition(mStereoConfig->GetIPD() * -0.5f, 0, 0);
+	mCamera->setPosition(mStereoConfig->GetIPD() * -0.5f, 0.075f, 0.045f);
 	
     // Create the camera
     mCameraRight = mSceneMgr->createCamera("RightCamera");
@@ -112,7 +123,7 @@ void Controller::createCameras(Ogre::SceneManager* sceneMgr)
 	mRotationNode->attachObject(mCameraRight);
 
 	//right eye position
-	mCameraRight->setPosition(mStereoConfig->GetIPD() * 0.5f, 0, 0);
+	mCameraRight->setPosition(mStereoConfig->GetIPD() * 0.5f, 0.075f, 0.045f);
 }
 
 void Controller::createViewports()

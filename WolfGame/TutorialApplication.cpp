@@ -96,6 +96,8 @@ extern "C" {
         TutorialApplication app;
 
         try {
+			
+
             app.go();
         } catch( Ogre::Exception& e ) {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

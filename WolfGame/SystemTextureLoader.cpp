@@ -50,31 +50,9 @@ HANDLE GetDWMSharedHandle(HWND hwnd)
 
 void SystemTextureLoader::loadResource ( Resource *resource)
 {
-	//boom for render system specific stuff out here 
-
-	if(D3D9Texture *tex = dynamic_cast<D3D9Texture*>(resource))
+	if(D3D11Texture *tex = dynamic_cast<D3D11Texture*>(resource))
 	{
-		//this does not work directx 9 does not appear capable of opening the shared resource handle
-		IDirect3DDevice9 *device = Ogre::D3D9RenderSystem::getActiveD3D9Device();
-		IDirect3DTexture9 **texture = tex->getNormTexturePtr();
-
-		IDirect3DTexture9 *outTexture = NULL;
-		HANDLE texHandle = GetDWMSharedHandle( (HWND)(0x00070584));
-
-		HRESULT result = device->CreateTexture(0,
-								  0,
-								  1, 
-								  D3DUSAGE_WRITEONLY,
-								  D3DFMT_A8B8G8R8,
-								  D3DPOOL_DEFAULT,
-								  &outTexture,
-								  &texHandle);
-
-		texture = &outTexture;
-		
-	}
-	else if(D3D11Texture *tex = dynamic_cast<D3D11Texture*>(resource))
-	{
+		//comment this out if building with standard ogre
 		HANDLE texHandle = GetDWMSharedHandle( (HWND)(0x000F0516));
 		tex->LoadSharedResource(texHandle);
 	}

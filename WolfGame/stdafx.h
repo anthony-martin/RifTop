@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 #include <OVR.h>
 
 #include <OgreCamera.h>

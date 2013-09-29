@@ -61,7 +61,7 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	float scaleFactor = 1.0f / mStereoConfig->GetDistortionScale();
 	float aspectRatio = mCamera->getAspectRatio();
 	Ogre::Vector2 scaleIn = Ogre::Vector2(2.0f, 2.0f /aspectRatio);
-	Ogre::Vector2 scale = Ogre::Vector2(0.5f* scaleFactor, 0.5f * scaleFactor * aspectRatio);
+	Ogre::Vector2 scale = Ogre::Vector2(0.5f* scaleFactor , 0.5f * scaleFactor * aspectRatio);
 
 	pParamsLeft->setNamedConstant("ChromAbParam", ChromAb);
 	pParamsLeft->setNamedConstant("Scale", scale);
@@ -71,8 +71,8 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	pParamsRight->setNamedConstant("Scale", scale);
 	pParamsRight->setNamedConstant("ScaleIn", scaleIn);
 
-	pParamsLeft->setNamedConstant("LensCentre", 0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f));
-	pParamsRight->setNamedConstant("LensCentre", 0.5f-(mStereoConfig->GetProjectionCenterOffset()/2.0f));
+	pParamsLeft->setNamedConstant("LensCentre", Ogre::Vector2(0.5f+(mStereoConfig->GetProjectionCenterOffset()/2.0f), 0.5f));
+	pParamsRight->setNamedConstant("LensCentre", Ogre::Vector2(0.5f-(mStereoConfig->GetProjectionCenterOffset()/2.0f), 0.5f));
 
 	Ogre::CompositorPtr comp = Ogre::CompositorManager::getSingleton().getByName("OculusRight");
 	comp->getTechnique(0)->getOutputTargetPass()->getPass(0)->setMaterialName("Ogre/Compositor/Oculus/Right");
@@ -131,6 +131,10 @@ void Controller::createViewports()
 	// Create one viewport, entire window
     mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
 	mRightVp = mWindow->addViewport(mCameraRight, 1, 0.5f,0.0f,0.5f,1.0f);
+
+	//note this next line is extremely important or you only get one viewport with content
+	mRightVp->setClearEveryFrame(false);
+
 	mLeftVp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 	mRightVp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 

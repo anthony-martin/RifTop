@@ -42,6 +42,25 @@ BaseApplication::~BaseApplication(void)
     delete mRoot;
 }
 
+	HWND mWindowHandle;
+
+LRESULT CALLBACK _WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	DWORD dwPID;
+	bool posted = false;
+	DWORD hThread ;
+	hThread = GetWindowThreadProcessId((HWND)(0x000204EE), &dwPID);  
+	if (dwPID != NULL && hThread!= NULL ) 
+	{
+		SetFocus((HWND)(0x000204EE));
+		posted = SendMessage((HWND)(0x000204EE), msg, wParam, lParam);
+		SetFocus(mWindowHandle);
+	}
+
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+    return 0;
+}
+
 //-------------------------------------------------------------------------------------
 bool BaseApplication::configure(void)
 {
@@ -50,9 +69,33 @@ bool BaseApplication::configure(void)
     // settings if you were sure there are valid ones saved in ogre.cfg
     if(mRoot->showConfigDialog())
     {
-        // If returned true, user clicked OK so initialise
-        // Here we choose to let the system create a default rendering window by passing 'true'
-        mWindow = mRoot->initialise(true, "TutorialApplication Render Window");
+		// If returned true, user clicked OK so initialise
+			// Here we choose to let the system create a default rendering window by passing 'true'
+			mRoot->initialise(false);
+			UINT classStyle = 0;
+
+			HINSTANCE hInst = NULL;
+
+			// Register the window class
+			// NB allow 4 bytes of window data for D3D11RenderWindow pointer
+			WNDCLASS wc = { classStyle, _WndProc, 0, 0, hInst,
+				LoadIcon(0, IDI_APPLICATION), LoadCursor(NULL, IDC_ARROW),
+				(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
+
+ 
+			RegisterClass(&wc);
+
+			DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
+
+			// Create our main window
+			// Pass pointer to self
+			mWindowHandle = CreateWindowA("rwnd", "Riftop", dwStyle,
+				0, 0, 1280, 800, NULL, 0, hInst, this);
+
+			NameValuePairList misc;
+			misc["externalWindowHandle"] = StringConverter::toString((int)mWindowHandle);
+			mWindow = mRoot->createRenderWindow("Main RenderWindow", 1280, 800, false, &misc);
+
 
         return true;
     }
@@ -82,11 +125,11 @@ void BaseApplication::createFrameListener(void)
 
     mInputManager = OIS::InputManager::createInputSystem( pl );
 
-    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+   // mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
+   // mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 
-    mMouse->setEventCallback(this);
-    mKeyboard->setEventCallback(this);
+    //mMouse->setEventCallback(this);
+    //mKeyboard->setEventCallback(this);
 
     //Set initial mouse clipping size
     windowResized(mWindow);
@@ -224,7 +267,7 @@ bool BaseApplication::setup(void)
     // Load resources
     loadResources();
 
-	SystemTextureLoader *loader = new SystemTextureLoader();
+	/*SystemTextureLoader *loader = new SystemTextureLoader();
 
 		Ogre::TexturePtr ptr = Ogre::TextureManager::getSingleton().createManual("window",
 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -237,7 +280,7 @@ bool BaseApplication::setup(void)
 			loader);
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
-	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);
+	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);*/
 
 
 	mOculus = new OculusControl();
@@ -273,10 +316,12 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
+	
+
 
     //Need to capture/update each device
-    mKeyboard->capture();
-    mMouse->capture();
+    //mKeyboard->capture();
+    //mMouse->capture();
 	//mBullet->StepPhysics(evt.timeSinceLastFrame);
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 	mPlayer->processMovement(evt.timeSinceLastFrame);
@@ -389,9 +434,9 @@ void BaseApplication::windowResized(Ogre::RenderWindow* rw)
     int left, top;
     rw->getMetrics(width, height, depth, left, top);
 
-    const OIS::MouseState &ms = mMouse->getMouseState();
-    ms.width = width;
-    ms.height = height;
+    //const OIS::MouseState &ms = mMouse->getMouseState();
+    //ms.width = width;
+    //ms.height = height;
 }
 
 //Unattach OIS before window shutdown (very important under Linux)
@@ -402,8 +447,8 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
     {
         if( mInputManager )
         {
-            mInputManager->destroyInputObject( mMouse );
-            mInputManager->destroyInputObject( mKeyboard );
+            //mInputManager->destroyInputObject( mMouse );
+            //mInputManager->destroyInputObject( mKeyboard );
 
             OIS::InputManager::destroyInputSystem(mInputManager);
             mInputManager = 0;

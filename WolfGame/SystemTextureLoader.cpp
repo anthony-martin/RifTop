@@ -3,8 +3,9 @@
 
 using namespace Ogre;
 
-SystemTextureLoader::SystemTextureLoader(void)
-	:ManualResourceLoader()
+SystemTextureLoader::SystemTextureLoader(HWND window)
+	:ManualResourceLoader(),
+	m_WindowHandle(window)
 {
 }
 
@@ -53,7 +54,7 @@ void SystemTextureLoader::loadResource ( Resource *resource)
 	if(D3D11Texture *tex = dynamic_cast<D3D11Texture*>(resource))
 	{
 		//comment this out if building with standard ogre
-		HANDLE texHandle = GetDWMSharedHandle( (HWND)(0x000F0516));
+		HANDLE texHandle = GetDWMSharedHandle( m_WindowHandle);
 		tex->LoadSharedResource(texHandle);
 	}
 }

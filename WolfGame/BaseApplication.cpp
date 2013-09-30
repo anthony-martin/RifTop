@@ -82,7 +82,6 @@ bool BaseApplication::configure(void)
 				LoadIcon(0, IDI_APPLICATION), LoadCursor(NULL, IDC_ARROW),
 				(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
 
- 
 			RegisterClass(&wc);
 
 			DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
@@ -125,11 +124,11 @@ void BaseApplication::createFrameListener(void)
 
     mInputManager = OIS::InputManager::createInputSystem( pl );
 
-   // mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-   // mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
+    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 
-    //mMouse->setEventCallback(this);
-    //mKeyboard->setEventCallback(this);
+    mMouse->setEventCallback(this);
+    mKeyboard->setEventCallback(this);
 
     //Set initial mouse clipping size
     windowResized(mWindow);
@@ -320,8 +319,8 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 
     //Need to capture/update each device
-    //mKeyboard->capture();
-    //mMouse->capture();
+    mKeyboard->capture();
+    mMouse->capture();
 	//mBullet->StepPhysics(evt.timeSinceLastFrame);
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 	mPlayer->processMovement(evt.timeSinceLastFrame);
@@ -434,9 +433,9 @@ void BaseApplication::windowResized(Ogre::RenderWindow* rw)
     int left, top;
     rw->getMetrics(width, height, depth, left, top);
 
-    //const OIS::MouseState &ms = mMouse->getMouseState();
-    //ms.width = width;
-    //ms.height = height;
+    const OIS::MouseState &ms = mMouse->getMouseState();
+    ms.width = width;
+    ms.height = height;
 }
 
 //Unattach OIS before window shutdown (very important under Linux)
@@ -447,8 +446,8 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
     {
         if( mInputManager )
         {
-            //mInputManager->destroyInputObject( mMouse );
-            //mInputManager->destroyInputObject( mKeyboard );
+            mInputManager->destroyInputObject( mMouse );
+            mInputManager->destroyInputObject( mKeyboard );
 
             OIS::InputManager::destroyInputSystem(mInputManager);
             mInputManager = 0;

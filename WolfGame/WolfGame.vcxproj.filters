@@ -66,6 +66,9 @@
     <ClCompile Include="SystemTextureLoader.cpp">
       <Filter>Source Files\SystemWindows</Filter>
     </ClCompile>
+    <ClCompile Include="SystemWindow.cpp">
+      <Filter>Source Files\SystemWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files\Areas</Filter>
     </ClInclude>
     <ClInclude Include="SystemTextureLoader.h">
+      <Filter>Header Files\SystemWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemWindow.h">
       <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
   </ItemGroup>

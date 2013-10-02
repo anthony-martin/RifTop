@@ -42,23 +42,22 @@ BaseApplication::~BaseApplication(void)
     delete mRoot;
 }
 
-	HWND mWindowHandle;
+	HWND mWindowHandle ;
+	HWND mExternalWindow = (HWND)(0x000707EC);
 
 LRESULT CALLBACK _WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	//note can use with OIS but need to pass more than just the mouse down message
 	DWORD dwPID;
 	bool posted = false;
 	DWORD hThread ;
-	hThread = GetWindowThreadProcessId((HWND)(0x000204EE), &dwPID);  
+	hThread = GetWindowThreadProcessId(mExternalWindow, &dwPID);  
 	if (dwPID != NULL && hThread!= NULL ) 
 	{
-		SetFocus((HWND)(0x000204EE));
-		posted = SendMessage((HWND)(0x000204EE), msg, wParam, lParam);
-		SetFocus(mWindowHandle);
+		SendMessage(mExternalWindow, msg, wParam, lParam);
 	}
-
-	return DefWindowProc(hwnd, msg, wParam, lParam);
-    return 0;
+	return DefWindowProc( hwnd, msg, wParam, lParam );
+	return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -71,30 +70,32 @@ bool BaseApplication::configure(void)
     {
 		// If returned true, user clicked OK so initialise
 			// Here we choose to let the system create a default rendering window by passing 'true'
-			mRoot->initialise(false);
-			UINT classStyle = 0;
+			//mWindow = mRoot->initialise(true, "Riftop");
+		mRoot->initialise(false);
+		UINT classStyle = 0;
 
-			HINSTANCE hInst = NULL;
+		HINSTANCE hInst = NULL;
 
-			// Register the window class
-			// NB allow 4 bytes of window data for D3D11RenderWindow pointer
-			WNDCLASS wc = { classStyle, _WndProc, 0, 0, hInst,
-				LoadIcon(0, IDI_APPLICATION), LoadCursor(NULL, IDC_ARROW),
-				(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
+		// Register the window class
+		// NB allow 4 bytes of window data for D3D11RenderWindow pointer
+		WNDCLASS wc = { classStyle, _WndProc, 0, 0, hInst,
+			LoadIcon(0, IDI_APPLICATION), LoadCursor(NULL, IDC_ARROW),
+			(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
 
-			RegisterClass(&wc);
+		RegisterClass(&wc);
 
-			DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
+		DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
 
-			// Create our main window
-			// Pass pointer to self
-			mWindowHandle = CreateWindowA("rwnd", "Riftop", dwStyle,
-				0, 0, 1280, 800, NULL, 0, hInst, this);
+		// Create our main window
+		// Pass pointer to self
+		mWindowHandle = CreateWindowA("rwnd", "Riftop", dwStyle,
+			0, 0, 1280, 800, NULL, 0, hInst, this);
 
-			NameValuePairList misc;
-			misc["externalWindowHandle"] = StringConverter::toString((int)mWindowHandle);
-			mWindow = mRoot->createRenderWindow("Main RenderWindow", 1280, 800, false, &misc);
-
+		NameValuePairList misc;
+		misc["externalWindowHandle"] = StringConverter::toString((int)mWindowHandle);
+		//misc["fullScreen"] = true;
+		mWindow = mRoot->createRenderWindow("Main RenderWindow", 1280, 800, false, &misc);
+		//Ogre::WindowEventUtilities::_addRenderWindow(mWindow);
 
         return true;
     }
@@ -224,6 +225,7 @@ void BaseApplication::loadResources(void)
 	}
 	
 	mShaderGenerator->createShaderBasedTechnique("box/singlelight", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+	mShaderGenerator->createShaderBasedTechnique("window/base", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
 	//Ogre::MaterialManager::getSingleton().addListener();
 }
@@ -280,7 +282,7 @@ bool BaseApplication::setup(void)
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);*/
-
+	SystemWindow *window = new SystemWindow(mExternalWindow , mSceneMgr);
 
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);
@@ -446,8 +448,8 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
     {
         if( mInputManager )
         {
-            mInputManager->destroyInputObject( mMouse );
-            mInputManager->destroyInputObject( mKeyboard );
+            //mInputManager->destroyInputObject( mMouse );
+            //mInputManager->destroyInputObject( mKeyboard );
 
             OIS::InputManager::destroyInputSystem(mInputManager);
             mInputManager = 0;

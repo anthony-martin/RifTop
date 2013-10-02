@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-
 #include <OVR.h>
 
 #include <OgreCamera.h>
@@ -30,6 +29,9 @@
 #include <OgreD3D9RenderSystem.h>
 #include <OgreResource.h>
 #include <OgreTextureManager.h>
+
+#include <OgreBillboard.h>
+#include <OgreBillboardSet.h>
 
 #include <OgreShaderGenerator.h>
 #include <OgreShaderExPerPixelLighting.h>

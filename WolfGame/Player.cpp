@@ -117,6 +117,7 @@ void Player::step()
 
 void Player::processMovement(Ogre::Real timeSinceLastFrame)
 {
+	return;
 	mFeet->setVisible(false) ;
 	
 	bool onGround = OnGround();

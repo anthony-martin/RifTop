@@ -24,6 +24,7 @@ This source file is part of the
 #include "WarehouseFloor.h"
 #include "SystemTextureLoader.h"
 #include "SystemWindow.h"
+#include "SystemWindowManager.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {

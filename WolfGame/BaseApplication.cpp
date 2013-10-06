@@ -282,7 +282,9 @@ bool BaseApplication::setup(void)
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);*/
-	SystemWindow *window = new SystemWindow(mExternalWindow , mSceneMgr);
+	SystemWindowManager *window = new SystemWindowManager( mSceneMgr);
+	window->RefreshWindowHandles();
+	window->DisplayWindow();
 
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);

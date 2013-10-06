@@ -69,6 +69,9 @@
     <ClCompile Include="SystemWindow.cpp">
       <Filter>Source Files\SystemWindows</Filter>
     </ClCompile>
+    <ClCompile Include="SystemWindowManager.cpp">
+      <Filter>Source Files\SystemWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
     <ClInclude Include="SystemWindow.h">
+      <Filter>Header Files\SystemWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemWindowManager.h">
       <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
   </ItemGroup>

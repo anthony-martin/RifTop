@@ -2,15 +2,21 @@
 #include "SystemWindowManager.h"
 
 
-SystemWindowManager::SystemWindowManager(Ogre::SceneManager *sceneManager)
+SystemWindowManager::SystemWindowManager(Ogre::SceneManager *sceneManager,
+										Ogre::RTShader::ShaderGenerator *shaderGenerator)
 	:m_Windows(),
-	m_SceneManager(sceneManager)
+	m_SceneManager(sceneManager),
+	m_ShaderGenerator(shaderGenerator)
 {
 }
 
 
 SystemWindowManager::~SystemWindowManager(void)
 {
+	for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
+	{
+		delete &it;
+	}
 }
 
 
@@ -41,29 +47,18 @@ void SystemWindowManager::RefreshWindowHandles()
                 GetWindowThreadProcessId(win, &processID);
                 if(processID == GetCurrentProcessId())
                     continue;
-
-				//todo see if this actually works
-				m_Windows.push_back(SystemWindow(win, m_SceneManager));
+				
+				m_Windows.push_back(new SystemWindow(win, m_SceneManager, m_ShaderGenerator));
 			}
 		}
 		
 	}
 	while(win = GetWindow(win, GW_HWNDNEXT));
+
+	m_Windows.at(0)->DisplayWindow();
 }
 
-void SystemWindowManager::DisplayWindow()
-{
-	//temp testing to see if windows load properly
-	Ogre::BillboardSet*	m_WindowSet =  m_SceneManager->createBillboardSet("windows");
-	m_WindowSet->setDefaultDimensions(1, 1);
-	m_WindowSet->setMaterialName("window/base");
 
-	Billboard* myBillboard = m_WindowSet->createBillboard(Ogre::Vector3(0, 0, 0));
-	Ogre::SceneNode* m_SceneNode = m_SceneManager->getRootSceneNode()->createChildSceneNode("windows");
-	m_SceneNode->attachObject(m_WindowSet);
-
-	m_SceneNode->setPosition(Ogre::Vector3(0,1.5,-.5));
-}
 //todo expose window list
 
 //first window

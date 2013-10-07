@@ -225,7 +225,7 @@ void BaseApplication::loadResources(void)
 	}
 	
 	mShaderGenerator->createShaderBasedTechnique("box/singlelight", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-	mShaderGenerator->createShaderBasedTechnique("window/base", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+	//mShaderGenerator->createShaderBasedTechnique("window/base", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
 	//Ogre::MaterialManager::getSingleton().addListener();
 }
@@ -282,9 +282,9 @@ bool BaseApplication::setup(void)
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);*/
-	SystemWindowManager *window = new SystemWindowManager( mSceneMgr);
+	SystemWindowManager *window = new SystemWindowManager( mSceneMgr, mShaderGenerator);
 	window->RefreshWindowHandles();
-	window->DisplayWindow();
+	//window->DisplayWindow();
 
 	mOculus = new OculusControl();
 	mController = new CameraController::Controller(mWindow);

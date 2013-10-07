@@ -30,7 +30,7 @@ TutorialApplication::~TutorialApplication(void)
 void TutorialApplication::createScene(void)
 {
    // Set the scene's ambient light
- //   mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+   mSceneMgr->setAmbientLight(Ogre::ColourValue(1.f, 1.0f, 1.0f));
  ////
  //    //Create an Entity
 	//Ogre::Entity *ent;
@@ -46,10 +46,7 @@ void TutorialApplication::createScene(void)
 	//Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");//,Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 	//ent->setMaterial(material);
 
-	////Ogre::Entity* bridge = mSceneMgr->createEntity("Bridge", "TestBridge.mesh");
-	////bridge->setMaterial(material);
-
- ////   // Create a SceneNode and attach the Entity to it
+   // Create a SceneNode and attach the Entity to it
  //   Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("HeadNode");
  //   headNode->attachObject(ent);
 	//headNode->setPosition(Ogre::Vector3::ZERO);

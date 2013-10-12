@@ -225,9 +225,7 @@ void BaseApplication::loadResources(void)
 	}
 	
 	mShaderGenerator->createShaderBasedTechnique("box/singlelight", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-	//mShaderGenerator->createShaderBasedTechnique("window/base", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-
-	//Ogre::MaterialManager::getSingleton().addListener();
+	
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::go(void)

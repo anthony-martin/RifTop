@@ -24,6 +24,7 @@ public:
 	~SystemWindow(void);
 
 	void DisplayWindow();
+	Ogre::String  GetMaterialName();
 
 	Ogre::Entity* GetAsEntity();
 };

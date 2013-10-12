@@ -55,7 +55,34 @@ void SystemWindowManager::RefreshWindowHandles()
 	}
 	while(win = GetWindow(win, GW_HWNDNEXT));
 
-	m_Windows.at(0)->DisplayWindow();
+	//m_Windows.at(0)->DisplayWindow();
+
+	Ogre::Entity *ent;
+    Ogre::Plane p;
+    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "windowPreview", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        p, .2, .2, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+
+	int count =0;
+	for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
+	{
+		Ogre::String name =Ogre::StringConverter::toString(count);
+		ent = m_SceneManager->createEntity(name, "windowPreview");
+
+		Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName((*it)->GetMaterialName());
+		ent->setMaterial(material);
+		Ogre::SceneNode* rotationNode = m_SceneManager->getRootSceneNode()->createChildSceneNode("rotation" + name);
+		rotationNode->setPosition(Ogre::Vector3(0,2,0));
+		Ogre::SceneNode* positionNode = rotationNode->createChildSceneNode("position" + name);
+		positionNode->attachObject(ent);
+		positionNode->setPosition(Ogre::Vector3(0,0,-.6));
+
+		rotationNode->yaw(Ogre::Radian(Ogre::Degree(30 - ((float)(count % 4) * 20.0))));
+		rotationNode->pitch((Ogre::Radian(Ogre::Degree(10 -((float)(count /4) * 20.0)))));
+		count++;
+	}
+
 }
 
 

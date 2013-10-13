@@ -6,8 +6,15 @@ SystemWindowManager::SystemWindowManager(Ogre::SceneManager *sceneManager,
 										Ogre::RTShader::ShaderGenerator *shaderGenerator)
 	:m_Windows(),
 	m_SceneManager(sceneManager),
-	m_ShaderGenerator(shaderGenerator)
+	m_ShaderGenerator(shaderGenerator),
+	m_ThumbnaislActive(false)
 {
+	
+    Ogre::Plane p;
+    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "windowPreview", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        p, .2, .2, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
 }
 
 
@@ -57,13 +64,20 @@ void SystemWindowManager::RefreshWindowHandles()
 
 	//m_Windows.at(0)->DisplayWindow();
 
-	Ogre::Entity *ent;
-    Ogre::Plane p;
-    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
-    Ogre::MeshManager::getSingleton().createPlane(
-        "windowPreview", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        p, .2, .2, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+}
 
+void SystemWindowManager::ShowThumbnails()
+{
+	//simple way of checking for double calls
+	if(m_ThumbnaislActive)
+	{
+		return;
+	}
+	m_ThumbnaislActive = true;
+
+	// this provides a single node from which we can cleanup the rest.
+	m_ThumbnailNode = m_SceneManager->getRootSceneNode()->createChildSceneNode("thumbnails");
+	Ogre::Entity *ent;
 	int count =0;
 	for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
 	{
@@ -72,20 +86,33 @@ void SystemWindowManager::RefreshWindowHandles()
 
 		Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName((*it)->GetMaterialName());
 		ent->setMaterial(material);
-		Ogre::SceneNode* rotationNode = m_SceneManager->getRootSceneNode()->createChildSceneNode("rotation" + name);
+		// we rotate this guy so we don't need to figure out anything fancy to position the window
+		Ogre::SceneNode* rotationNode = m_ThumbnailNode->createChildSceneNode("rotation" + name);
 		rotationNode->setPosition(Ogre::Vector3(0,2,0));
 		Ogre::SceneNode* positionNode = rotationNode->createChildSceneNode("position" + name);
 		positionNode->attachObject(ent);
 		positionNode->setPosition(Ogre::Vector3(0,0,-.6));
 
-		rotationNode->yaw(Ogre::Radian(Ogre::Degree(30 - ((float)(count % 4) * 20.0))));
-		rotationNode->pitch((Ogre::Radian(Ogre::Degree(10 -((float)(count /4) * 20.0)))));
+		//create rows of thumbnails 5 wide and a new row every 5 windows
+		rotationNode->yaw(Ogre::Radian(Ogre::Degree(40 - ((float)(count % 5) * 20.0))));
+		rotationNode->pitch((Ogre::Radian(Ogre::Degree(10 -((float)(count /5) * 20.0)))));
 		count++;
 	}
-
 }
 
+void SystemWindowManager::RemoveThumbnails()
+{
+	if(!m_ThumbnaislActive)
+	{
+		return;
+	}
+	m_ThumbnaislActive = false;
 
+	// clean up all the scene nodes.
+	SceneManagerExtensions::DestroyAllAttachedMovableObjects(m_ThumbnailNode);
+	m_ThumbnailNode->removeAndDestroyAllChildren();
+	m_SceneManager->destroySceneNode(m_ThumbnailNode);
+}
 //todo expose window list
 
 //first window

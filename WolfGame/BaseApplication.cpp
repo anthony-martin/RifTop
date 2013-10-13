@@ -266,22 +266,8 @@ bool BaseApplication::setup(void)
     // Load resources
     loadResources();
 
-	/*SystemTextureLoader *loader = new SystemTextureLoader();
-
-		Ogre::TexturePtr ptr = Ogre::TextureManager::getSingleton().createManual("window",
-			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-			Ogre::TextureType::TEX_TYPE_2D,
-			256,
-			256,
-			1,
-			Ogre::PixelFormat::PF_A8R8G8B8,
-			Ogre::TU_STATIC_WRITE_ONLY,
-			loader);
-
-	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
-	material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTexture(ptr);*/
-	SystemWindowManager *window = new SystemWindowManager( mSceneMgr, mShaderGenerator);
-	window->RefreshWindowHandles();
+	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator);
+	m_Windows->RefreshWindowHandles();
 	//window->DisplayWindow();
 
 	mOculus = new OculusControl();
@@ -368,7 +354,8 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     }
 	else if(arg.key == OIS::KC_SPACE)
     {
-        mPlayer->jump();
+		m_Windows->ShowThumbnails();
+        //mPlayer->jump();
     }
     else if (arg.key == OIS::KC_SYSRQ)   // take a screenshot
     {
@@ -406,6 +393,11 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 	else if(arg.key == OIS::KC_LCONTROL)
     {
         mPlayer->changeHeight(false);
+    }
+	else if(arg.key == OIS::KC_SPACE)
+    {
+		m_Windows->RemoveThumbnails();
+        //mPlayer->jump();
     }
 	
     return true;

@@ -72,6 +72,9 @@
     <ClCompile Include="SystemWindowManager.cpp">
       <Filter>Source Files\SystemWindows</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManagerExtensions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="SystemWindowManager.h">
       <Filter>Header Files\SystemWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManagerExtensions.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

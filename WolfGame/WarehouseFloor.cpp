@@ -5,31 +5,6 @@
 //blocks 3x2 bottom centre 2.5, 3.5/ 5.5, 3.5
 using namespace Ogre;
 
-void DestroyAllAttachedMovableObjects( SceneNode* i_pSceneNode )
-{
-   if ( i_pSceneNode )
-   {
-  
-   // Destroy all the attached objects
-   SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
-
-   while ( itObject.hasMoreElements() )
-   {
-      MovableObject* pObject = static_cast<MovableObject*>(itObject.getNext());
-      i_pSceneNode->getCreator()->destroyMovableObject( pObject );
-   }
-
-   // Recurse to child SceneNodes
-   SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
-
-   while ( itChild.hasMoreElements() )
-   {
-      SceneNode* pChildNode = static_cast<SceneNode*>(itChild.getNext());
-      DestroyAllAttachedMovableObjects( pChildNode );
-   }
-   }
-}
-
 void WarehouseFloor::createWalls()
 {
 	Ogre::Entity *ent;
@@ -259,7 +234,7 @@ WarehouseFloor::WarehouseFloor(Ogre::SceneManager* sceneMgr)
 
 WarehouseFloor::~WarehouseFloor(void)
 {
-	DestroyAllAttachedMovableObjects(mMainNode);
+	SceneManagerExtensions::DestroyAllAttachedMovableObjects(mMainNode);
 	mMainNode->removeAndDestroyAllChildren();
 	mSceneMgr->destroySceneNode(mMainNode);
 }

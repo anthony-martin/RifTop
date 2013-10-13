@@ -83,6 +83,10 @@ protected:
     OIS::InputManager* mInputManager;
     OIS::Mouse*    mMouse;
     OIS::Keyboard* mKeyboard;
+
+	//window handling
+	SystemWindowManager *m_Windows;
+
 };
 
 #endif // #ifndef __BaseApplication_h_

@@ -83,6 +83,7 @@
     <ClCompile Include="feet.cpp" />
     <ClCompile Include="OculusControl.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneManagerExtensions.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -100,6 +101,7 @@
     <ClInclude Include="feet.h" />
     <ClInclude Include="OculusControl.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneManagerExtensions.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemTextureLoader.h" />
     <ClInclude Include="SystemWindow.h" />

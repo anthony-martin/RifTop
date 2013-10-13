@@ -283,8 +283,6 @@ bool BaseApplication::setup(void)
 		mController->createViewports();
 	}
 	
-
-	
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
 	mScene = new WarehouseFloor(mSceneMgr);
@@ -303,13 +301,10 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
-	
-
 
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
-	//mBullet->StepPhysics(evt.timeSinceLastFrame);
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 	mPlayer->processMovement(evt.timeSinceLastFrame);
     return true;
@@ -317,87 +312,18 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
-	/*if(arg.key == OIS::KC_1)
-    {
-		if(!mWarehouseShown )
-		{
-			mScene = new WarehouseFloor(mSceneMgr);
-			mWarehouseShown = true;
-		}
-		else
-		{
-			delete mScene;
-			mWarehouseShown = false;
-		}
-    }*/
-
-
-	if(arg.key == OIS::KC_A)
-    {
-		mPlayer->addKeyboardInput(Ogre::Vector3(-1,0,0));
-    }
-	else if(arg.key == OIS::KC_D)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(1,0,0));
-    }
-	else if(arg.key == OIS::KC_S)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,1));
-    }
-	else if(arg.key == OIS::KC_W)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,-1));
-    }
-    else if(arg.key == OIS::KC_F5)   // refresh all textures
-    {
-        Ogre::TextureManager::getSingleton().reloadAll();
-    }
-	else if(arg.key == OIS::KC_SPACE)
+	if(arg.key == OIS::KC_SPACE)
     {
 		m_Windows->ShowThumbnails();
-        //mPlayer->jump();
-    }
-    else if (arg.key == OIS::KC_SYSRQ)   // take a screenshot
-    {
-        mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
-    }
-    else if (arg.key == OIS::KC_ESCAPE)
-    {
-        mShutDown = true;
-    }
-	else if(arg.key == OIS::KC_LCONTROL)
-    {
-        mPlayer->changeHeight(true);
     }
     return true;
 }
 
 bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 {
-	if(arg.key == OIS::KC_A)
-    {
-		mPlayer->addKeyboardInput(Ogre::Vector3(1,0,0));
-    }
-	else if(arg.key == OIS::KC_D)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(-1,0,0));
-    }
-	else if(arg.key == OIS::KC_S)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,-1));
-    }
-	else if(arg.key == OIS::KC_W)
-    {
-        mPlayer->addKeyboardInput(Ogre::Vector3(0,0,1));
-    }
-	else if(arg.key == OIS::KC_LCONTROL)
-    {
-        mPlayer->changeHeight(false);
-    }
-	else if(arg.key == OIS::KC_SPACE)
+	if(arg.key == OIS::KC_SPACE)
     {
 		m_Windows->RemoveThumbnails();
-        //mPlayer->jump();
     }
 	
     return true;

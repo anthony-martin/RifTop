@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{91658C6C-76CF-4344-81A8-08855BBAB65B}</ProjectGuid>
     <RootNamespace>WolfGame</RootNamespace>
+    <ProjectName>Riftop</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

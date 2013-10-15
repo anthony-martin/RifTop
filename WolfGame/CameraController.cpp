@@ -2,21 +2,19 @@
 #include "CameraController.h"
 
 
-using namespace CameraController;
-
 namespace
 {
 const float g_defaultFarClip = 10000.0f;
 }
 
-Controller::Controller( Ogre::RenderWindow* window)
+CameraController::CameraController( Ogre::RenderWindow* window)
 {
 	mWindow = window;
 	mStereoConfig = new OVR::Util::Render::StereoConfig();
 	mInput = Ogre::Vector3::ZERO;
 }
 
-Controller::~Controller( )
+CameraController::~CameraController( )
 {
 	Ogre::CompositorManager::getSingleton().removeCompositor(mLeftVp, "Oculus");
 	Ogre::CompositorManager::getSingleton().removeCompositor(mRightVp, "Oculus");
@@ -34,7 +32,7 @@ Controller::~Controller( )
 
 }
 
-void Controller::configureCompositors(OVR::HMDInfo devinfo)
+void CameraController::configureCompositors(OVR::HMDInfo devinfo)
 {
 	Ogre::MaterialPtr matLeft = Ogre::MaterialManager::getSingleton().getByName("Ogre/Compositor/Oculus");
 	
@@ -83,7 +81,7 @@ void Controller::configureCompositors(OVR::HMDInfo devinfo)
 	mRightCompositor->setEnabled(true);
 }
 
-void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
+void CameraController::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side)
 {
 	camera->setNearClipDistance(0.02f);
 	camera->setFarClipDistance(g_defaultFarClip);
@@ -103,7 +101,7 @@ void Controller::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConf
 	camera->setCustomProjectionMatrix(true, proj * camera->getProjectionMatrix());
 }
 
-void Controller::createCameras(Ogre::SceneManager* sceneMgr)
+void CameraController::createCameras(Ogre::SceneManager* sceneMgr)
 {
 	mSceneMgr = sceneMgr;
 	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); 
@@ -126,7 +124,7 @@ void Controller::createCameras(Ogre::SceneManager* sceneMgr)
 	mCameraRight->setPosition(mStereoConfig->GetIPD() * 0.5f, 0.075f, 0.045f);
 }
 
-void Controller::createViewports()
+void CameraController::createViewports()
 {
 	// Create one viewport, entire window
     mLeftVp = mWindow->addViewport(mCamera, 0, 0.0f,0.0f,0.5f,1.0f);
@@ -142,7 +140,7 @@ void Controller::createViewports()
 	mRightVp->setBackgroundColour(Ogre::ColourValue(0,0,1));
 }
 
-void Controller::createViewports(OVR::HMDInfo devinfo)
+void CameraController::createViewports(OVR::HMDInfo devinfo)
 {
 	createViewports();
 

@@ -14,6 +14,7 @@ This source file is part of the
       http://www.ogre3d.org/tikiwiki/
 -----------------------------------------------------------------------------
 */
+#pragma once
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
 #include "stdafx.h"
@@ -68,7 +69,7 @@ protected:
 	Ogre::RTShader::ShaderGenerator *mShaderGenerator;
 
     Ogre::Root *mRoot;
-	CameraController::Controller* mController;
+	CameraController* mController;
 	Player* mPlayer;
 	OculusControl* mOculus;
     Ogre::SceneManager* mSceneMgr;
@@ -86,6 +87,8 @@ protected:
 
 	//window handling
 	SystemWindowManager *m_Windows;
+
+	bool m_MoveWindow;
 
 };
 

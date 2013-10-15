@@ -28,7 +28,8 @@ BaseApplication::BaseApplication(void)
     mShutDown(false),
     mInputManager(0),
     mMouse(0),
-    mKeyboard(0)
+    mKeyboard(0),
+	m_MoveWindow(true)
 {
 }
 
@@ -266,13 +267,11 @@ bool BaseApplication::setup(void)
     // Load resources
     loadResources();
 
-	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator);
-	m_Windows->RefreshWindowHandles();
-	//window->DisplayWindow();
-
 	mOculus = new OculusControl();
-	mController = new CameraController::Controller(mWindow);
+	mController = new CameraController(mWindow);
     mController->createCameras(mSceneMgr);
+
+	
 
 	if(mOculus->isInitialised())
 	{
@@ -282,7 +281,9 @@ bool BaseApplication::setup(void)
 	{
 		mController->createViewports();
 	}
-	
+	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController);
+	m_Windows->RefreshWindowHandles();
+
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
 	mScene = new WarehouseFloor(mSceneMgr);
@@ -316,6 +317,10 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     {
 		m_Windows->ShowThumbnails();
     }
+	else if (arg.key == OIS::KC_ESCAPE)
+	{
+		mShutDown = true;
+	}
     return true;
 }
 
@@ -337,7 +342,16 @@ bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	mPlayer->step();
+	if(m_MoveWindow)
+	{
+		m_Windows->MoveSelected();
+		m_MoveWindow = false;
+	}
+	else
+	{
+		m_Windows->ReleaseSelected();
+		m_MoveWindow = true;
+	}
     return true;
 }
 

@@ -22,10 +22,11 @@ Bring system windows in as textures.
 Build Steps
 
 You will need 
-Ogre 3D prefferably 1.9.1 + some custom changes I have not pushed to a public repo yet. 
+Ogre 3D use the 1.9 branch from the ogre repo at the bottom. Still in testing I will look at merging once I know it's stable
 Boost 1.53
 Oculus Rift SDK
 Directx SDK (also required for Ogre). I am just going to assume this gets installed to c:\ if it doesnt on your system you will need to change the path.
+A directx11 capable machine
 
 If you set your folder structure up as follows the relative paths should work.
 Create a top level folder aka Riftop
@@ -42,4 +43,5 @@ Riftop\Ogre\RenderSystems	< Ogre source
 Riftop\boost			< boost 1.53 should be the folder just above include and lib
 Riftop\Wolfgame			< This repo. I'll rename it eventaully it's just not high on the todo list yet.
 
-
+Ogre Repository
+https://bitbucket.org/anthony_martin/ogre

@@ -3,10 +3,12 @@
 
 
 SystemWindowManager::SystemWindowManager(Ogre::SceneManager *sceneManager,
-										Ogre::RTShader::ShaderGenerator *shaderGenerator)
+										Ogre::RTShader::ShaderGenerator *shaderGenerator,
+										CameraController *cameraController)
 	:m_Windows(),
 	m_SceneManager(sceneManager),
 	m_ShaderGenerator(shaderGenerator),
+	m_Controller(cameraController),
 	m_ThumbnaislActive(false)
 {
 	
@@ -62,8 +64,7 @@ void SystemWindowManager::RefreshWindowHandles()
 	}
 	while(win = GetWindow(win, GW_HWNDNEXT));
 
-	//m_Windows.at(0)->DisplayWindow();
-
+	m_Windows.at(0)->DisplayWindow();
 }
 
 void SystemWindowManager::ShowThumbnails()
@@ -113,7 +114,13 @@ void SystemWindowManager::RemoveThumbnails()
 	m_ThumbnailNode->removeAndDestroyAllChildren();
 	m_SceneManager->destroySceneNode(m_ThumbnailNode);
 }
-//todo expose window list
 
-//first window
+	void SystemWindowManager::MoveSelected()
+	{
+		m_Windows.at(0)->AttachTo(m_Controller->mRotationNode);
+	}
+	void SystemWindowManager::ReleaseSelected()
+	{
+		m_Windows.at(0)->DetatchFrom(m_Controller->mRotationNode);
+	}
 

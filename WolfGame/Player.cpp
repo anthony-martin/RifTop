@@ -3,7 +3,7 @@
 
 const float minHeight = 0.5f;
 const float maxHeight = 1.75f;
-const Ogre::Vector3 startPosition(0,.1,0);
+const Ogre::Vector3 startPosition(0,0,0);
 //const Ogre::Vector3 startPosition(6,6,14);
 const float minX = -2.0;
 const float maxX = 12.0;

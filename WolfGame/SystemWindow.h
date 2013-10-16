@@ -34,5 +34,11 @@ public:
 	void AttachTo(Ogre::SceneNode* parent);
 	//Detach the window from the parent and fix the orientation in world space
 	void DetatchFrom(Ogre::SceneNode* parent);
+
+	void ScaleUp();
+	void ScaleDown();
+	
+	void MoveCloserToCamera();
+	void MoveFurtherFromCamera();
 };
 

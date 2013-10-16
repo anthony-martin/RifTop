@@ -123,3 +123,54 @@ void SystemWindow::DetatchFrom(Ogre::SceneNode* parent)
 	m_RotationNode->addChild(m_PositionNode);
 	m_RotationNode->setOrientation(eyeOrientation);
 }
+
+void SystemWindow::ScaleUp()
+{
+	if(!m_WindowVisible)
+	{
+		return;
+	}
+
+	m_PositionNode->setScale(m_PositionNode->getScale()*1.1f);
+}
+
+void SystemWindow::ScaleDown()
+{
+	if(!m_WindowVisible)
+	{
+		return;
+	}
+	m_PositionNode->setScale(m_PositionNode->getScale()/1.1f);
+}
+
+void SystemWindow::MoveCloserToCamera()
+{
+	if(!m_WindowVisible)
+	{
+		return;
+	}
+	Ogre::Vector3 position = m_PositionNode->getPosition();
+	if(position.z > -40.0f)
+	{
+		// negative Z is into the screen 
+		position.z -= 0.1f;
+	}
+
+	m_PositionNode->setPosition(position);
+}
+void SystemWindow::MoveFurtherFromCamera()
+{
+	if(!m_WindowVisible)
+	{
+		return;
+	}
+
+	Ogre::Vector3 position = m_PositionNode->getPosition();
+	if(position.z < -0.2f)
+	{
+		// positive Z is out from the screen
+		position.z += 0.1f;
+	}
+
+	m_PositionNode->setPosition(position);
+}

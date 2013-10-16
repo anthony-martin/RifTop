@@ -115,12 +115,26 @@ void SystemWindowManager::RemoveThumbnails()
 	m_SceneManager->destroySceneNode(m_ThumbnailNode);
 }
 
-	void SystemWindowManager::MoveSelected()
+void SystemWindowManager::MoveSelected()
+{
+	m_Windows.at(0)->AttachTo(m_Controller->mRotationNode);
+}
+void SystemWindowManager::ReleaseSelected()
+{
+	m_Windows.at(0)->DetatchFrom(m_Controller->mRotationNode);
+}
+
+void SystemWindowManager::ScaleSelected(float scale)
+{
+	if(scale > 0)
 	{
-		m_Windows.at(0)->AttachTo(m_Controller->mRotationNode);
+		//m_Windows.at(0)->ScaleUp();
+		m_Windows.at(0)->MoveCloserToCamera();
 	}
-	void SystemWindowManager::ReleaseSelected()
+	else if(scale < 0)
 	{
-		m_Windows.at(0)->DetatchFrom(m_Controller->mRotationNode);
+		//m_Windows.at(0)->ScaleDown();
+		m_Windows.at(0)->MoveFurtherFromCamera();
 	}
+}
 

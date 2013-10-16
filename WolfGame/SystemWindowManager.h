@@ -28,5 +28,7 @@ public:
 
 	void MoveSelected();
 	void ReleaseSelected();
+
+	void ScaleSelected(float scale);
 };
 

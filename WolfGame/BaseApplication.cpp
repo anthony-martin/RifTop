@@ -336,7 +336,10 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
+	// turn the body
 	mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
+	// scale the selected window
+	m_Windows->ScaleSelected(arg.state.Z.rel);
     return true;
 }
 

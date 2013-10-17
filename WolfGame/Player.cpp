@@ -34,6 +34,7 @@ Player::Player(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode)
 
 Player::~Player(void)
 {
+	delete mCollisionTools;
 }
 
 void Player::addKeyboardInput(Ogre::Vector3 input)

@@ -150,10 +150,10 @@ void SystemWindow::MoveCloserToCamera()
 		return;
 	}
 	Ogre::Vector3 position = m_PositionNode->getPosition();
-	if(position.z > -40.0f)
+	if(position.z < -0.2f)
 	{
-		// negative Z is into the screen 
-		position.z -= 0.1f;
+		// positive Z is out from the screen
+		position.z += 0.1f;
 	}
 
 	m_PositionNode->setPosition(position);
@@ -166,10 +166,10 @@ void SystemWindow::MoveFurtherFromCamera()
 	}
 
 	Ogre::Vector3 position = m_PositionNode->getPosition();
-	if(position.z < -0.2f)
+	if(position.z> -40.0f )
 	{
-		// positive Z is out from the screen
-		position.z += 0.1f;
+		// negative Z is into the screen 
+		position.z -= 0.1f;
 	}
 
 	m_PositionNode->setPosition(position);

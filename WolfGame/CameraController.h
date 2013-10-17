@@ -29,5 +29,6 @@ private:
 	Ogre::SceneManager* mSceneMgr;
 	void SetupCamera(Ogre::Camera* camera, OVR::Util::Render::StereoConfig *config, float side);
 	void configureCompositors(OVR::HMDInfo devinfo);
+	
 };
 

@@ -1,22 +1,24 @@
 #include "stdafx.h"
 #include "SystemWindowManager.h"
 
+using namespace Ogre;
 
-SystemWindowManager::SystemWindowManager(Ogre::SceneManager *sceneManager,
-										Ogre::RTShader::ShaderGenerator *shaderGenerator,
+SystemWindowManager::SystemWindowManager(SceneManager *sceneManager,
+										RTShader::ShaderGenerator *shaderGenerator,
 										CameraController *cameraController)
 	:m_Windows(),
 	m_SceneManager(sceneManager),
 	m_ShaderGenerator(shaderGenerator),
 	m_Controller(cameraController),
-	m_ThumbnaislActive(false)
+	m_ThumbnaislActive(false),
+	m_CollisionTools(sceneManager)
 {
 	
-    Ogre::Plane p;
-    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
-    Ogre::MeshManager::getSingleton().createPlane(
-        "windowPreview", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        p, .2, .2, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
+    Plane p;
+    p.normal = Vector3(0,0,1); p.d = 0;
+    MeshManager::getSingleton().createPlane(
+        "windowPreview", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        p, .2, .2, 1, 1, true, 1, 1, 1, Vector3::UNIT_Y);
 }
 
 
@@ -78,25 +80,25 @@ void SystemWindowManager::ShowThumbnails()
 
 	// this provides a single node from which we can cleanup the rest.
 	m_ThumbnailNode = m_SceneManager->getRootSceneNode()->createChildSceneNode("thumbnails");
-	Ogre::Entity *ent;
+	Entity *ent;
 	int count =0;
 	for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
 	{
-		Ogre::String name =Ogre::StringConverter::toString(count);
+		String name =StringConverter::toString(count);
 		ent = m_SceneManager->createEntity(name, "windowPreview");
 
-		Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName((*it)->GetMaterialName());
+		MaterialPtr material = MaterialManager::getSingleton().getByName((*it)->GetMaterialName());
 		ent->setMaterial(material);
 		// we rotate this guy so we don't need to figure out anything fancy to position the window
-		Ogre::SceneNode* rotationNode = m_ThumbnailNode->createChildSceneNode("rotation" + name);
-		rotationNode->setPosition(Ogre::Vector3(0,2,0));
-		Ogre::SceneNode* positionNode = rotationNode->createChildSceneNode("position" + name);
+		SceneNode* rotationNode = m_ThumbnailNode->createChildSceneNode("rotation" + name);
+		rotationNode->setPosition(Vector3(0,2,0));
+		SceneNode* positionNode = rotationNode->createChildSceneNode("position" + name);
 		positionNode->attachObject(ent);
-		positionNode->setPosition(Ogre::Vector3(0,0,-.6));
+		positionNode->setPosition(Vector3(0,0,-.6));
 
 		//create rows of thumbnails 5 wide and a new row every 5 windows
-		rotationNode->yaw(Ogre::Radian(Ogre::Degree(40 - ((float)(count % 5) * 20.0))));
-		rotationNode->pitch((Ogre::Radian(Ogre::Degree(10 -((float)(count /5) * 20.0)))));
+		rotationNode->yaw(Radian(Degree(40.0f - ((float)(count % 5) * 20.0f))));
+		rotationNode->pitch((Radian(Degree(10.0f -((float)(count /5) * 20.0f)))));
 		count++;
 	}
 }
@@ -128,13 +130,64 @@ void SystemWindowManager::ScaleSelected(float scale)
 {
 	if(scale > 0)
 	{
-		//m_Windows.at(0)->ScaleUp();
-		m_Windows.at(0)->MoveCloserToCamera();
+		if(m_ZoomMode)
+		{
+			m_Windows.at(0)->ScaleUp();
+		}
+		else
+		{
+			m_Windows.at(0)->MoveFurtherFromCamera();
+		}
+			
 	}
 	else if(scale < 0)
 	{
-		//m_Windows.at(0)->ScaleDown();
-		m_Windows.at(0)->MoveFurtherFromCamera();
+		if(m_ZoomMode)
+		{
+			m_Windows.at(0)->ScaleDown();
+		}
+		else
+		{
+			m_Windows.at(0)->MoveCloserToCamera();
+		}
 	}
 }
 
+
+void SystemWindowManager::SetZoomActive(bool zoomAcitve)
+{
+	m_ZoomMode = zoomAcitve;
+}
+
+void SystemWindowManager::OnMouseMoved(Vector3 mouseMovement)
+{
+
+	ScaleSelected(mouseMovement.z );
+	
+	if(mouseMovement.x != 0.0f || mouseMovement.y != 0.0f)
+	{
+		if(m_ThumbnaislActive)
+		{
+			CheckActiveThumbnail();
+		}
+	}
+}
+
+void SystemWindowManager::CheckActiveThumbnail()
+{
+	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
+	Quaternion normal =m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
+	//convert to a vector 3 going into the screen
+	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
+
+	Vector3 result;
+	Entity* thumbnail = NULL;
+	float distToColl = -1.0f;
+
+	m_CollisionTools.raycastFromPoint(origin, other, result,thumbnail, distToColl);
+
+ 	if(thumbnail)
+	{
+		String name= thumbnail->getName();
+	}
+}

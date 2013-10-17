@@ -321,6 +321,10 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 	{
 		mShutDown = true;
 	}
+	else if (arg.key == OIS::KC_LSHIFT || arg.key == OIS::KC_RSHIFT)
+	{
+		m_Windows->SetZoomActive(true);
+	}
     return true;
 }
 
@@ -330,7 +334,10 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
     {
 		m_Windows->RemoveThumbnails();
     }
-	
+	else if (arg.key == OIS::KC_LSHIFT || arg.key == OIS::KC_RSHIFT)
+	{
+		m_Windows->SetZoomActive(false);
+	}
     return true;
 }
 
@@ -339,7 +346,7 @@ bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 	// turn the body
 	mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
 	// scale the selected window
-	m_Windows->ScaleSelected(arg.state.Z.rel);
+	m_Windows->OnMouseMoved(Ogre::Vector3(arg.state.X.rel, arg.state.Y.rel,arg.state.Z.rel));
     return true;
 }
 

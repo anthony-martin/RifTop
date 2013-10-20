@@ -17,10 +17,14 @@ private:
 	Ogre::SceneNode* m_ThumbnailNode;
 	Ogre::SceneNode* m_HighlightedNode;
 
+	SystemWindow* m_SelectedWindow;
+
 	bool m_ZoomMode;
 
 
 	void CheckActiveThumbnail();
+	void ChangeHighlightedThumbnail( String name);
+	void RemoveHighlightedThumbnail();
 
 public:
 	SystemWindowManager(Ogre::SceneManager *sceneManager,

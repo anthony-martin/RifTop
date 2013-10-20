@@ -74,13 +74,8 @@ void SystemWindow::DisplayWindow()
 	// will look into instanced geometry later
 
 	Ogre::Entity *ent;
-    Ogre::Plane p;
-    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
-    Ogre::MeshManager::getSingleton().createPlane(
-        "FloorPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        p, 1, 1, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
 
-    ent = m_SceneManager->createEntity("bob", "FloorPlane");
+    ent = m_SceneManager->createEntity(m_MaterialName, "window");
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(m_MaterialName);
 	ent->setMaterial(material);
@@ -133,7 +128,8 @@ void SystemWindow::ScaleUp()
 	Vector3 scale = m_PositionNode->getScale();
 	if(scale.length() < 50.0f)
 	{
-		scale = scale*1.1f;
+		scale.x = scale.x*1.1f;
+		scale.y = scale.y*1.1f;
 	}
 	m_PositionNode->setScale(scale);
 }
@@ -147,7 +143,8 @@ void SystemWindow::ScaleDown()
 	Vector3 scale = m_PositionNode->getScale();
 	if(scale.length() > 0.001f)
 	{
-		scale = scale/1.1f;
+		scale.x = scale.x/1.1f;
+		scale.y = scale.y/1.1f;
 	}
 	m_PositionNode->setScale(scale);
 }

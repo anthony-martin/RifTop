@@ -20,6 +20,11 @@ SystemWindowManager::SystemWindowManager(SceneManager *sceneManager,
     MeshManager::getSingleton().createPlane(
         "windowPreview", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         p, .2, .2, 1, 1, true, 1, 1, 1, Vector3::UNIT_Y);
+
+    p.normal = Ogre::Vector3(0,0,1); p.d = 0;
+    Ogre::MeshManager::getSingleton().createPlane(
+        "window", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        p, 1, 1, 1, 1, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
 }
 
 
@@ -67,7 +72,8 @@ void SystemWindowManager::RefreshWindowHandles()
 	}
 	while(win = GetWindow(win, GW_HWNDNEXT));
 
-	m_Windows.at(0)->DisplayWindow();
+	m_SelectedWindow = m_Windows.at(0);
+	m_SelectedWindow->DisplayWindow();
 }
 
 void SystemWindowManager::ShowThumbnails()
@@ -91,7 +97,7 @@ void SystemWindowManager::ShowThumbnails()
 		MaterialPtr material = MaterialManager::getSingleton().getByName((*it)->GetMaterialName());
 		ent->setMaterial(material);
 		// we rotate this guy so we don't need to figure out anything fancy to position the window
-		SceneNode* rotationNode = m_ThumbnailNode->createChildSceneNode("rotation" + name);
+		SceneNode* rotationNode = m_ThumbnailNode->createChildSceneNode(name);
 		rotationNode->setPosition(Vector3(0,2,0));
 		SceneNode* positionNode = rotationNode->createChildSceneNode("position" + name);
 		positionNode->attachObject(ent);
@@ -110,6 +116,14 @@ void SystemWindowManager::RemoveThumbnails()
 	{
 		return;
 	}
+
+	if(m_HighlightedNode)
+	{
+		int windowIndex = StringConverter::parseInt(m_HighlightedNode->getName());
+		m_SelectedWindow = m_Windows.at(windowIndex);
+		m_SelectedWindow->DisplayWindow();
+	}
+	RemoveHighlightedThumbnail();
 	m_ThumbnaislActive = false;
 
 	// clean up all the scene nodes.
@@ -120,11 +134,11 @@ void SystemWindowManager::RemoveThumbnails()
 
 void SystemWindowManager::MoveSelected()
 {
-	m_Windows.at(0)->AttachTo(m_Controller->mRotationNode);
+	m_SelectedWindow->AttachTo(m_Controller->mRotationNode);
 }
 void SystemWindowManager::ReleaseSelected()
 {
-	m_Windows.at(0)->DetatchFrom(m_Controller->mRotationNode);
+	m_SelectedWindow->DetatchFrom(m_Controller->mRotationNode);
 }
 
 void SystemWindowManager::ScaleSelected(float scale)
@@ -133,11 +147,11 @@ void SystemWindowManager::ScaleSelected(float scale)
 	{
 		if(m_ZoomMode)
 		{
-			m_Windows.at(0)->ScaleUp();
+			m_SelectedWindow->ScaleUp();
 		}
 		else
 		{
-			m_Windows.at(0)->MoveFurtherFromCamera();
+			m_SelectedWindow->MoveFurtherFromCamera();
 		}
 			
 	}
@@ -145,11 +159,11 @@ void SystemWindowManager::ScaleSelected(float scale)
 	{
 		if(m_ZoomMode)
 		{
-			m_Windows.at(0)->ScaleDown();
+			m_SelectedWindow->ScaleDown();
 		}
 		else
 		{
-			m_Windows.at(0)->MoveCloserToCamera();
+			m_SelectedWindow->MoveCloserToCamera();
 		}
 	}
 }
@@ -189,36 +203,48 @@ void SystemWindowManager::CheckActiveThumbnail()
 
  	if(thumbnail)
 	{
-		String name= thumbnail->getName();
-		if(StringConverter::isNumber(name))
+		ChangeHighlightedThumbnail(thumbnail->getName());
+	}
+	else
+	{
+		RemoveHighlightedThumbnail();
+	}
+}
+
+
+void SystemWindowManager::ChangeHighlightedThumbnail( String name)
+{
+	if(StringConverter::isNumber(name))
+	{
+		//int windowIndex = StringConverter::parseInt(name);
+		//m_Windows.at(windowIndex);
+
+		//come up with a better way to detect this
+		SceneNode* child =static_cast<SceneNode*>(m_ThumbnailNode->getChild(name));
+
+		if(m_HighlightedNode)
 		{
-			//int windowIndex = StringConverter::parseInt(name);
-			//m_Windows.at(windowIndex);
-
-			SceneNode* child =static_cast<SceneNode*>(m_ThumbnailNode->getChild("rotation" +name));
-
-			if(m_HighlightedNode)
+			if(m_HighlightedNode->getName() != child->getName())
 			{
-				if(m_HighlightedNode->getName() != child->getName())
-				{
-					m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
-					child->setScale(Vector3(1.1f,1.1f,1.0f));
-					m_HighlightedNode = child;
-				}
-			}
-			else
-			{
+				// don't set z it will move the window
+				m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
 				child->setScale(Vector3(1.1f,1.1f,1.0f));
 				m_HighlightedNode = child;
 			}
 		}
-	}
-	else
-	{
-		if(m_HighlightedNode)
+		else
 		{
-			m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
-			m_HighlightedNode = NULL;
+			child->setScale(Vector3(1.1f,1.1f,1.0f));
+			m_HighlightedNode = child;
 		}
+	}
+}
+
+void SystemWindowManager::RemoveHighlightedThumbnail()
+{
+	if(m_HighlightedNode)
+	{
+		m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
+		m_HighlightedNode = NULL;
 	}
 }

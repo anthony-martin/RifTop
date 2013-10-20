@@ -8,12 +8,13 @@ Todo list in no particular order.
 Standardise class field and method naming.
 Convert to using IOC
 Add Unit test assembly
-Create window manager controlling windows window handles
-Populate billboards with window textures
-Local only input and window movement
 Pump messages back to active window
 Detect newly opened windows.
-Create a fork of Ogre with the changes required to build this
+Get window aspect ratio and apply it to windows.
+Remove windows with corrupt textures
+Refresh the list of open windows.
+configuration for bindings
+
 
 
 In Progress

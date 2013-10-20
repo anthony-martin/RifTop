@@ -15,6 +15,7 @@ private:
 
 	bool m_ThumbnaislActive;
 	Ogre::SceneNode* m_ThumbnailNode;
+	Ogre::SceneNode* m_HighlightedNode;
 
 	bool m_ZoomMode;
 

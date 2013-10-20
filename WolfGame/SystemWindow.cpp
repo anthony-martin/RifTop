@@ -130,8 +130,12 @@ void SystemWindow::ScaleUp()
 	{
 		return;
 	}
-
-	m_PositionNode->setScale(m_PositionNode->getScale()*1.1f);
+	Vector3 scale = m_PositionNode->getScale();
+	if(scale.length() < 50.0f)
+	{
+		scale = scale*1.1f;
+	}
+	m_PositionNode->setScale(scale);
 }
 
 void SystemWindow::ScaleDown()
@@ -140,7 +144,12 @@ void SystemWindow::ScaleDown()
 	{
 		return;
 	}
-	m_PositionNode->setScale(m_PositionNode->getScale()/1.1f);
+	Vector3 scale = m_PositionNode->getScale();
+	if(scale.length() > 0.001f)
+	{
+		scale = scale/1.1f;
+	}
+	m_PositionNode->setScale(scale);
 }
 
 void SystemWindow::MoveCloserToCamera()

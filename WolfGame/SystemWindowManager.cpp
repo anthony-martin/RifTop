@@ -11,7 +11,8 @@ SystemWindowManager::SystemWindowManager(SceneManager *sceneManager,
 	m_ShaderGenerator(shaderGenerator),
 	m_Controller(cameraController),
 	m_ThumbnaislActive(false),
-	m_CollisionTools(sceneManager)
+	m_CollisionTools(sceneManager),
+	m_HighlightedNode(NULL)
 {
 	
     Plane p;
@@ -189,5 +190,35 @@ void SystemWindowManager::CheckActiveThumbnail()
  	if(thumbnail)
 	{
 		String name= thumbnail->getName();
+		if(StringConverter::isNumber(name))
+		{
+			//int windowIndex = StringConverter::parseInt(name);
+			//m_Windows.at(windowIndex);
+
+			SceneNode* child =static_cast<SceneNode*>(m_ThumbnailNode->getChild("rotation" +name));
+
+			if(m_HighlightedNode)
+			{
+				if(m_HighlightedNode->getName() != child->getName())
+				{
+					m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
+					child->setScale(Vector3(1.1f,1.1f,1.0f));
+					m_HighlightedNode = child;
+				}
+			}
+			else
+			{
+				child->setScale(Vector3(1.1f,1.1f,1.0f));
+				m_HighlightedNode = child;
+			}
+		}
+	}
+	else
+	{
+		if(m_HighlightedNode)
+		{
+			m_HighlightedNode->setScale(Vector3(1.0f,1.0f,1.0f));
+			m_HighlightedNode = NULL;
+		}
 	}
 }

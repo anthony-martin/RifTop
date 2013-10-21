@@ -81,9 +81,27 @@ void SystemWindow::DisplayWindow()
 	ent->setMaterial(material);
 	m_RotationNode = m_SceneManager->getRootSceneNode()->createChildSceneNode(m_MaterialName);
 	m_RotationNode->setPosition(Ogre::Vector3(0,1.75,0));
-	m_PositionNode = m_RotationNode->createChildSceneNode(m_MaterialName+"position");
+	m_PositionNode = m_RotationNode->createChildSceneNode("position" + m_MaterialName);
 	m_PositionNode->attachObject(ent);
 	m_PositionNode->setPosition(Ogre::Vector3(0,0,-2));
+
+	RECT rect;
+	bool sucess = GetWindowRect(m_WindowHandle, &rect);
+	DWORD error;
+	if(sucess)
+	{
+		float width = rect.right - rect.left;
+		float height = rect.top - rect.bottom;
+
+		float aspectRatio = Math::Abs(width / height);
+
+		m_PositionNode->scale( Vector3(1.0f * aspectRatio, 1.0f, 1.0f));
+	}
+	else
+	{
+		error = GetLastError();
+	}
+
 	m_WindowVisible = true;
 }
 

@@ -69,12 +69,11 @@ void SystemWindow::DisplayWindow()
 	{
 		return;
 	}
-	//testing doing this here for now with a single window texture from the loaded windows.
+	
 	//using geometry instead of billboards as the rotation towards the camera is not so cool
 	// will look into instanced geometry later
 
 	Ogre::Entity *ent;
-
     ent = m_SceneManager->createEntity(m_MaterialName, "window");
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(m_MaterialName);
@@ -86,7 +85,7 @@ void SystemWindow::DisplayWindow()
 	m_PositionNode->setPosition(Ogre::Vector3(0,0,-2));
 
 	RECT rect;
-	bool sucess = GetWindowRect(m_WindowHandle, &rect);
+	bool sucess = GetClientRect(m_WindowHandle, &rect);
 	DWORD error;
 	if(sucess)
 	{

@@ -26,6 +26,7 @@ This source file is part of the
 #include "SystemTextureLoader.h"
 #include "SystemWindow.h"
 #include "SystemWindowManager.h"
+#include "MessagePump.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -78,7 +79,6 @@ protected:
     Ogre::String mPluginsCfg;
 
     bool mCursorWasVisible;                    // was cursor visible before dialog appeared
-    bool mShutDown;
 
     //OIS Input devices
     OIS::InputManager* mInputManager;
@@ -89,7 +89,6 @@ protected:
 	SystemWindowManager *m_Windows;
 
 	bool m_MoveWindow;
-
 };
 
 #endif // #ifndef __BaseApplication_h_

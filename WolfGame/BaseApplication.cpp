@@ -17,6 +17,8 @@ This source file is part of the
 #include "stdafx.h"
 #include "BaseApplication.h"
 
+static bool mShutDown(false);
+
 //-------------------------------------------------------------------------------------
 BaseApplication::BaseApplication(void)
     : mRoot(0),
@@ -25,7 +27,6 @@ BaseApplication::BaseApplication(void)
     mResourcesCfg(Ogre::StringUtil::BLANK),
     mPluginsCfg(Ogre::StringUtil::BLANK),
     mCursorWasVisible(false),
-    mShutDown(false),
     mInputManager(0),
     mMouse(0),
     mKeyboard(0),
@@ -49,6 +50,35 @@ BaseApplication::~BaseApplication(void)
 LRESULT CALLBACK _WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	//note can use with OIS but need to pass more than just the mouse down message
+
+	switch (msg) 
+    { 
+	case WM_KEYDOWN:
+		{
+			if(wParam == VK_ESCAPE)
+			{
+				mShutDown = true;
+			}
+			break;
+		}
+	
+		case WM_LBUTTONDOWN: 
+		case WM_LBUTTONUP: 
+			{
+				int xPos = GET_X_LPARAM(lParam); 
+				int yPos = GET_Y_LPARAM(lParam); 
+
+				if(xPos == 0)
+				{
+					DefWindowProc( hwnd, msg, wParam, lParam );
+				}
+			break;
+			}
+
+		default:
+			return DefWindowProc( hwnd, msg, wParam, lParam );
+	}
+
 	DWORD dwPID;
 	bool posted = false;
 	DWORD hThread ;
@@ -79,7 +109,7 @@ bool BaseApplication::configure(void)
 
 		// Register the window class
 		// NB allow 4 bytes of window data for D3D11RenderWindow pointer
-		WNDCLASS wc = { classStyle, _WndProc, 0, 0, hInst,
+		WNDCLASS wc = { classStyle, MessagePump::_WndProc, 0, 0, hInst,
 			LoadIcon(0, IDI_APPLICATION), LoadCursor(NULL, IDC_ARROW),
 			(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
 
@@ -124,13 +154,13 @@ void BaseApplication::createFrameListener(void)
     windowHndStr << windowHnd;
     pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-    mInputManager = OIS::InputManager::createInputSystem( pl );
+    //mInputManager = OIS::InputManager::createInputSystem( pl );
 
-    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+    //mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
+    //mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 
-    mMouse->setEventCallback(this);
-    mKeyboard->setEventCallback(this);
+    //mMouse->setEventCallback(this);
+   // mKeyboard->setEventCallback(this);
 
     //Set initial mouse clipping size
     windowResized(mWindow);
@@ -304,8 +334,8 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         return false;
 
     //Need to capture/update each device
-    mKeyboard->capture();
-    mMouse->capture();
+    //mKeyboard->capture();
+    //mMouse->capture();
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 	mPlayer->processMovement(evt.timeSinceLastFrame);
     return true;
@@ -377,9 +407,9 @@ void BaseApplication::windowResized(Ogre::RenderWindow* rw)
     int left, top;
     rw->getMetrics(width, height, depth, left, top);
 
-    const OIS::MouseState &ms = mMouse->getMouseState();
-    ms.width = width;
-    ms.height = height;
+    //const OIS::MouseState &ms = mMouse->getMouseState();
+    //ms.width = width;
+   // ms.height = height;
 }
 
 //Unattach OIS before window shutdown (very important under Linux)

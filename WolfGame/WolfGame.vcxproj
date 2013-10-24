@@ -86,6 +86,7 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CollisionTools.cpp" />
     <ClCompile Include="feet.cpp" />
+    <ClCompile Include="MessagePump.cpp" />
     <ClCompile Include="OculusControl.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManagerExtensions.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CollisionTools.h" />
     <ClInclude Include="feet.h" />
+    <ClInclude Include="MessagePump.h" />
     <ClInclude Include="OculusControl.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManagerExtensions.h" />

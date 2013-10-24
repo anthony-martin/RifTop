@@ -75,6 +75,9 @@
     <ClCompile Include="SceneManagerExtensions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MessagePump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -114,6 +117,9 @@
       <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
     <ClInclude Include="SceneManagerExtensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MessagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

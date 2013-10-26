@@ -98,6 +98,7 @@
     <ClCompile Include="SystemWindowManager.cpp" />
     <ClCompile Include="TutorialApplication.cpp" />
     <ClCompile Include="WarehouseFloor.cpp" />
+    <ClCompile Include="WindowInputController.cpp" />
     <ClCompile Include="WolfGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +116,7 @@
     <ClInclude Include="SystemWindowManager.h" />
     <ClInclude Include="TutorialApplication.h" />
     <ClInclude Include="WarehouseFloor.h" />
+    <ClInclude Include="WindowInputController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,12 +1,13 @@
 #pragma once
-
-class MessageHandler
-{
-	LRESULT Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-};
-
 namespace MessagePump
 {
+	class MessageHandler
+	{
+		public:
+			virtual LRESULT Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+			{return 0;};
+	};
+
 	void Subscribe(MessageHandler *handler);
 	void UnSubscribe(MessageHandler *handler);
 

@@ -191,7 +191,7 @@ void SystemWindowManager::OnMouseMoved(Vector3 mouseMovement)
 void SystemWindowManager::CheckActiveThumbnail()
 {
 	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
-	Quaternion normal =m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
+	Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
 	//convert to a vector 3 going into the screen
 	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
 
@@ -199,7 +199,7 @@ void SystemWindowManager::CheckActiveThumbnail()
 	Entity* thumbnail = NULL;
 	float distToColl = -1.0f;
 
-	m_CollisionTools.raycastFromPoint(origin, other, result,thumbnail, distToColl);
+	m_CollisionTools.raycastFromPoint(origin, other, result, thumbnail, distToColl);
 
  	if(thumbnail)
 	{

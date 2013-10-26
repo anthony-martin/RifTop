@@ -42,12 +42,14 @@ BaseApplication::~BaseApplication(void)
     Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
     windowClosed(mWindow);
     delete mRoot;
+	delete m_Windows;
+	delete m_WindowInput;
 }
 
 	HWND mWindowHandle ;
 	HWND mExternalWindow = (HWND)(0x000707EC);
 
-LRESULT CALLBACK _WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT BaseApplication::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	//note can use with OIS but need to pass more than just the mouse down message
 
@@ -61,33 +63,11 @@ LRESULT CALLBACK _WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		}
-	
-		case WM_LBUTTONDOWN: 
-		case WM_LBUTTONUP: 
-			{
-				int xPos = GET_X_LPARAM(lParam); 
-				int yPos = GET_Y_LPARAM(lParam); 
-
-				if(xPos == 0)
-				{
-					DefWindowProc( hwnd, msg, wParam, lParam );
-				}
-			break;
-			}
-
 		default:
-			return DefWindowProc( hwnd, msg, wParam, lParam );
+			return 0;
 	}
 
-	DWORD dwPID;
-	bool posted = false;
-	DWORD hThread ;
-	hThread = GetWindowThreadProcessId(mExternalWindow, &dwPID);  
-	if (dwPID != NULL && hThread!= NULL ) 
-	{
-		SendMessage(mExternalWindow, msg, wParam, lParam);
-	}
-	return DefWindowProc( hwnd, msg, wParam, lParam );
+
 	return 0;
 }
 
@@ -115,6 +95,7 @@ bool BaseApplication::configure(void)
 
 		RegisterClass(&wc);
 
+		
 		DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
 
 		// Create our main window
@@ -313,6 +294,11 @@ bool BaseApplication::setup(void)
 	}
 	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController);
 	m_Windows->RefreshWindowHandles();
+
+	m_WindowInput = new WindowInputController(m_Windows);
+
+	MessagePump::Subscribe(m_WindowInput);
+	MessagePump::Subscribe(this);
 
 	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 

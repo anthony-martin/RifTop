@@ -78,6 +78,9 @@
     <ClCompile Include="MessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WindowInputController.cpp">
+      <Filter>Source Files\SystemWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="MessagePump.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInputController.h">
+      <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,12 +27,18 @@ This source file is part of the
 #include "SystemWindow.h"
 #include "SystemWindowManager.h"
 #include "MessagePump.h"
+#include "WindowInputController.h"
 
-class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
+class BaseApplication : public Ogre::FrameListener, 
+						public Ogre::WindowEventListener, 
+						public OIS::KeyListener, 
+						public OIS::MouseListener,
+						public MessagePump::MessageHandler
 {
 public:
     BaseApplication(void);
     virtual ~BaseApplication(void);
+	virtual LRESULT Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     virtual void go(void);
 
@@ -87,6 +93,7 @@ protected:
 
 	//window handling
 	SystemWindowManager *m_Windows;
+	WindowInputController *m_WindowInput;
 
 	bool m_MoveWindow;
 };

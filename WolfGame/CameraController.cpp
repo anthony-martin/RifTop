@@ -104,7 +104,7 @@ void CameraController::SetupCamera(Ogre::Camera* camera, OVR::Util::Render::Ster
 void CameraController::createCameras(Ogre::SceneManager* sceneMgr)
 {
 	mSceneMgr = sceneMgr;
-	mBodyRotationNode = mSceneMgr->createSceneNode("eyes"); 
+	mBodyRotationNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("eyes"); 
 	mRotationNode = mBodyRotationNode->createChildSceneNode("Head");
 	mBodyRotationNode->setPosition(Ogre::Vector3(0,1.75,0));
     // Create the camera

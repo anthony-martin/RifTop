@@ -38,12 +38,13 @@ BaseApplication::BaseApplication(void)
 BaseApplication::~BaseApplication(void)
 {
 	delete mController;
+	delete m_Windows;
+	delete m_WindowInput;
+
     //Remove ourself as a Window listener
     Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
     windowClosed(mWindow);
     delete mRoot;
-	delete m_Windows;
-	delete m_WindowInput;
 }
 
 	HWND mWindowHandle ;
@@ -300,9 +301,9 @@ bool BaseApplication::setup(void)
 	MessagePump::Subscribe(m_WindowInput);
 	MessagePump::Subscribe(this);
 
-	mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
+	//mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
-	mScene = new WarehouseFloor(mSceneMgr);
+	//mScene = new WarehouseFloor(mSceneMgr);
 	mWarehouseShown = true;
     createScene();
 
@@ -323,7 +324,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     //mKeyboard->capture();
     //mMouse->capture();
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
-	mPlayer->processMovement(evt.timeSinceLastFrame);
+	//mPlayer->processMovement(evt.timeSinceLastFrame);
     return true;
 }
 //-------------------------------------------------------------------------------------
@@ -360,9 +361,9 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
 	// turn the body
-	mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
+	//mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
 	// scale the selected window
-	m_Windows->OnMouseMoved(Ogre::Vector3(arg.state.X.rel, arg.state.Y.rel,arg.state.Z.rel));
+	//m_Windows->OnMouseMoved(Ogre::Vector3(arg.state.X.rel, arg.state.Y.rel,arg.state.Z.rel));
     return true;
 }
 

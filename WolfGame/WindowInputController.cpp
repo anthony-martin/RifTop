@@ -4,7 +4,7 @@
 
 WindowInputController::WindowInputController(SystemWindowManager *windowManager)
 	:m_WindowManager(windowManager),
-	m_MoveWindow(false)
+	m_MoveWindow(true)
 {
 }
 

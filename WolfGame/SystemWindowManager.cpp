@@ -32,7 +32,7 @@ SystemWindowManager::~SystemWindowManager(void)
 {
 	for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
 	{
-		delete &it;
+		delete *it;
 	}
 }
 

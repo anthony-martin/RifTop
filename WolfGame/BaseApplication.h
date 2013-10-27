@@ -96,6 +96,8 @@ protected:
 	WindowInputController *m_WindowInput;
 
 	bool m_MoveWindow;
+
+	int m_cursorPos;
 };
 
 #endif // #ifndef __BaseApplication_h_

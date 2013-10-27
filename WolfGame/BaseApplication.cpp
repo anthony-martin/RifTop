@@ -30,7 +30,8 @@ BaseApplication::BaseApplication(void)
     mInputManager(0),
     mMouse(0),
     mKeyboard(0),
-	m_MoveWindow(true)
+	m_MoveWindow(true),
+	m_cursorPos(NULL)
 {
 }
 
@@ -63,6 +64,25 @@ LRESULT BaseApplication::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 				mShutDown = true;
 			}
 			break;
+		}
+	case WM_MOUSEMOVE:
+		{
+			if(m_cursorPos)
+			{
+				//also add method for this 
+				int xPos = GET_X_LPARAM(lParam);
+				float movement = 0.0f;
+
+				movement = m_cursorPos - xPos -3;// magic number that makes the border align
+
+				if(movement != 0.0f)
+				{
+					Ogre::Radian turn((movement / -200.0f));
+					mController->mBodyRotationNode->yaw(turn);
+				}
+
+				return 1;
+			}
 		}
 		default:
 			return 0;
@@ -103,12 +123,19 @@ bool BaseApplication::configure(void)
 		// Pass pointer to self
 		mWindowHandle = CreateWindowA("rwnd", "Riftop", dwStyle,
 			0, 0, 1280, 800, NULL, 0, hInst, this);
+		
 
 		NameValuePairList misc;
 		misc["externalWindowHandle"] = StringConverter::toString((int)mWindowHandle);
 		//misc["fullScreen"] = true;
 		mWindow = mRoot->createRenderWindow("Main RenderWindow", 1280, 800, false, &misc);
 		//Ogre::WindowEventUtilities::_addRenderWindow(mWindow);
+		RECT rect;
+		if(GetClientRect(mWindowHandle, &rect))
+		{
+			ClipCursor(&rect);
+		}
+		ShowCursor(false);
 
         return true;
     }
@@ -319,6 +346,16 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
+	RECT rect;
+	if(GetWindowRect(mWindowHandle, &rect))
+	{
+		int deltaX = rect.right - rect.left;
+		int deltsY = rect.bottom - rect.top;
+		m_cursorPos = (deltaX/2);
+		SetCursorPos(rect.left + m_cursorPos,rect.top + deltsY/2 );
+	}
+
+	
 
     //Need to capture/update each device
     //mKeyboard->capture();

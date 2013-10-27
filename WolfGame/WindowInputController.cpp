@@ -20,19 +20,37 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 
 	switch (msg) 
     { 
-	case WM_LBUTTONDOWN:
+		case WM_LBUTTONDOWN:
 		{
 			if(m_MoveWindow)
-		{
-			m_WindowManager->MoveSelected();
-			m_MoveWindow = false;
-		}
-		else
-		{
-			m_WindowManager->ReleaseSelected();
-			m_MoveWindow = true;
-		}
+			{
+				m_WindowManager->MoveSelected();
+				m_MoveWindow = false;
+			}
+			else
+			{
+				m_WindowManager->ReleaseSelected();
+				m_MoveWindow = true;
+			}
 			return 1;
+		}
+		case WM_KEYDOWN:
+		{
+			if(wParam == VK_TAB )
+			{
+				m_WindowManager->ShowThumbnails();
+				return 1;
+			}
+			
+		}
+		case WM_KEYUP:
+		{
+			if(wParam == VK_TAB )
+			{
+				m_WindowManager->RemoveThumbnails();
+				return 1;
+			}
+			
 		}
 		default:
 			return 0;

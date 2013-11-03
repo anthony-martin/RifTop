@@ -44,6 +44,8 @@ public:
 	void ScaleSelected(float scale);
 	void SetZoomActive(bool zoomAcitve);
 
+	void MessageSelected(UINT msg, WPARAM wParam, LPARAM lParam);
+
 	void OnMouseMoved(Ogre::Vector3 mouseMovement);
 };
 

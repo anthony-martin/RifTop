@@ -7,6 +7,7 @@ class WindowInputController : public MessagePump::MessageHandler
 private:
 	SystemWindowManager *m_WindowManager;
 	bool m_MoveWindow;
+	bool m_InputMode;
 
 public:
 	WindowInputController(SystemWindowManager *windowManager);

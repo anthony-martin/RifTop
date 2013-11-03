@@ -248,3 +248,11 @@ void SystemWindowManager::RemoveHighlightedThumbnail()
 		m_HighlightedNode = NULL;
 	}
 }
+
+void SystemWindowManager::MessageSelected(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if(m_SelectedWindow)
+	{
+		m_SelectedWindow->Message(msg, wParam, lParam);
+	}
+}

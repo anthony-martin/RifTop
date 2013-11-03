@@ -49,7 +49,6 @@ BaseApplication::~BaseApplication(void)
 }
 
 	HWND mWindowHandle ;
-	HWND mExternalWindow = (HWND)(0x000707EC);
 
 LRESULT BaseApplication::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -346,14 +345,14 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
-	RECT rect;
+	/*RECT rect;
 	if(GetWindowRect(mWindowHandle, &rect))
 	{
 		int deltaX = rect.right - rect.left;
 		int deltsY = rect.bottom - rect.top;
 		m_cursorPos = (deltaX/2);
 		SetCursorPos(rect.left + m_cursorPos,rect.top + deltsY/2 );
-	}
+	}*/
 
 	
 

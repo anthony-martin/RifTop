@@ -100,7 +100,8 @@ void SystemWindow::DisplayWindow()
 	{
 		error = GetLastError();
 	}
-
+	SendMessage(m_WindowHandle , WM_ACTIVATE, WA_ACTIVE, (LPARAM)m_WindowHandle);
+	SendMessage(m_WindowHandle , WM_SETFOCUS, 0, 0);
 	m_WindowVisible = true;
 }
 
@@ -196,4 +197,38 @@ void SystemWindow::MoveFurtherFromCamera()
 	}
 
 	m_PositionNode->setPosition(position);
+}
+
+void SystemWindow::Message(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	//if(msg == 127 ||
+	//	msg == 70 ||
+	//	msg == 71||
+	//	msg == 28||
+	//	msg == 134 ||
+	//	msg == 6||
+	//	msg == 641||
+	//	msg == 642||
+	//	msg == 7||
+	//	msg == 132||
+	//	msg == 32||
+	//	msg == 8||
+	//	msg == 512||
+	//	msg == 513||
+	//	msg == 799 ||
+	//	msg == 15 ||
+	//	msg == 49320)
+
+	//	//note message 6 WM_ACTIVATE is the one we need to send to the other window.
+	//{
+	//	return;
+	//}
+
+	LRESULT result = PostMessage(m_WindowHandle , msg, wParam, lParam);
+
+	if(result != S_OK)
+	{
+		MoveFurtherFromCamera();
+		MoveCloserToCamera();
+	}
 }

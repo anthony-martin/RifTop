@@ -40,5 +40,6 @@ public:
 	
 	void MoveCloserToCamera();
 	void MoveFurtherFromCamera();
+	void Message(UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

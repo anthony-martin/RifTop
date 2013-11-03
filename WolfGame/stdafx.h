@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <Windowsx.h>
+#include <Shobjidl.h>
 #include <OVR.h>
 
 #include <OgreCamera.h>

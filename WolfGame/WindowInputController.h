@@ -9,6 +9,8 @@ private:
 	bool m_MoveWindow;
 	bool m_InputMode;
 
+	LRESULT HandleInputMode(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 public:
 	WindowInputController(SystemWindowManager *windowManager);
 	~WindowInputController(void);

@@ -6,6 +6,7 @@ SystemWindow::SystemWindow(HWND window,
 							Ogre::SceneManager *sceneManager,
 							Ogre::RTShader::ShaderGenerator *shaderGenerator)
 	:m_WindowHandle(window),
+	m_CurrentWindow(window),
 	m_SceneManager(sceneManager),
 	m_ShaderGenerator(shaderGenerator),
 	m_WindowVisible(false)
@@ -100,9 +101,14 @@ void SystemWindow::DisplayWindow()
 	{
 		error = GetLastError();
 	}
+	LPARAM MouseActive = WM_LBUTTONDOWN<<16|HTCLIENT;
+
 	SendMessage(m_WindowHandle , WM_ACTIVATE, WA_ACTIVE, (LPARAM)m_WindowHandle);
+	SendMessage(m_WindowHandle , WM_MOUSEACTIVATE, (WPARAM)m_WindowHandle, MouseActive);
 	SendMessage(m_WindowHandle , WM_SETFOCUS, 0, 0);
 	m_WindowVisible = true;
+
+	CheckActiveWindow(1,2);
 }
 
 Ogre::String SystemWindow::GetMaterialName()
@@ -199,7 +205,70 @@ void SystemWindow::MoveFurtherFromCamera()
 	m_PositionNode->setPosition(position);
 }
 
-void SystemWindow::Message(UINT msg, WPARAM wParam, LPARAM lParam)
+void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT result = PostMessage(m_WindowHandle , msg, wParam, lParam);
+	LRESULT result = PostMessage(m_CurrentWindow , msg, wParam, lParam);
+}
+
+void SystemWindow::SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	LRESULT result = SendMessage(m_WindowHandle , msg, wParam, lParam);
+}
+
+void SystemWindow::SendWindowMessage(UINT msg, LPARAM lParam)
+{
+	LRESULT result = SendMessage(m_WindowHandle , msg, (WPARAM)m_WindowHandle, lParam);
+}
+
+
+void SystemWindow::CheckActiveWindow(HWND win, long windowsPosX, long windowsPosY)
+{
+	do
+	{
+		if(IsWindowVisible(win))
+        {
+			 DWORD processID;
+                GetWindowThreadProcessId(win, &processID);
+                if(processID == GetCurrentProcessId())
+                    continue;
+
+			RECT clientRect;
+            if(GetWindowRect(win, &clientRect))
+			{
+				if(windowsPosX > clientRect.left && windowsPosX < clientRect.right
+					&& windowsPosY > clientRect.top && windowsPosY < clientRect.bottom )
+				{
+					m_CurrentWindow = win;
+					HWND child = GetWindow(win, GW_CHILD);
+					if(child)
+					{
+						CheckActiveWindow( child, windowsPosX, windowsPosY);
+					}
+					else
+					{
+						m_CurrentWindow = win;
+					}
+				}
+			}
+		}
+		
+	}
+	while(win = GetWindow(win, GW_HWNDNEXT));
+}
+
+void SystemWindow::CheckActiveWindow(double x, double y)
+{
+	HWND win = GetWindow(m_WindowHandle, GW_CHILD);
+
+	RECT parentRect;
+    GetWindowRect(m_WindowHandle, &parentRect);
+
+	RECT parentClient;
+    GetClientRect(m_WindowHandle, &parentClient);
+
+	long windowsPosX = 0.5 * parentClient.right + parentRect.left;
+	long windowsPosY = 0.5 * parentClient.bottom+ parentRect.top;
+
+	CheckActiveWindow( win, windowsPosX, windowsPosY);
+
 }

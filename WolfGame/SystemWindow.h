@@ -11,6 +11,7 @@ private:
 	Ogre::SceneManager *m_SceneManager;
 
 	HWND m_WindowHandle;
+	HWND m_CurrentWindow;
 	SystemTextureLoader *m_TextureLoader;
 	Ogre::SceneNode* m_RotationNode;
 	Ogre::SceneNode* m_PositionNode;
@@ -40,6 +41,11 @@ public:
 	
 	void MoveCloserToCamera();
 	void MoveFurtherFromCamera();
-	void Message(UINT msg, WPARAM wParam, LPARAM lParam);
+	void PostWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+	void SendWindowMessage(UINT msg, LPARAM lParam);
+	void SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+
+	void CheckActiveWindow(double x, double y);
+	void CheckActiveWindow(HWND nextWin, long windowsPosX, long windowsPosY);
 };
 

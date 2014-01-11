@@ -48,11 +48,6 @@ void SystemWindowManager::RefreshWindowHandles()
 	{
 		if(IsWindowVisible(win))
         {
-            RECT clientRect;
-            GetClientRect(win, &clientRect);
-
-            HWND hwndParent = GetParent(win);
-
             DWORD exStyles = (DWORD)GetWindowLongPtr(win, GWL_EXSTYLE);
             DWORD styles = (DWORD)GetWindowLongPtr(win, GWL_STYLE);
 
@@ -249,10 +244,17 @@ void SystemWindowManager::RemoveHighlightedThumbnail()
 	}
 }
 
-void SystemWindowManager::MessageSelected(UINT msg, WPARAM wParam, LPARAM lParam)
+void SystemWindowManager::PostMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(m_SelectedWindow)
-	{
-		m_SelectedWindow->Message(msg, wParam, lParam);
-	}
+	m_SelectedWindow->PostWindowMessage(msg, wParam, lParam);
+}
+
+void SystemWindowManager::SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	m_SelectedWindow->SendWindowMessage(msg, wParam, lParam);
+}
+
+void SystemWindowManager::SendMessageSelected(UINT msg,LPARAM lParam)
+{
+	m_SelectedWindow->SendWindowMessage(msg, lParam);
 }

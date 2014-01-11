@@ -114,7 +114,6 @@ bool BaseApplication::configure(void)
 			(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "rwnd" };	
 
 		RegisterClass(&wc);
-
 		
 		DWORD dwStyle =  WS_VISIBLE | WS_CLIPCHILDREN;
 
@@ -134,7 +133,7 @@ bool BaseApplication::configure(void)
 		{
 			ClipCursor(&rect);
 		}
-		ShowCursor(false);
+		ShowCursor(true);
 
         return true;
     }

@@ -118,9 +118,27 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		msg == WM_KEYDOWN || 
 		msg == WM_KEYUP ||
 		msg == WM_MOUSEHWHEEL ||
-		msg == WM_MOUSEWHEEL))
+		msg == WM_MOUSEWHEEL||
+		msg == WM_MOUSEMOVE))
 	{
-		m_WindowManager->MessageSelected(msg, wParam, lParam);
+		m_WindowManager->PostMessageSelected(msg, wParam, lParam);
+		m_WindowManager->SendMessageSelected(WM_NCHITTEST, NULL, lParam);
+		return 0;
+	}
+
+	if(m_InputMode &&
+		msg == WM_RBUTTONDOWN || 
+		msg == WM_RBUTTONUP ||
+		msg == WM_LBUTTONDOWN || 
+		msg == WM_LBUTTONUP )
+	{
+		LPARAM MouseActive = msg<<16|HTCLIENT;
+
+		m_WindowManager->SendMessageSelected(WM_IME_SETCONTEXT, true, 0xC000000F);
+		m_WindowManager->SendMessageSelected(WM_IME_NOTIFY, IMN_OPENSTATUSWINDOW, NULL);
+		m_WindowManager->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
+		m_WindowManager->PostMessageSelected(msg, MK_LBUTTON, lParam);
+		m_WindowManager->SendMessageSelected(WM_NCHITTEST, lParam);
 		return 0;
 	}
 

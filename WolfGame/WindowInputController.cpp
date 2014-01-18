@@ -45,7 +45,7 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 		{
-			if(wParam == VK_MENU )
+			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = false;
 				return 1;  
@@ -62,7 +62,7 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 		case WM_KEYUP:
 		{
 			
-			if(wParam == VK_MENU || wParam == VK_RWIN )
+			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = true;
 				return 0;
@@ -73,6 +73,11 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 				return 1;
 			}
 			
+		}
+		case WM_MOUSEMOVE:
+		{
+			m_WindowManager->OnMouseMoved(Vector3( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam),0.0f ));
+			return 0;
 		}
 	}
 	return 0;
@@ -90,7 +95,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 		{
-			if(wParam == VK_MENU )
+			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = false;
 				return 1;  
@@ -100,7 +105,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_KEYUP:
 		{
 			
-			if(wParam == VK_MENU || wParam == VK_RWIN )
+			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = true;
 				return 0;
@@ -118,13 +123,14 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		msg == WM_KEYDOWN || 
 		msg == WM_KEYUP ||
 		msg == WM_MOUSEHWHEEL ||
-		msg == WM_MOUSEWHEEL||
-		msg == WM_MOUSEMOVE))
+		msg == WM_MOUSEWHEEL))
 	{
 		m_WindowManager->PostMessageSelected(msg, wParam, lParam);
 		m_WindowManager->SendMessageSelected(WM_NCHITTEST, NULL, lParam);
 		return 0;
 	}
+
+	
 
 	if(m_InputMode &&
 		msg == WM_RBUTTONDOWN || 
@@ -134,12 +140,15 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	{
 		LPARAM MouseActive = msg<<16|HTCLIENT;
 
-		m_WindowManager->SendMessageSelected(WM_IME_SETCONTEXT, true, 0xC000000F);
-		m_WindowManager->SendMessageSelected(WM_IME_NOTIFY, IMN_OPENSTATUSWINDOW, NULL);
-		m_WindowManager->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
-		m_WindowManager->PostMessageSelected(msg, MK_LBUTTON, lParam);
-		m_WindowManager->SendMessageSelected(WM_NCHITTEST, lParam);
-		return 0;
+		Vector2 relMousePos;
+		if(m_WindowManager->CheckWindowCollision( msg != WM_MOUSEMOVE, &relMousePos))
+		{
+			m_WindowManager->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
+			m_WindowManager->PostMessageSelected(msg, MK_LBUTTON, relMousePos);
+			//m_WindowManager->SendMessageSelected(WM_NCHITTEST, lParam);
+			return 0;
+		}
+		
 	}
 
 	return 0;

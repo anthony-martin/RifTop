@@ -45,9 +45,12 @@ public:
 	void SetZoomActive(bool zoomAcitve);
 
 	void PostMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam);
+	void PostMessageSelected(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos);
 	void SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam);
 	void SendMessageSelected(UINT msg, LPARAM lParam);
 
 	void OnMouseMoved(Ogre::Vector3 mouseMovement);
+
+	bool CheckWindowCollision(bool canChangeSelection, Vector2 *outRelativePosition);
 };
 

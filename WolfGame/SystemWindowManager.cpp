@@ -249,6 +249,11 @@ void SystemWindowManager::PostMessageSelected(UINT msg, WPARAM wParam, LPARAM lP
 	m_SelectedWindow->PostWindowMessage(msg, wParam, lParam);
 }
 
+void SystemWindowManager::PostMessageSelected(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos)
+{
+	m_SelectedWindow->PostWindowMessage(msg, wParam, relativeMousePos);
+}
+
 void SystemWindowManager::SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	m_SelectedWindow->SendWindowMessage(msg, wParam, lParam);
@@ -257,4 +262,63 @@ void SystemWindowManager::SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lP
 void SystemWindowManager::SendMessageSelected(UINT msg,LPARAM lParam)
 {
 	m_SelectedWindow->SendWindowMessage(msg, lParam);
+}
+
+
+bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 *outRelativePosition)
+{
+	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
+	Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
+	//convert to a vector 3 going into the screen
+	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
+
+	Vector3 result;
+	Entity* entity = NULL;
+	float distToColl = -1.0f;
+
+	m_CollisionTools.raycastFromPoint(origin, other, result, entity, distToColl);
+
+ 	if(entity)
+	{
+		AxisAlignedBox bounds = entity->getBoundingBox();
+		SceneNode *node = entity->getParentSceneNode();
+		Vector3 position = result - node->convertLocalToWorldPosition(Vector3::ZERO);
+		double relx, rely = 0;
+
+		Vector3 topLeft = bounds.getCorner(AxisAlignedBox::FAR_LEFT_TOP);
+		Vector3 bottomRight = bounds.getCorner(AxisAlignedBox::FAR_RIGHT_BOTTOM);
+
+		relx = (position.x - topLeft.x) / (bottomRight.x - topLeft.x);
+		rely = (position.y - topLeft.y) / (bottomRight.y - topLeft.y);
+
+
+		if(m_SelectedWindow->GetMaterialName() == entity->getName())
+		{
+			//todo figure out the mouse coordiantes
+			m_SelectedWindow->CheckActiveWindow(relx, rely);
+			*outRelativePosition = Vector2(relx, rely);
+			return true;
+		}
+		else if(canChangeSelection)
+		{
+			for (std::vector<SystemWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); ++it)
+			{
+				if((*it)->GetMaterialName() == entity->getName())
+				{
+					//todo deactivate the old window here
+					m_SelectedWindow = (*it);
+					m_SelectedWindow->CheckActiveWindow(relx, rely);
+					*outRelativePosition = Vector2(relx, rely);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	else if(canChangeSelection)
+	{
+		RemoveHighlightedThumbnail();
+	}
+
+	return false;
 }

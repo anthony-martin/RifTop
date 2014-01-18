@@ -42,6 +42,7 @@ public:
 	void MoveCloserToCamera();
 	void MoveFurtherFromCamera();
 	void PostWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+	void PostWindowMessage(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos);
 	void SendWindowMessage(UINT msg, LPARAM lParam);
 	void SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 

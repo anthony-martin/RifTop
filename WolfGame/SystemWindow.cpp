@@ -108,7 +108,7 @@ void SystemWindow::DisplayWindow()
 	SendMessage(m_WindowHandle , WM_SETFOCUS, 0, 0);
 	m_WindowVisible = true;
 
-	CheckActiveWindow(1,2);
+	
 }
 
 Ogre::String SystemWindow::GetMaterialName()
@@ -210,6 +210,27 @@ void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 	LRESULT result = PostMessage(m_CurrentWindow , msg, wParam, lParam);
 }
 
+
+void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos)
+{
+	RECT parentRect;
+    GetWindowRect(m_WindowHandle, &parentRect);
+
+	RECT parentClient;
+    GetClientRect(m_WindowHandle, &parentClient);
+
+	int windowsPosX = relativeMousePos.x * parentClient.right;
+	int windowsPosY = relativeMousePos.y * parentClient.bottom ;
+	
+	LPARAM MousePos = windowsPosY<<16|windowsPosX;
+
+	int xPos = GET_X_LPARAM(MousePos); 
+	int yPos = GET_Y_LPARAM(MousePos); 
+
+
+	LRESULT result = PostMessage(m_CurrentWindow , msg, wParam, MousePos);
+}
+
 void SystemWindow::SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = SendMessage(m_WindowHandle , msg, wParam, lParam);
@@ -266,8 +287,8 @@ void SystemWindow::CheckActiveWindow(double x, double y)
 	RECT parentClient;
     GetClientRect(m_WindowHandle, &parentClient);
 
-	long windowsPosX = 0.5 * parentClient.right + parentRect.left;
-	long windowsPosY = 0.5 * parentClient.bottom+ parentRect.top;
+	long windowsPosX = x * parentClient.right + parentRect.left;
+	long windowsPosY = y * parentClient.bottom+ parentRect.top;
 
 	CheckActiveWindow( win, windowsPosX, windowsPosY);
 

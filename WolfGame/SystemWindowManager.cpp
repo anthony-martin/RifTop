@@ -259,6 +259,11 @@ void SystemWindowManager::SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lP
 	m_SelectedWindow->SendWindowMessage(msg, wParam, lParam);
 }
 
+void SystemWindowManager::SendMessageSelected(UINT msg, Ogre::Vector2 relativeMousePos)
+{
+	m_SelectedWindow->SendWindowMessage(msg, relativeMousePos);
+}
+
 void SystemWindowManager::SendMessageSelected(UINT msg,LPARAM lParam)
 {
 	m_SelectedWindow->SendWindowMessage(msg, lParam);
@@ -268,6 +273,7 @@ void SystemWindowManager::SendMessageSelected(UINT msg,LPARAM lParam)
 bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 *outRelativePosition)
 {
 	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
+	//todo actually calcualte the orientation to the cursor location.
 	Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
 	//convert to a vector 3 going into the screen
 	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
@@ -282,7 +288,9 @@ bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 
 	{
 		AxisAlignedBox bounds = entity->getBoundingBox();
 		SceneNode *node = entity->getParentSceneNode();
-		Vector3 position = result - node->convertLocalToWorldPosition(Vector3::ZERO);
+		Vector3 nodePosition =  node->getPosition();
+		Vector3 nodeWorldPosition =  node->convertLocalToWorldPosition(Vector3::ZERO);
+		Vector3 position = node->convertWorldToLocalPosition(result - nodeWorldPosition);
 		double relx, rely = 0;
 
 		Vector3 topLeft = bounds.getCorner(AxisAlignedBox::FAR_LEFT_TOP);

@@ -28,6 +28,7 @@ This source file is part of the
 #include "SystemWindowManager.h"
 #include "MessagePump.h"
 #include "WindowInputController.h"
+#include "MouseCursor.h"
 
 class BaseApplication : public Ogre::FrameListener, 
 						public Ogre::WindowEventListener, 
@@ -83,6 +84,8 @@ protected:
     Ogre::RenderWindow* mWindow;
     Ogre::String mResourcesCfg;
     Ogre::String mPluginsCfg;
+
+	MouseCursor *m_MosueCursor;
 
     bool mCursorWasVisible;                    // was cursor visible before dialog appeared
 

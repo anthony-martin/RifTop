@@ -81,6 +81,9 @@
     <ClCompile Include="WindowInputController.cpp">
       <Filter>Source Files\SystemWindows</Filter>
     </ClCompile>
+    <ClCompile Include="MouseCursor.cpp">
+      <Filter>Source Files\SystemWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApplication.h">
@@ -126,6 +129,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowInputController.h">
+      <Filter>Header Files\SystemWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseCursor.h">
       <Filter>Header Files\SystemWindows</Filter>
     </ClInclude>
   </ItemGroup>

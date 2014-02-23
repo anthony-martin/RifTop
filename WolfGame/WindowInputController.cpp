@@ -118,7 +118,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		}
 	}
 		//note can use with OIS but need to pass more than just the mouse down message
-	if(m_InputMode && 
+	/*if(m_InputMode && 
 		(
 		msg == WM_KEYDOWN || 
 		msg == WM_KEYUP ||
@@ -136,7 +136,8 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		msg == WM_RBUTTONDOWN || 
 		msg == WM_RBUTTONUP ||
 		msg == WM_LBUTTONDOWN || 
-		msg == WM_LBUTTONUP )
+		msg == WM_LBUTTONUP || 
+		msg == WM_LBUTTONUP)
 	{
 		LPARAM MouseActive = msg<<16|HTCLIENT;
 
@@ -145,11 +146,11 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		{
 			m_WindowManager->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
 			m_WindowManager->PostMessageSelected(msg, MK_LBUTTON, relMousePos);
-			//m_WindowManager->SendMessageSelected(WM_NCHITTEST, lParam);
+			m_WindowManager->SendMessageSelected(WM_NCHITTEST, relMousePos);
 			return 0;
 		}
 		
-	}
+	}*/
 
 	return 0;
 }

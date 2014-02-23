@@ -236,6 +236,25 @@ void SystemWindow::SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 	LRESULT result = SendMessage(m_WindowHandle , msg, wParam, lParam);
 }
 
+void SystemWindow::SendWindowMessage(UINT msg, Ogre::Vector2 relativeMousePos)
+{
+	RECT parentRect;
+    GetWindowRect(m_WindowHandle, &parentRect);
+
+	RECT parentClient;
+    GetClientRect(m_WindowHandle, &parentClient);
+
+	int windowsPosX = relativeMousePos.x * parentClient.right;
+	int windowsPosY = relativeMousePos.y * parentClient.bottom ;
+	
+	LPARAM MousePos = windowsPosY<<16|windowsPosX;
+
+	int xPos = GET_X_LPARAM(MousePos); 
+	int yPos = GET_Y_LPARAM(MousePos); 
+
+	LRESULT result = SendMessage(m_WindowHandle , msg, (WPARAM)m_WindowHandle, MousePos);
+}
+
 void SystemWindow::SendWindowMessage(UINT msg, LPARAM lParam)
 {
 	LRESULT result = SendMessage(m_WindowHandle , msg, (WPARAM)m_WindowHandle, lParam);

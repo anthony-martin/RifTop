@@ -64,25 +64,25 @@ LRESULT BaseApplication::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			}
 			break;
 		}
-	case WM_MOUSEMOVE:
-		{
-			if(m_cursorPos)
-			{
-				//also add method for this 
-				int xPos = GET_X_LPARAM(lParam);
-				float movement = 0.0f;
+	//case WM_MOUSEMOVE:
+	//	{
+	//		if(m_cursorPos)
+	//		{
+	//			//also add method for this 
+	//			int xPos = GET_X_LPARAM(lParam);
+	//			float movement = 0.0f;
 
-				movement = m_cursorPos - xPos -3;// magic number that makes the border align
+	//			movement = m_cursorPos - xPos -3;// magic number that makes the border align
 
-				if(movement != 0.0f)
-				{
-					Ogre::Radian turn((movement / -200.0f));
-					mController->mBodyRotationNode->yaw(turn);
-				}
+	//			if(movement != 0.0f)
+	//			{
+	//				Ogre::Radian turn((movement / -200.0f));
+	//				mController->mBodyRotationNode->yaw(turn);
+	//			}
 
-				return 1;
-			}
-		}
+	//			return 1;
+	//		}
+	//	}
 		default:
 			return 0;
 	}
@@ -161,12 +161,12 @@ void BaseApplication::createFrameListener(void)
     windowHndStr << windowHnd;
     pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-    //mInputManager = OIS::InputManager::createInputSystem( pl );
+    mInputManager = OIS::InputManager::createInputSystem( pl );
 
     //mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-    //mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 
-    //mMouse->setEventCallback(this);
+    mMouse->setEventCallback(this);
    // mKeyboard->setEventCallback(this);
 
     //Set initial mouse clipping size
@@ -328,6 +328,8 @@ bool BaseApplication::setup(void)
 
 	//mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
+	m_MosueCursor = new MouseCursor(mSceneMgr, mController->mBodyRotationNode);
+
 	//mScene = new WarehouseFloor(mSceneMgr);
 	mWarehouseShown = true;
     createScene();
@@ -357,7 +359,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     //Need to capture/update each device
     //mKeyboard->capture();
-    //mMouse->capture();
+    mMouse->capture();
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
 	//mPlayer->processMovement(evt.timeSinceLastFrame);
     return true;
@@ -395,6 +397,7 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
+	m_MosueCursor->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
 	// turn the body
 	//mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
 	// scale the selected window

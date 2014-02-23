@@ -45,6 +45,7 @@ public:
 	void PostWindowMessage(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos);
 	void SendWindowMessage(UINT msg, LPARAM lParam);
 	void SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+	void SendWindowMessage(UINT msg, Ogre::Vector2 relativeMousePos);
 
 	void CheckActiveWindow(double x, double y);
 	void CheckActiveWindow(HWND nextWin, long windowsPosX, long windowsPosY);

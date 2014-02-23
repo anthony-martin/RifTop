@@ -5,14 +5,16 @@ using namespace Ogre;
 
 SystemWindowManager::SystemWindowManager(SceneManager *sceneManager,
 										RTShader::ShaderGenerator *shaderGenerator,
-										CameraController *cameraController)
+										CameraController *cameraController,
+										MouseCursor *mouseCursor)
 	:m_Windows(),
 	m_SceneManager(sceneManager),
 	m_ShaderGenerator(shaderGenerator),
 	m_Controller(cameraController),
 	m_ThumbnaislActive(false),
 	m_CollisionTools(sceneManager),
-	m_HighlightedNode(NULL)
+	m_HighlightedNode(NULL),
+	m_MosueCursor(mouseCursor)
 {
 	
     Plane p;
@@ -274,15 +276,17 @@ bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 
 {
 	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
 	//todo actually calcualte the orientation to the cursor location.
-	Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
+	Vector3 cursor = m_MosueCursor->GetPosition();
+	//Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
 	//convert to a vector 3 going into the screen
-	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
+	Vector3 other = cursor - origin;
 
 	Vector3 result;
 	Entity* entity = NULL;
 	float distToColl = -1.0f;
-
+	m_MosueCursor->SetVisible(false);
 	m_CollisionTools.raycastFromPoint(origin, other, result, entity, distToColl);
+	m_MosueCursor->SetVisible(true);
 
  	if(entity)
 	{
@@ -290,7 +294,7 @@ bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 
 		SceneNode *node = entity->getParentSceneNode();
 		Vector3 nodePosition =  node->getPosition();
 		Vector3 nodeWorldPosition =  node->convertLocalToWorldPosition(Vector3::ZERO);
-		Vector3 position = node->convertWorldToLocalPosition(result - nodeWorldPosition);
+		Vector3 position = node->convertWorldToLocalPosition(result);
 		double relx, rely = 0;
 
 		Vector3 topLeft = bounds.getCorner(AxisAlignedBox::FAR_LEFT_TOP);

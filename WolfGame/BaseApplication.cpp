@@ -318,7 +318,10 @@ bool BaseApplication::setup(void)
 	{
 		mController->createViewports();
 	}
-	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController);
+
+	m_MosueCursor = new MouseCursor(mSceneMgr, mController->mBodyRotationNode);
+
+	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController, m_MosueCursor);
 	m_Windows->RefreshWindowHandles();
 
 	m_WindowInput = new WindowInputController(m_Windows);
@@ -328,7 +331,7 @@ bool BaseApplication::setup(void)
 
 	//mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
 
-	m_MosueCursor = new MouseCursor(mSceneMgr, mController->mBodyRotationNode);
+	
 
 	//mScene = new WarehouseFloor(mSceneMgr);
 	mWarehouseShown = true;
@@ -398,6 +401,11 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
 	m_MosueCursor->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
+	/*	Vector2 relMousePos;
+		if(m_Windows->CheckWindowCollision( false, &relMousePos))
+		{
+			m_Windows->PostMessageSelected(WM_MOUSEMOVE, 0, relMousePos);
+		}*/
 	// turn the body
 	//mPlayer->mouseInput(Ogre::Vector2(arg.state.X.rel, arg.state.Y.rel));
 	// scale the selected window
@@ -407,21 +415,33 @@ bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	if(m_MoveWindow)
+	Vector2 relMousePos;
+	if(m_Windows->CheckWindowCollision( true, &relMousePos))
 	{
-		m_Windows->MoveSelected();
-		m_MoveWindow = false;
-	}
-	else
-	{
-		m_Windows->ReleaseSelected();
-		m_MoveWindow = true;
+		LPARAM MouseActive = WM_LBUTTONDOWN<<16|HTCLIENT;
+		if(id == OIS::MouseButtonID::MB_Left)
+		{
+			m_Windows->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
+			m_Windows->PostMessageSelected(WM_LBUTTONDOWN, MK_LBUTTON, relMousePos);
+			m_Windows->SendMessageSelected(WM_NCHITTEST, relMousePos);
+		}
 	}
     return true;
 }
 
 bool BaseApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
+	Vector2 relMousePos;
+	if(m_Windows->CheckWindowCollision( false, &relMousePos))
+	{
+		LPARAM MouseActive = WM_LBUTTONUP<<16|HTCLIENT;
+		if(id == OIS::MouseButtonID::MB_Left)
+		{
+			m_Windows->SendMessageSelected(WM_SETCURSOR, NULL, MouseActive);
+			m_Windows->PostMessageSelected(WM_LBUTTONUP, MK_LBUTTON, relMousePos);
+			m_Windows->SendMessageSelected(WM_NCHITTEST, relMousePos);
+		}
+	}
     return true;
 }
 

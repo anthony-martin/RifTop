@@ -12,4 +12,7 @@ private:
 public: 
 	MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode);
 	void mouseInput(Ogre::Vector2 input);
+	Ogre::Vector3 GetPosition();
+
+	void SetVisible(bool visible);
 };

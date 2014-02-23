@@ -117,8 +117,8 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			}
 		}
 	}
-		//note can use with OIS but need to pass more than just the mouse down message
-	/*if(m_InputMode && 
+	//note can use with OIS but need to pass more than just the mouse down message
+	if(m_InputMode && 
 		(
 		msg == WM_KEYDOWN || 
 		msg == WM_KEYUP ||
@@ -131,7 +131,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	}
 
 	
-
+	/*
 	if(m_InputMode &&
 		msg == WM_RBUTTONDOWN || 
 		msg == WM_RBUTTONUP ||

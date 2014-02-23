@@ -18,7 +18,6 @@ MouseCursor::MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* rotation
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	cursorEntity->setMaterial(material);
 	m_Cursor->attachObject(cursorEntity);
-
 	m_Cursor->setPosition(Ogre::Vector3(0,0,-1));
 
 	m_Cursor->setScale(0.01,0.01,0.01);
@@ -61,4 +60,14 @@ void MouseCursor::mouseInput(Ogre::Vector2 input)
 	}
 
 	m_Cursor->setPosition(position);
+}
+
+Ogre::Vector3 MouseCursor::GetPosition()
+{
+	return m_Cursor->convertLocalToWorldPosition(Ogre::Vector3::ZERO);
+}
+
+void MouseCursor::SetVisible(bool visible)
+{
+	m_Cursor->setVisible(visible);
 }

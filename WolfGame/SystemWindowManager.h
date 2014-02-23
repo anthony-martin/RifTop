@@ -3,6 +3,7 @@
 #include "SceneManagerExtensions.h"
 #include "CameraController.h"
 #include "CollisionTools.h"
+#include "MouseCursor.h"
 
 class SystemWindowManager
 {
@@ -25,11 +26,14 @@ private:
 	void CheckActiveThumbnail();
 	void ChangeHighlightedThumbnail( String name);
 	void RemoveHighlightedThumbnail();
+	
+	MouseCursor *m_MosueCursor;
 
 public:
 	SystemWindowManager(Ogre::SceneManager *sceneManager,
 						Ogre::RTShader::ShaderGenerator *shaderGenerator,
-						CameraController *cameraController);
+						CameraController *cameraController,
+						MouseCursor *mouseCursor);
 	~SystemWindowManager(void);
 
 

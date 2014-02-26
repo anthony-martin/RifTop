@@ -65,7 +65,7 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = true;
-				return 0;
+				return 1;
 			}
 			if(wParam == VK_TAB )
 			{
@@ -98,6 +98,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = false;
+				m_WindowManager->PostMessageSelected(msg, wParam, lParam);
 				return 1;  
 			}
 		}
@@ -108,7 +109,8 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = true;
-				return 0;
+				m_WindowManager->PostMessageSelected(msg, wParam, lParam);
+				return 1;
 			}
 			if(wParam == VK_TAB )
 			{

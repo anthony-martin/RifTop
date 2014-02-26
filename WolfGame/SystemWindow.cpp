@@ -213,7 +213,7 @@ void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, Ogre::Vector2 relativeMousePos)
 {
-	RECT parentRect;
+	/*RECT parentRect;
     GetWindowRect(m_WindowHandle, &parentRect);
 
 	RECT parentClient;
@@ -222,6 +222,28 @@ void SystemWindow::PostWindowMessage(UINT msg, WPARAM wParam, Ogre::Vector2 rela
 	int windowsPosX = relativeMousePos.x * parentClient.right;
 	int windowsPosY = relativeMousePos.y * parentClient.bottom ;
 	
+	todo convert from relative to parent pos to relative to current pos*/
+	RECT parentRect;
+    GetWindowRect(m_WindowHandle, &parentRect);
+
+	RECT childRect;
+    GetWindowRect(m_CurrentWindow, &childRect);
+
+	//relx = (position.x - topLeft.x) / (bottomRight.x - topLeft.x);
+	//rely = (position.y - topLeft.y) / (bottomRight.y - topLeft.y);
+
+	float childleftOffset = (float)(childRect.left - parentRect.left) / (float)(parentRect.right - parentRect.left);
+	float childRightOffset = (float)(childRect.right - parentRect.left) / (float)(parentRect.right - parentRect.left);
+	float childRelativeWidth = childRightOffset - childleftOffset;
+
+	float childTopOffset = (float)(childRect.top - parentRect.top)/ (float)( parentRect.bottom - parentRect.top);
+	float childBottompOffset = (float)(childRect.bottom - parentRect.top)/ (float)( parentRect.bottom - parentRect.top);
+	float childRelativeHeight =  childBottompOffset - childTopOffset;
+
+	int windowsPosX = ((relativeMousePos.x - childleftOffset)/ childRelativeWidth)* (float)(childRect.right - childRect.left);
+	int windowsPosY = ((relativeMousePos.y - childTopOffset)/ childRelativeHeight) * (float)( childRect.bottom - childRect.top);
+
+
 	LPARAM MousePos = windowsPosY<<16|windowsPosX;
 
 	int xPos = GET_X_LPARAM(MousePos); 
@@ -238,15 +260,27 @@ void SystemWindow::SendWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void SystemWindow::SendWindowMessage(UINT msg, Ogre::Vector2 relativeMousePos)
 {
+	//todo convert from relative to parent pos to relative to current pos
 	RECT parentRect;
     GetWindowRect(m_WindowHandle, &parentRect);
 
-	RECT parentClient;
-    GetClientRect(m_WindowHandle, &parentClient);
+	RECT childRect;
+    GetWindowRect(m_CurrentWindow, &childRect);
 
-	int windowsPosX = relativeMousePos.x * parentClient.right;
-	int windowsPosY = relativeMousePos.y * parentClient.bottom ;
-	
+	//relx = (position.x - topLeft.x) / (bottomRight.x - topLeft.x);
+	//rely = (position.y - topLeft.y) / (bottomRight.y - topLeft.y);
+
+	float childleftOffset = (float)(childRect.left - parentRect.left) / (float)(parentRect.right - parentRect.left);
+	float childRightOffset = (float)(childRect.right - parentRect.left) / (float)(parentRect.right - parentRect.left);
+	float childRelativeWidth = childRightOffset - childleftOffset;
+
+	float childTopOffset = (float)(childRect.top - parentRect.top)/ (float)( parentRect.bottom - parentRect.top);
+	float childBottompOffset = (float)(childRect.bottom - parentRect.top)/ (float)( parentRect.bottom - parentRect.top);
+	float childRelativeHeight =  childBottompOffset - childTopOffset;
+
+	int windowsPosX = ((relativeMousePos.x - childleftOffset)/ childRelativeWidth)* (float)(childRect.right - childRect.left);
+	int windowsPosY = ((relativeMousePos.y - childTopOffset)/ childRelativeHeight) * (float)( childRect.bottom - childRect.top);
+
 	LPARAM MousePos = windowsPosY<<16|windowsPosX;
 
 	int xPos = GET_X_LPARAM(MousePos); 
@@ -303,11 +337,8 @@ void SystemWindow::CheckActiveWindow(double x, double y)
 	RECT parentRect;
     GetWindowRect(m_WindowHandle, &parentRect);
 
-	RECT parentClient;
-    GetClientRect(m_WindowHandle, &parentClient);
-
-	long windowsPosX = x * parentClient.right + parentRect.left;
-	long windowsPosY = y * parentClient.bottom+ parentRect.top;
+	long windowsPosX = x * (parentRect.right - parentRect.left) + parentRect.left;
+	long windowsPosY = y * (parentRect.bottom - parentRect.top)+ parentRect.top;
 
 	CheckActiveWindow( win, windowsPosX, windowsPosY);
 

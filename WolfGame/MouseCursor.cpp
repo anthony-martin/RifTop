@@ -12,15 +12,15 @@ MouseCursor::MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* rotation
 	m_RotationNode(rotationNode)
 {
 	m_Cursor = rotationNode->createChildSceneNode("bodyNode");
-
+	Ogre::SceneNode* child= m_Cursor->createChildSceneNode("iconNode");
 	Ogre::Entity *cursorEntity = sceneMgr->createEntity("left foot", "Boxnk2.mesh");
 
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
 	cursorEntity->setMaterial(material);
-	m_Cursor->attachObject(cursorEntity);
-	m_Cursor->setPosition(Ogre::Vector3(0,0,-1));
+	child->attachObject(cursorEntity);
 
-	m_Cursor->setScale(0.01,0.01,0.01);
+	child->setScale(0.01,0.01,0.01);
+	m_Cursor->setPosition(Ogre::Vector3(0,0,-2));
 }
 
 

@@ -98,8 +98,6 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = false;
-				m_WindowManager->PostMessageSelected(msg, wParam, lParam);
-				return 1;  
 			}
 		}
 		case WM_SYSKEYUP:
@@ -109,8 +107,6 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			if(wParam == VK_CONTROL )
 			{
 				m_InputMode = true;
-				m_WindowManager->PostMessageSelected(msg, wParam, lParam);
-				return 1;
 			}
 			if(wParam == VK_TAB )
 			{

@@ -41,6 +41,7 @@ BaseApplication::~BaseApplication(void)
 	delete mController;
 	delete m_Windows;
 	delete m_WindowInput;
+	delete m_MosueCursor;
 
     //Remove ourself as a Window listener
     Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
@@ -165,8 +166,7 @@ void BaseApplication::createFrameListener(void)
 
     //mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
     mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
-
-    mMouse->setEventCallback(this);
+	mMouse->setEventCallback(m_WindowInput);
    // mKeyboard->setEventCallback(this);
 
     //Set initial mouse clipping size
@@ -308,8 +308,6 @@ bool BaseApplication::setup(void)
 	mController = new CameraController(mWindow);
     mController->createCameras(mSceneMgr);
 
-	
-
 	if(mOculus->isInitialised())
 	{
 		mController->createViewports(mOculus->getDeviceInfo());
@@ -324,7 +322,7 @@ bool BaseApplication::setup(void)
 	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController, m_MosueCursor);
 	m_Windows->RefreshWindowHandles();
 
-	m_WindowInput = new WindowInputController(m_Windows);
+	m_WindowInput = new WindowInputController(m_Windows, m_MosueCursor);
 
 	MessagePump::Subscribe(m_WindowInput);
 	MessagePump::Subscribe(this);

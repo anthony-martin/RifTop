@@ -22,8 +22,7 @@ private:
 
 	bool m_ZoomMode;
 
-
-	void CheckActiveThumbnail();
+	
 	void ChangeHighlightedThumbnail( String name);
 	void RemoveHighlightedThumbnail();
 	
@@ -36,7 +35,7 @@ public:
 						MouseCursor *mouseCursor);
 	~SystemWindowManager(void);
 
-
+	void CheckActiveThumbnail();
 	void RefreshWindowHandles();
 
 	void ShowThumbnails();
@@ -53,8 +52,6 @@ public:
 	void SendMessageSelected(UINT msg, WPARAM wParam, LPARAM lParam);
 	void SendMessageSelected(UINT msg, Ogre::Vector2 relativeMousePos);
 	void SendMessageSelected(UINT msg, LPARAM lParam);
-
-	void OnMouseMoved(Ogre::Vector3 mouseMovement);
 
 	bool CheckWindowCollision(bool canChangeSelection, Vector2 *outRelativePosition);
 };

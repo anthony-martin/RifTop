@@ -171,31 +171,20 @@ void SystemWindowManager::SetZoomActive(bool zoomAcitve)
 	m_ZoomMode = zoomAcitve;
 }
 
-void SystemWindowManager::OnMouseMoved(Vector3 mouseMovement)
-{
-
-	ScaleSelected(mouseMovement.z );
-	
-	if(mouseMovement.x != 0.0f || mouseMovement.y != 0.0f)
-	{
-		if(m_ThumbnaislActive)
-		{
-			CheckActiveThumbnail();
-		}
-	}
-}
-
 void SystemWindowManager::CheckActiveThumbnail()
 {
+	if(!m_ThumbnaislActive)
+	{
+		return;
+	}
 	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
-	Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
 	//convert to a vector 3 going into the screen
-	Vector3 other = normal * Vector3::NEGATIVE_UNIT_Z;
+	Vector3 other = m_MosueCursor->GetPosition() - origin;
 
 	Vector3 result;
 	Entity* thumbnail = NULL;
 	float distToColl = -1.0f;
-
+	 
 	m_CollisionTools.raycastFromPoint(origin, other, result, thumbnail, distToColl);
 
  	if(thumbnail)
@@ -275,9 +264,7 @@ void SystemWindowManager::SendMessageSelected(UINT msg,LPARAM lParam)
 bool SystemWindowManager::CheckWindowCollision(bool canChangeSelection, Vector2 *outRelativePosition)
 {
 	Vector3 origin = m_Controller->mRotationNode->convertLocalToWorldPosition(Vector3::ZERO);
-	//todo actually calcualte the orientation to the cursor location.
 	Vector3 cursor = m_MosueCursor->GetPosition();
-	//Quaternion normal = m_Controller->mRotationNode->convertLocalToWorldOrientation(Quaternion::IDENTITY);
 	//convert to a vector 3 going into the screen
 	Vector3 other = cursor - origin;
 

@@ -347,21 +347,12 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
-	/*RECT rect;
-	if(GetWindowRect(mWindowHandle, &rect))
-	{
-		int deltaX = rect.right - rect.left;
-		int deltsY = rect.bottom - rect.top;
-		m_cursorPos = (deltaX/2);
-		SetCursorPos(rect.left + m_cursorPos,rect.top + deltsY/2 );
-	}*/
-
-	
 
     //Need to capture/update each device
     //mKeyboard->capture();
     mMouse->capture();
 	mController->mRotationNode->setOrientation(mOculus->getOrientation());
+	m_Windows->CheckActiveThumbnail();
 	//mPlayer->processMovement(evt.timeSinceLastFrame);
     return true;
 }

@@ -7,20 +7,25 @@ const float maxX = 1.0f;
 const float maxY = 1.5f;
 
 
-MouseCursor::MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* rotationNode)
+MouseCursor::MouseCursor(Ogre::SceneManager *sceneMgr, 
+					     Ogre::SceneNode* rotationNode,
+						 Ogre::SceneNode* orientationNode)
 	:m_Sensitivity(0.00175f),
 	m_RotationNode(rotationNode)
 {
-	m_Cursor = rotationNode->createChildSceneNode("bodyNode");
+	m_Cursor = orientationNode->createChildSceneNode("bodyNode");
 	Ogre::SceneNode* child= m_Cursor->createChildSceneNode("iconNode");
-	Ogre::Entity *cursorEntity = sceneMgr->createEntity("left foot", "Boxnk2.mesh");
+	Ogre::Entity *cursorEntity = sceneMgr->createEntity("Cursor", "Cursor.mesh");
 
-	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("box/singlelight");
+	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("Cursor");
 	cursorEntity->setMaterial(material);
 	child->attachObject(cursorEntity);
 
-	child->setScale(0.01,0.01,0.01);
-	m_Cursor->setPosition(Ogre::Vector3(0,0,-2));
+	child->yaw(Ogre::Radian(3*Ogre::Math::PI/2));
+	child->roll(Ogre::Radian(-Ogre::Math::PI/2));
+	m_Cursor->setPosition(Ogre::Vector3(0,0,-1.9f));
+	child->setScale(.1f,.1f,.1f);
+	
 }
 
 

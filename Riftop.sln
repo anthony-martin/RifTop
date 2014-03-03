@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WolfGame", "WolfGame\WolfGame.vcxproj", "{91658C6C-76CF-4344-81A8-08855BBAB65B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Riftop", "WolfGame\WolfGame.vcxproj", "{91658C6C-76CF-4344-81A8-08855BBAB65B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

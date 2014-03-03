@@ -24,7 +24,7 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 		{
-			if(wParam == VK_CONTROL )
+			if(wParam == VK_OEM_3 )
 			{
 				m_InputMode = false;
 				return 1;  
@@ -41,7 +41,7 @@ LRESULT WindowInputController::HandleInputMode(HWND hwnd, UINT msg, WPARAM wPara
 		case WM_KEYUP:
 		{
 			
-			if(wParam == VK_CONTROL )
+			if(wParam == VK_OEM_3 )
 			{
 				m_InputMode = true;
 				return 1;
@@ -70,7 +70,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 		{
-			if(wParam == VK_CONTROL )
+			if(wParam == VK_OEM_3 )
 			{
 				m_InputMode = false;
 				break;
@@ -80,7 +80,7 @@ LRESULT WindowInputController::Handle(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_KEYUP:
 		{
 			
-			if(wParam == VK_CONTROL )
+			if(wParam == VK_OEM_3 )
 			{
 				m_InputMode = true;
 				break;
@@ -160,7 +160,7 @@ bool WindowInputController::mousePressed( const OIS::MouseEvent &arg, OIS::Mouse
 	}
 	//otherwise send input to window
 	Vector2 relMousePos;
-	if(m_WindowManager->CheckWindowCollision( false, &relMousePos))
+	if(m_WindowManager->CheckWindowCollision( true, &relMousePos))
 	{
 		LPARAM MouseActive = WM_LBUTTONDOWN<<16|HTCLIENT;
 		if(id == OIS::MouseButtonID::MB_Left)

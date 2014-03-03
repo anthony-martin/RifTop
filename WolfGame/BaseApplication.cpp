@@ -242,10 +242,10 @@ void BaseApplication::loadResources(void)
 		mShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
  
 		// Add the shader libs resource location.
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreSource\\Samples\\Media\\RTShaderLib\\Cg", "FileSystem");
+		//Ogre::ResourceGroupManager::getSingleton().addResourceLocation("D:\\Project\\Ogre\\OgreSource\\Samples\\Media\\RTShaderLib\\Cg", "FileSystem");
  
 		// Set shader cache path.
-		mShaderGenerator->setShaderCachePath("D:\\Project\\WolfGame\\WolfGame\\Debug\\shaders");		
+		mShaderGenerator->setShaderCachePath(".\\Media\\shaders");		
 		//mShaderGenerator->
 		// Set the scene manager.
 		mShaderGenerator->addSceneManager(mSceneMgr);
@@ -262,7 +262,7 @@ void BaseApplication::loadResources(void)
 		//return true;
 	}
 	
-	mShaderGenerator->createShaderBasedTechnique("box/singlelight", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+	mShaderGenerator->createShaderBasedTechnique("Cursor", Ogre::MaterialManager::DEFAULT_SCHEME_NAME, Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 	
 }
 //-------------------------------------------------------------------------------------
@@ -317,7 +317,9 @@ bool BaseApplication::setup(void)
 		mController->createViewports();
 	}
 
-	m_MosueCursor = new MouseCursor(mSceneMgr, mController->mBodyRotationNode);
+	m_MosueCursor = new MouseCursor(mSceneMgr, 
+									mController->mBodyRotationNode, 
+									mController->mRotationNode);
 
 	m_Windows = new SystemWindowManager( mSceneMgr, mShaderGenerator, mController, m_MosueCursor);
 	m_Windows->RefreshWindowHandles();
@@ -327,11 +329,6 @@ bool BaseApplication::setup(void)
 	MessagePump::Subscribe(m_WindowInput);
 	MessagePump::Subscribe(this);
 
-	//mPlayer = new Player(mSceneMgr, mController->mBodyRotationNode);
-
-	
-
-	//mScene = new WarehouseFloor(mSceneMgr);
 	mWarehouseShown = true;
     createScene();
 

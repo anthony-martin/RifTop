@@ -10,7 +10,7 @@ private:
 	Ogre::SceneNode *m_Cursor;
 	Ogre::SceneNode *m_RotationNode;
 public: 
-	MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode);
+	MouseCursor(Ogre::SceneManager *sceneMgr, Ogre::SceneNode* eyeNode, Ogre::SceneNode* orientationNode);
 	void mouseInput(Ogre::Vector2 input);
 	Ogre::Vector3 GetPosition();
 

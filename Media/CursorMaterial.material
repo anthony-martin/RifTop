@@ -1,0 +1,17 @@
+material Cursor
+ {
+    technique
+    {
+       pass
+        {
+          scene_blend alpha_blend
+          depth_write off
+
+	  texture_unit
+          {
+            texture Cursor.png 0
+            scale 1 1
+          }
+       }   
+    }
+ }

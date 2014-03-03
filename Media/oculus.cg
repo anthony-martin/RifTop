@@ -14,6 +14,7 @@ float4 main_fp(float4 pos : POSITION,
 	float2 theta1 = theta * (HmdWarpParam.x + HmdWarpParam.y * rSq + HmdWarpParam.z * rSq * rSq + HmdWarpParam.w * rSq * rSq * rSq);
 	float2 tc = LensCentre + Scale * theta1;
 
+
 	// Detect whether blue texture coordinates are out of range
 	// since these will scaled out the furthest.
 	float2 thetaBlue = theta1 * (ChromAbParam.z + ChromAbParam.w * rSq);

@@ -6,7 +6,6 @@ fragment_program Ogre/Compositor/OculusFP_cg cg
 	
 	default_params
 	{
-		param_named ScreenCenter float2 1 1
 		param_named LensCentre float2 0.5 0.5
 		param_named Scale float2 0.3 0.3
 		param_named ScaleIn float2 2 2
@@ -14,6 +13,25 @@ fragment_program Ogre/Compositor/OculusFP_cg cg
 		param_named ChromAbParam float4 0.9959999f, -0.0040000002, 1.0140001, 0
 	}
 }
+
+vertex_program PlainTexture_VS cg            
+{
+        // Look in this source file for shader code
+    source SimpleShaders.cg
+        // Use this function for the vertex shader            
+    entry_point main_plain_texture_vp    
+        // Compile the shader to vs_1_1 format    
+    profiles vs_4_0 vs_2_0 arbvp1                 
+ 
+    // This block saves us from manually setting parameters in code
+        default_params                    
+    {
+                // Ogre will put the worldviewproj into our 'worldViewProj' parameter for us.
+        param_named_auto worldViewProj worldviewproj_matrix        
+                // Note that 'worldViewProj' is a parameter in the cg code.
+    }
+}
+
 
 vertex_program oculusBaseLightMap_vp cg
 {
@@ -23,7 +41,7 @@ vertex_program oculusBaseLightMap_vp cg
 	default_params
 	{
 		param_named_auto worldViewProj worldviewproj_matrix
-        param_named_auto ambient ambient_light_colour
+       		param_named_auto ambient ambient_light_colour
 	}
 }
 
@@ -42,7 +60,7 @@ material Ogre/Compositor/Oculus
 		{
 			depth_check off
 
-			vertex_program_ref Ogre/Compositor/StdQuad_vp
+			vertex_program_ref PlainTexture_VS
 			{
 			}
 

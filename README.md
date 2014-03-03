@@ -41,6 +41,7 @@ Riftop\Ogre\Include		< Ogre build
 Riftop\Ogre\OgreMain		< Ogre source from the ogre source code.
 Riftop\Ogre\Components		< Ogre source
 Riftop\Ogre\RenderSystems	< Ogre source
+Riftop\Ogre\Dependecies         < The Ogre Dependecies.
 Riftop\boost			< boost 1.53 should be the folder just above include and lib
 Riftop\Wolfgame			< This repo. I'll rename it eventaully it's just not high on the todo list yet.
 

@@ -184,8 +184,10 @@ void SystemWindowManager::CheckActiveThumbnail()
 	Vector3 result;
 	Entity* thumbnail = NULL;
 	float distToColl = -1.0f;
-	 
+	
+	m_MosueCursor->SetVisible(false);
 	m_CollisionTools.raycastFromPoint(origin, other, result, thumbnail, distToColl);
+	m_MosueCursor->SetVisible(true);
 
  	if(thumbnail)
 	{

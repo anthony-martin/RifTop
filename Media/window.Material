@@ -1,0 +1,14 @@
+
+material window/base
+ {
+    technique
+    {
+       pass
+        {
+	  texture_unit
+          {
+            scale 1 1
+          }
+       }   
+    }
+ }

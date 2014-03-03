@@ -1,8 +1,39 @@
+vertex_program PlainTexture_VS cg            
+{
+        // Look in this source file for shader code
+    source SimpleShaders.cg
+        // Use this function for the vertex shader            
+    entry_point main_plain_texture_vp    
+        // Compile the shader to vs_1_1 format    
+    profiles vs_1_1                    
+ 
+    // This block saves us from manually setting parameters in code
+        default_params                    
+    {
+                // Ogre will put the worldviewproj into our 'worldViewProj' parameter for us.
+        param_named_auto worldViewProj worldviewproj_matrix        
+                // Note that 'worldViewProj' is a parameter in the cg code.
+    }
+}
+ 
+// CG Pixel shader definition
+fragment_program PlainTexture_PS cg            
+{
+        // Look in this source file for shader code
+    source SimpleShaders.cg
+        // Use this function for the pixel shader    
+    entry_point main_plain_texture_fp    
+        // Compile to ps_1_1 format    
+    profiles ps_1_1                    
+}
+
+
 compositor OculusLeft
 {
     technique
     {
-        texture rt0 target_width_scaled 1.25 target_height_scaled 1.25 PF_R8G8B8
+
+        texture rt0 target_width_scaled 2.0 target_height_scaled 2.0 PF_R8G8B8
 
         target rt0 { input previous }
 
@@ -24,7 +55,7 @@ compositor OculusRight
 {
     technique
     {
-        texture rt0 target_width_scaled 1.5 target_height_scaled 1.5 PF_R8G8B8
+        texture rt0 target_width_scaled 2.0 target_height_scaled 2.0 PF_R8G8B8
 
         target rt0 { input previous }
 

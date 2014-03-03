@@ -1,0 +1,80 @@
+vertex_program PlainTexture_VS cg            
+{
+        // Look in this source file for shader code
+    source SimpleShaders.cg
+        // Use this function for the vertex shader            
+    entry_point main_plain_texture_vp    
+        // Compile the shader to vs_1_1 format    
+    profiles vs_4_0 vs_2_0 arbvp1                 
+ 
+    // This block saves us from manually setting parameters in code
+        default_params                    
+    {
+                // Ogre will put the worldviewproj into our 'worldViewProj' parameter for us.
+        param_named_auto worldViewProj worldviewproj_matrix        
+                // Note that 'worldViewProj' is a parameter in the cg code.
+    }
+}
+ 
+// CG Pixel shader definition
+fragment_program PlainTexture_PS cg            
+{
+        // Look in this source file for shader code
+    source SimpleShaders.cg
+        // Use this function for the pixel shader    
+    entry_point main_plain_texture_fp    
+        // Compile to ps_1_1 format    
+    profiles ps_4_0 ps_2_0 arbfp1                   
+}
+
+material player/feet
+ {
+    technique
+    {
+       pass
+        {
+	depth_write off
+	scene_blend alpha_blend  
+		
+	    // Make this pass use the vertex shader defined above
+            vertex_program_ref PlainTexture_VS    
+            {
+            }
+            // Make this pass use the pixel shader defined above
+            fragment_program_ref PlainTexture_PS    
+            {
+            }
+	  texture_unit
+          {
+            texture blackFootLight.png
+            scale 1 1
+          }
+       }   
+    }
+ }
+
+material player/Activefoot
+ {
+    technique
+    {
+       pass
+        {
+	depth_write off
+	scene_blend alpha_blend  
+	    // Make this pass use the vertex shader defined above
+            vertex_program_ref PlainTexture_VS    
+            {
+            }
+            // Make this pass use the pixel shader defined above
+            fragment_program_ref PlainTexture_PS    
+            {
+            }
+	  texture_unit
+          {
+            texture blackFoot.png
+            scale 1 1
+          }
+       }   
+    }
+ }
+

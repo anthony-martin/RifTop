@@ -44,6 +44,9 @@ Riftop\Ogre\RenderSystems	< Ogre source
 Riftop\Ogre\Dependecies         < The Ogre Dependecies.
 Riftop\boost			< boost 1.53 should be the folder just above include and lib
 Riftop\Wolfgame			< This repo. I'll rename it eventaully it's just not high on the todo list yet.
+\Media\cg			< This needs to be set to the cg folder from the RTShaderLib in the Ogre samples media
+
+You will also likely need to adjust paths to make the debug build work but for the release build just copt the Ogre dlls and the media folder next to the .exe
 
 Ogre Repository
 https://bitbucket.org/anthony_martin/ogre

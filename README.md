@@ -1,6 +1,7 @@
 RifTop
 ======
 
+![Screenshot](https://www.google.com/url?sa=i&source=imgres&cd=&ved=0CAYQjBwwAGoVChMI57bmkvznxwIVhXQ-Ch1teQj0&url=http%3A%2F%2Fi.imgur.com%2FS8Y4Ifr.png&psig=AFQjCNFzt-Qaf9lS58GYXOBgkShpHv4USA&ust=1441819987738629)
 
 Base code working from my work towards the oculus rift gamejam. I plan to use this as a starting point to develop an oculus compatble window manager for windows to streamline the development process so that work can be done with both the rift on or off depending on style.
 
